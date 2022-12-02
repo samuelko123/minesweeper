@@ -19,7 +19,7 @@ export const BaseDropdown = (props) => {
 		>
 			{
 				options.map(option => {
-					if (!option || !option.label || !option.value) {
+					if (!option || option.label === undefined || option.value === undefined) {
 						return null
 					}
 
