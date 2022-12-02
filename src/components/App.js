@@ -1,6 +1,6 @@
 import React from 'react'
 import Board from './Board'
-import Counter from './Counter'
+import { Counter } from './molecules/Counter'
 import Button from './Button'
 import { NumericTextField } from './molecules/NumericTextField'
 import { BaseDropdown } from './atoms/Dropdowns'
