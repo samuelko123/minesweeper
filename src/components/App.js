@@ -122,11 +122,6 @@ export default class App extends React.Component {
 				onKeyDown={this.handleKeyDown}
 				tabIndex={0}
 			>
-				<h1 className='hide'>MineSweeper</h1>
-				<h2 className='hide'>MineSweeper made from ReactJS</h2>
-				<h3 className='hide'>Enjoy the classic MineSweeper</h3>
-				<h4 className='hide'>Contact developer: koshunyin@gmail.com</h4>
-
 				<BaseStack gap={2}>
 					<BaseDropdown
 						label='mode'
@@ -134,19 +129,19 @@ export default class App extends React.Component {
 						options={[
 							{
 								value: 0,
-								label: 'Easy', 
+								label: 'Easy',
 							},
 							{
 								value: 1,
-								label: 'Medium', 
+								label: 'Medium',
 							},
 							{
 								value: 2,
-								label: 'Hard', 
+								label: 'Hard',
 							},
 							{
 								value: 3,
-								label: 'Custom', 
+								label: 'Custom',
 							},
 						]}
 						onChange={this.handleDropdownChange}
