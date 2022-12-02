@@ -180,54 +180,54 @@ export default class App extends React.Component {
 						onBlur={(val) => { this.handleNumberInputChange({ bomb_count: val }) }}
 					/>
 
-					<div
-						style={{ width: this.settings.board_width * constants.TILE_HEIGHT }}
+					<Box
 						onContextMenu={(e) => { e.preventDefault() }}
+						sx={{
+							width: 'fit-content',
+						}}
 					>
-						<div id='board'>
-							<Box
-								sx={{
-									display: 'flex',
-									justifyContent: 'space-between',
-									alignItems: 'center',
-								}}
+						<Box
+							sx={{
+								display: 'flex',
+								justifyContent: 'space-between',
+								alignItems: 'center',
+							}}
+						>
+							<Counter value={this.settings.bomb_count - this.state.flag_count} />
+							<FaceButton
+								onClick={this.handleSmileyClick}
+								status={this.state.button_status}
 							>
-								<Counter value={this.settings.bomb_count - this.state.flag_count} />
-								<FaceButton
-									onClick={this.handleSmileyClick}
-									status={this.state.button_status}
-								>
-									{this.state.button_status === constants.BUTTON_INIT && <FaSmile />}
-									{this.state.button_status === constants.BUTTON_PEEK && <FaSurprise />}
-									{this.state.button_status === constants.BUTTON_GAME_WIN && <BsFillEmojiSunglassesFill />}
-									{this.state.button_status === constants.BUTTON_GAME_LOSE && <ImSad2 />}
-								</FaceButton>
-								<Counter value={this.state.time} />
-							</Box>
+								{this.state.button_status === constants.BUTTON_INIT && <FaSmile />}
+								{this.state.button_status === constants.BUTTON_PEEK && <FaSurprise />}
+								{this.state.button_status === constants.BUTTON_GAME_WIN && <BsFillEmojiSunglassesFill />}
+								{this.state.button_status === constants.BUTTON_GAME_LOSE && <ImSad2 />}
+							</FaceButton>
+							<Counter value={this.state.time} />
+						</Box>
 
-							<Board
-								key={this.restart_count}
-								board_width={this.settings.board_width}
-								board_height={this.settings.board_height}
-								bomb_count={this.settings.bomb_count}
-								notifyFlagChange={this.handleFlagChange}
-								notifyGameStatus={this.handleGameStatus}
-								notifyTilePeek={this.handleTilePeek}
-							/>
-						</div>
+						<Board
+							key={this.restart_count}
+							board_width={this.settings.board_width}
+							board_height={this.settings.board_height}
+							bomb_count={this.settings.bomb_count}
+							notifyFlagChange={this.handleFlagChange}
+							notifyGameStatus={this.handleGameStatus}
+							notifyTilePeek={this.handleTilePeek}
+						/>
+					</Box>
 
-						<footer>
-							<div>
-								<span>Samuel Ko | </span>
-								<div className='tooltip'>
-									<a target='_blank' rel='noopener noreferrer' href='https://github.com/samuelko123/minesweeper'>
-										<i className='fa fa-github'></i>
-									</a>
-									<span className='tooltiptext'>Source code</span>
-								</div>
+					<footer>
+						<div>
+							<span>Samuel Ko | </span>
+							<div className='tooltip'>
+								<a target='_blank' rel='noopener noreferrer' href='https://github.com/samuelko123/minesweeper'>
+									<i className='fa fa-github'></i>
+								</a>
+								<span className='tooltiptext'>Source code</span>
 							</div>
-						</footer>
-					</div>
+						</div>
+					</footer>
 				</BaseStack>
 			</div>
 		)

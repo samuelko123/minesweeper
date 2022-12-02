@@ -88,14 +88,11 @@ footer {
 }
 
 #board {
-	background-color: lightyellow;
-}
-
-.comp-board {
-	margin: 0px;
-	padding: 0px;
-	border: 0px;
+	margin: 0;
+	padding: 0;
+	border: 0;
 	display: block;
+	border-collapse: collapse;
 }
 
 .comp-button {

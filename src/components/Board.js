@@ -209,33 +209,35 @@ export default class Board extends React.Component {
 	}
 
 	render() {
-		const arr = []
-
-		for (let row = 0; row < this.props.board_height; row++) {
-			for (let col = 0; col < this.props.board_width; col++) {
-				arr.push(<Tile
-					key={col + '_' + row}
-					peek={this.peek_state[row][col]}
-					tile_value={this.tile_value[row][col]}
-					tile_state={this.tile_state[row][col]}
-					notifyMouseEvent={this.enabled ? this.handleTileMouseEvent : null}
-					notifyTouchEvent={this.enabled ? this.handleTileTouchEvent : null}
-					notifyLongTouchEvent={this.enabled ? this.handleTileLongTouchEvent : null}
-					row={row}
-					col={col}
-				></Tile>,
-				)
-			}
-		}
-
 		return (
-			<div
-				className='comp_board'
-				style={{
-					width: this.props.board_width * constants.TILE_HEIGHT,
-					height: this.props.board_height * constants.TILE_HEIGHT,
-				}}
-			>{arr}</div>
+			<table id='board'>
+				<tbody>
+					{
+						this.tile_value.map((arr, row) => {
+							return (
+								<tr key={row}>
+									{arr.map((_, col) => {
+										return (
+											<Tile
+												key={col + '_' + row}
+												peek={this.peek_state[row][col]}
+												tile_value={this.tile_value[row][col]}
+												tile_state={this.tile_state[row][col]}
+												notifyMouseEvent={this.enabled ? this.handleTileMouseEvent : null}
+												notifyTouchEvent={this.enabled ? this.handleTileTouchEvent : null}
+												notifyLongTouchEvent={this.enabled ? this.handleTileLongTouchEvent : null}
+												row={row}
+												col={col}
+											/>
+										)
+									})
+									}
+								</tr>
+							)
+						})
+					}
+				</tbody>
+			</table>
 		)
 	}
 }

@@ -53,7 +53,7 @@ export default class Tile extends React.PureComponent {
 		}
 
 		return (
-			<div
+			<td
 				className='comp-tile'
 				style={{ backgroundPosition: '0px -' + offset * constants.TILE_HEIGHT + 'px' }}
 				onMouseDown={(e) => this.handleMouseEvent(e, constants.MOUSE_DOWN)}
@@ -62,7 +62,7 @@ export default class Tile extends React.PureComponent {
 				onMouseLeave={(e) => this.handleMouseEvent(e, constants.MOUSE_LEAVE)}
 				onTouchStart={this.handleTouchStart}
 				onTouchEnd={this.handleTouchEnd}
-			></div>
+			/>
 		)
 	}
 }
