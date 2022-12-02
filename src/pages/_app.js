@@ -1,3 +1,4 @@
+import { CssBaseline } from '@mui/material'
 import '../styles/global.css'
 
 export default function App(props) {
@@ -7,6 +8,9 @@ export default function App(props) {
 	} = props
 
 	return (
-		<Component {...pageProps} />
+		<>
+			<CssBaseline />
+			<Component {...pageProps} />
+		</>
 	)
 }
