@@ -1,10 +1,19 @@
 import React from 'react'
 import Board from './Board'
 import { Counter } from './molecules/Counter'
-import Button from './Button'
 import { NumericTextField } from './molecules/NumericTextField'
 import { BaseDropdown } from './atoms/Dropdowns'
 import { BaseStack } from './atoms/Stack'
+import { Box } from '@mui/material'
+import {
+	FaSmile,
+	FaSurprise,
+} from 'react-icons/fa'
+import { BsFillEmojiSunglassesFill } from 'react-icons/bs'
+import { ImSad2 } from 'react-icons/im'
+
+import { FaceButton } from './molecules/FaceButton'
+
 const constants = require('../lib/constants')
 
 export default class App extends React.Component {
@@ -176,16 +185,25 @@ export default class App extends React.Component {
 						onContextMenu={(e) => { e.preventDefault() }}
 					>
 						<div id='board'>
-							<div id='header'>
+							<Box
+								sx={{
+									display: 'flex',
+									justifyContent: 'space-between',
+									alignItems: 'center',
+								}}
+							>
 								<Counter value={this.settings.bomb_count - this.state.flag_count} />
-								<div>
-									<Button
-										notifyClick={this.handleSmileyClick}
-										status={this.state.button_status}
-									></Button>
-								</div>
+								<FaceButton
+									onClick={this.handleSmileyClick}
+									status={this.state.button_status}
+								>
+									{this.state.button_status === constants.BUTTON_INIT && <FaSmile />}
+									{this.state.button_status === constants.BUTTON_PEEK && <FaSurprise />}
+									{this.state.button_status === constants.BUTTON_GAME_WIN && <BsFillEmojiSunglassesFill />}
+									{this.state.button_status === constants.BUTTON_GAME_LOSE && <ImSad2 />}
+								</FaceButton>
 								<Counter value={this.state.time} />
-							</div>
+							</Box>
 
 							<Board
 								key={this.restart_count}
