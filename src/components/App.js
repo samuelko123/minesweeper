@@ -1,13 +1,10 @@
-import {
-	Box,
-	Grid,
-} from '@material-ui/core'
 import React from 'react'
 import Board from './Board'
 import Counter from './Counter'
 import Button from './Button'
-import Dropdown from './Dropdown'
 import NumberInput from './NumberInput'
+import { BaseDropdown } from './atoms/Dropdowns'
+import { BaseStack } from './atoms/Stack'
 const constants = require('../lib/constants')
 
 export default class App extends React.Component {
@@ -33,8 +30,7 @@ export default class App extends React.Component {
 	}
 
 	handleKeyDown = (e) => {
-		if (e.keyCode === constants.KEYBOARD_F2)
-		{this.restartGame()}
+		if (e.keyCode === constants.KEYBOARD_F2) { this.restartGame() }
 	}
 
 	handleSmileyClick = () => {
@@ -131,95 +127,95 @@ export default class App extends React.Component {
 				<h3 className='hide'>Enjoy the classic MineSweeper</h3>
 				<h4 className='hide'>Contact developer: koshunyin@gmail.com</h4>
 
-				<Box mb={1}>
-					<Grid
-						container={true}
-						direction='row'
-						justifyContent='flex-start'
-						alignItems='flex-end'
+				<BaseStack gap={2}>
+					<BaseDropdown
+						label='mode'
+						value={this.settings.mode}
+						options={[
+							{
+								value: 0,
+								label: 'Easy', 
+							},
+							{
+								value: 1,
+								label: 'Medium', 
+							},
+							{
+								value: 2,
+								label: 'Hard', 
+							},
+							{
+								value: 3,
+								label: 'Custom', 
+							},
+						]}
+						onChange={this.handleDropdownChange}
+					/>
+
+					<NumberInput
+						name='Width'
+						value={this.settings.board_width}
+						min={constants.BOARD_WIDTH_MIN}
+						max={constants.BOARD_WIDTH_MAX}
+						notifyChange={(val) => { this.handleNumberInputChange({ board_width: val }) }}
+					/>
+
+					<NumberInput
+						name='Height'
+						value={this.settings.board_height}
+						min={constants.BOARD_HEIGHT_MIN}
+						max={constants.BOARD_HEIGHT_MAX}
+						notifyChange={(val) => { this.handleNumberInputChange({ board_height: val }) }}
+					/>
+
+					<NumberInput
+						name='Bombs'
+						value={this.settings.bomb_count}
+						min={1}
+						max={this.settings.board_width * this.settings.board_height - 1} // Allow one non-bomb tile
+						notifyChange={(val) => { this.handleNumberInputChange({ bomb_count: val }) }}
+					/>
+
+					<div
+						style={{ width: this.settings.board_width * constants.TILE_HEIGHT }}
+						onContextMenu={(e) => { e.preventDefault() }}
 					>
-						<Box ml={1}>
-							<Dropdown
-								key={this.restart_count}
-								mode={this.settings.mode}
-								notifyChange={this.handleDropdownChange}
-							></Dropdown>
-						</Box>
+						<div id='board'>
+							<div id='header'>
+								<Counter value={this.settings.bomb_count - this.state.flag_count} />
+								<div>
+									<Button
+										notifyClick={this.handleSmileyClick}
+										status={this.state.button_status}
+									></Button>
+								</div>
+								<Counter value={this.state.time} />
+							</div>
 
-						<Box ml={1}>
-							<NumberInput
+							<Board
 								key={this.restart_count}
-								name='Width'
-								value={this.settings.board_width}
-								min={constants.BOARD_WIDTH_MIN}
-								max={constants.BOARD_WIDTH_MAX}
-								notifyChange={(val) => { this.handleNumberInputChange({ board_width: val }) }}
-							></NumberInput>
-						</Box>
+								board_width={this.settings.board_width}
+								board_height={this.settings.board_height}
+								bomb_count={this.settings.bomb_count}
+								notifyFlagChange={this.handleFlagChange}
+								notifyGameStatus={this.handleGameStatus}
+								notifyTilePeek={this.handleTilePeek}
+							/>
+						</div>
 
-						<Box ml={1}>
-							<NumberInput
-								key={this.restart_count}
-								name='Height'
-								value={this.settings.board_height}
-								min={constants.BOARD_HEIGHT_MIN}
-								max={constants.BOARD_HEIGHT_MAX}
-								notifyChange={(val) => { this.handleNumberInputChange({ board_height: val }) }}
-							></NumberInput>
-						</Box>
-
-						<Box ml={1}>
-							<NumberInput
-								key={this.restart_count}
-								name='Bombs'
-								value={this.settings.bomb_count}
-								min={1}
-								max={this.settings.board_width * this.settings.board_height - 1} // Allow one non-bomb tile
-								notifyChange={(val) => { this.handleNumberInputChange({ bomb_count: val }) }}
-							></NumberInput>
-						</Box>
-					</Grid>
-				</Box>
-
-				<div
-					style={{ width: this.settings.board_width * constants.TILE_HEIGHT }}
-					onContextMenu={(e) => { e.preventDefault() }}
-				>
-					<div id='board'>
-						<div id='header'>
-							<Counter value={this.settings.bomb_count - this.state.flag_count} />
+						<footer>
 							<div>
-								<Button
-									notifyClick={this.handleSmileyClick}
-									status={this.state.button_status}
-								></Button>
+								<span>Samuel Ko | </span>
+								<div className='tooltip'>
+									<a target='_blank' rel='noopener noreferrer' href='https://github.com/samuelko123/minesweeper'>
+										<i className='fa fa-github'></i>
+									</a>
+									<span className='tooltiptext'>Source code</span>
+								</div>
 							</div>
-							<Counter value={this.state.time} />
-						</div>
-
-						<Board
-							key={this.restart_count}
-							board_width={this.settings.board_width}
-							board_height={this.settings.board_height}
-							bomb_count={this.settings.bomb_count}
-							notifyFlagChange={this.handleFlagChange}
-							notifyGameStatus={this.handleGameStatus}
-							notifyTilePeek={this.handleTilePeek}
-						/>
+						</footer>
 					</div>
-
-					<footer>
-						<div>
-							<span>Samuel Ko | </span>
-							<div className='tooltip'>
-								<a target='_blank' rel='noopener noreferrer' href='https://github.com/samuelko123/minesweeper'>
-									<i className='fa fa-github'></i>
-								</a>
-								<span className='tooltiptext'>Source code</span>
-							</div>
-						</div>
-					</footer>
-				</div>
+				</BaseStack>
 			</div>
 		)
 	}

@@ -1,8 +1,5 @@
-import {
-	InputLabel,
-	TextField,
-} from '@material-ui/core'
 import React from 'react'
+import { BaseTextField } from './atoms/TextFields.js'
 const regexUtil = require('../lib/regexUtil.js')
 
 export default class NumberInput extends React.Component {
@@ -29,22 +26,13 @@ export default class NumberInput extends React.Component {
 
 	render() {
 		return (
-			<div className='comp-input'>
-				<InputLabel htmlFor={this.props.name}>{this.props.name}</InputLabel>
-				<TextField
-					id={this.props.name}
-					value={this.state.value}
-					onChange={this.handleChange}
-					onBlur={this.handleLostFocus}
-					inputProps={{
-						style: {
-							textAlign: 'center',
-							width: '3em',
-						},
-					}}
-					autoComplete='off'
-				></TextField>
-			</div>
+			<BaseTextField
+				label={this.props.name}
+				value={this.state.value}
+				onChange={this.handleChange}
+				onBlur={this.handleLostFocus}
+				InputLabelProps={{ shrink: true }}
+			/>
 		)
 	}
 }
