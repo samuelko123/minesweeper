@@ -1,0 +1,61 @@
+.hide {
+	display: none;
+}
+
+#header {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+}
+
+#app {
+	outline: none;
+}
+
+#board {
+	background-color: lightyellow;
+}
+
+.comp-board {
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+	display: block;
+}
+
+.comp-button {
+	height: 24px;
+	width: 24px;
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+	background-image: url("../sprite.png");
+	background-repeat: no-repeat;
+	display: inline-block;
+}
+
+.comp-counter {
+	display: inline-block;
+}
+
+.comp-counter-digit {
+	width: 13px;
+	height: 23px;
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+	background-image: url("../sprite.png");
+	background-repeat: no-repeat;
+	display: inline-block;
+}
+
+.comp-tile {
+	height: 16px;
+	width: 16px;
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+	float: left;
+	background-image: url('../sprite.png');
+	background-repeat: no-repeat;
+}

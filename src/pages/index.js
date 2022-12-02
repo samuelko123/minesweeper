@@ -1,5 +1,7 @@
-export default function Home() {
+import App from '../components/App'
+
+export default function Page() {
 	return (
-		<h1>Hello</h1>
+		<App />
 	)
 }
