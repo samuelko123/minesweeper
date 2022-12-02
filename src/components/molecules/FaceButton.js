@@ -22,12 +22,11 @@ export const FaceButton = (props) => {
 				borderRadius: 0,
 
 				backgroundColor: '#c0c0c0',
-				boxShadow: '1px 1px 2px #555',
-
 				':hover': {
 					backgroundColor: '#c0c0c0',
 				},
 
+				boxShadow: '1px 1px 2px #555',
 				':active': {
 					boxShadow: '1px 1px 2px #555 inset',
 				},
