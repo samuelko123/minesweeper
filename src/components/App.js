@@ -216,18 +216,6 @@ export default class App extends React.Component {
 							notifyTilePeek={this.handleTilePeek}
 						/>
 					</Box>
-
-					<footer>
-						<div>
-							<span>Samuel Ko | </span>
-							<div className='tooltip'>
-								<a target='_blank' rel='noopener noreferrer' href='https://github.com/samuelko123/minesweeper'>
-									<i className='fa fa-github'></i>
-								</a>
-								<span className='tooltiptext'>Source code</span>
-							</div>
-						</div>
-					</footer>
 				</BaseStack>
 			</div>
 		)
