@@ -1,5 +1,5 @@
 import React from 'react'
-import Tile from './Tile'
+import { Tile } from './Tile'
 const arr2D = require('../lib/arr2D')
 const constants = require('../lib/constants')
 const minesweeper = require('../lib/minesweeper')

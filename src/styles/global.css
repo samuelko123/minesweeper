@@ -28,13 +28,12 @@ footer svg {
 	vertical-align: middle;
 }
 
-.comp-tile {
+td {
 	height: 16px;
 	width: 16px;
-	margin: 0px;
-	padding: 0px;
-	border: 0px;
-	float: left;
+	margin: 0;
+	padding: 0;
+	border: 0;
 	background-image: url('../sprite.png');
 	background-repeat: no-repeat;
 }
