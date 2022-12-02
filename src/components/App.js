@@ -2,11 +2,6 @@ import {
 	Box,
 	Grid,
 } from '@material-ui/core'
-import {
-	FacebookIcon,
-	FacebookShareButton,
-} from 'react-share'
-import html2canvas from 'html2canvas'
 import React from 'react'
 import Board from './Board'
 import Counter from './Counter'
@@ -35,18 +30,6 @@ export default class App extends React.Component {
 			win: false,
 			flag_count: 0,
 		}
-	}
-
-	downloadScreenshot = () => {
-		html2canvas(document.getElementById('board'), {
-			scrollX: 0,
-			scrollY: -window.scrollY,
-		}).then(function (canvas) {
-			const a = document.createElement('a')
-			a.href = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream')
-			a.download = 'MineSweeper.png'
-			a.click()
-		})
 	}
 
 	handleKeyDown = (e) => {
@@ -136,27 +119,6 @@ export default class App extends React.Component {
 	}
 
 	render() {
-		const screenshot_button =
-			<div className='tooltip'>
-				<i onClick={this.downloadScreenshot} className='fa fa-camera pointer'></i>
-				<span className='tooltiptext'>Download screenshot</span>
-			</div>
-
-		const win_msg = this.state.win ?
-			<div>
-				<div>
-					<span>Share your victory on : </span>
-					<FacebookShareButton
-						url='https://mine-sweeper.now.sh/'
-						quote={'I beat Minesweeper (' + constants.MODES[this.settings.mode] + ': ' + this.settings.board_width + 'x' + this.settings.board_height + ', ' + this.settings.bomb_count + ' bombs) in ' + this.state.time + ' seconds! '}
-					><FacebookIcon size={20} round></FacebookIcon></FacebookShareButton>
-				</div>
-				<div>
-					<span>Download screenshot: </span>{screenshot_button}
-				</div>
-			</div>
-			: null
-
 		return (
 			<div
 				id='app'
@@ -219,8 +181,6 @@ export default class App extends React.Component {
 					</Grid>
 				</Box>
 
-				{win_msg}
-
 				<div
 					style={{ width: this.settings.board_width * constants.TILE_HEIGHT }}
 					onContextMenu={(e) => { e.preventDefault() }}
@@ -252,28 +212,15 @@ export default class App extends React.Component {
 						<div>
 							<span>Samuel Ko | </span>
 							<div className='tooltip'>
-								<a href='mailto:koshunyin@gmail.com'>
-									<i className='fa fa-envelope'></i>
-								</a>
-								<span className='tooltiptext'>Email me</span>
-							</div>
-							<span> | </span>
-							<div className='tooltip'>
 								<a target='_blank' rel='noopener noreferrer' href='https://github.com/samuelko123/minesweeper'>
 									<i className='fa fa-github'></i>
 								</a>
-								<span className='tooltiptext'>See source code</span>
-							</div>
-							<span> | </span>
-							<div className='tooltip'>
-								<i onClick={this.downloadScreenshot} className='fa fa-camera pointer'></i>
-								<span className='tooltiptext'>Download screenshot</span>
+								<span className='tooltiptext'>Source code</span>
 							</div>
 						</div>
 					</footer>
 				</div>
 			</div>
-
 		)
 	}
 }
