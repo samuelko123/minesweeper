@@ -2,7 +2,7 @@ import React from 'react'
 import Board from './Board'
 import Counter from './Counter'
 import Button from './Button'
-import NumberInput from './NumberInput'
+import { NumericTextField } from './molecules/NumericTextField'
 import { BaseDropdown } from './atoms/Dropdowns'
 import { BaseStack } from './atoms/Stack'
 const constants = require('../lib/constants')
@@ -147,28 +147,28 @@ export default class App extends React.Component {
 						onChange={this.handleDropdownChange}
 					/>
 
-					<NumberInput
-						name='Width'
+					<NumericTextField
+						label='Width'
 						value={this.settings.board_width}
 						min={constants.BOARD_WIDTH_MIN}
 						max={constants.BOARD_WIDTH_MAX}
-						notifyChange={(val) => { this.handleNumberInputChange({ board_width: val }) }}
+						onBlur={(val) => { this.handleNumberInputChange({ board_width: val }) }}
 					/>
 
-					<NumberInput
-						name='Height'
+					<NumericTextField
+						label='Height'
 						value={this.settings.board_height}
 						min={constants.BOARD_HEIGHT_MIN}
 						max={constants.BOARD_HEIGHT_MAX}
-						notifyChange={(val) => { this.handleNumberInputChange({ board_height: val }) }}
+						onBlur={(val) => { this.handleNumberInputChange({ board_height: val }) }}
 					/>
 
-					<NumberInput
-						name='Bombs'
+					<NumericTextField
+						label='Bombs'
 						value={this.settings.bomb_count}
 						min={1}
 						max={this.settings.board_width * this.settings.board_height - 1} // Allow one non-bomb tile
-						notifyChange={(val) => { this.handleNumberInputChange({ bomb_count: val }) }}
+						onBlur={(val) => { this.handleNumberInputChange({ bomb_count: val }) }}
 					/>
 
 					<div
