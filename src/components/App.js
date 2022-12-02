@@ -4,6 +4,7 @@ import { Counter } from './molecules/Counter'
 import { NumericTextField } from './molecules/NumericTextField'
 import { BaseDropdown } from './atoms/Dropdowns'
 import { BaseStack } from './atoms/Stack'
+import { FaceButton } from './molecules/FaceButton'
 import { Box } from '@mui/material'
 import {
 	FaSmile,
@@ -12,84 +13,67 @@ import {
 import { BsFillEmojiSunglassesFill } from 'react-icons/bs'
 import { ImSad2 } from 'react-icons/im'
 
-import { FaceButton } from './molecules/FaceButton'
-
 const constants = require('../lib/constants')
 
-export default class App extends React.Component {
-	constructor(props) {
-		super(props)
-
-		this.restart_count = 0 // Note: change this will force restasrt
-		this.screenshot = ''
-
-		this.settings = {
-			board_width: 30,
-			board_height: 16,
-			bomb_count: 99,
-			mode: constants.MODE_HARD,
-		}
-
-		this.state = {
-			button_status: constants.BUTTON_INIT,
-			time: 0,
-			win: false,
-			flag_count: 0,
-		}
+export const App = () => {
+	let restart_count = 0 // Note: change this will force restart
+	let settings = {
+		board_width: 30,
+		board_height: 16,
+		bomb_count: 99,
+		mode: constants.MODE_HARD,
 	}
 
-	handleKeyDown = (e) => {
-		if (e.keyCode === constants.KEYBOARD_F2) { this.restartGame() }
+	let timer
+	const [button_status, setButtonStatus] = React.useState(constants.BUTTON_INIT)
+	const [time, setTime] = React.useState(0)
+	const [flag_count, setFlagCount] = React.useState(0)
+
+	const handleKeyDown = (e) => {
+		if (e.keyCode === constants.KEYBOARD_F2) { restartGame() }
 	}
 
-	handleSmileyClick = () => {
-		this.restartGame()
+	const handleSmileyClick = () => {
+		restartGame()
 	}
 
-	restartGame = () => {
+	const restartGame = () => {
 		// Force a restart
-		clearInterval(this.timer)
-		this.restart_count++
+		clearInterval(timer)
+		restart_count++
 
-		this.setState({
-			button_status: constants.BUTTON_INIT,
-			time: 0,
-			flag_count: 0,
-			win: false,
-		})
+		setButtonStatus(constants.BUTTON_INIT)
+		setTime(0)
+		setFlagCount(0)
 	}
 
-	handleTilePeek = (peek) => {
+	const handleTilePeek = (peek) => {
 		const status = peek ? constants.BUTTON_PEEK : constants.BUTTON_INIT
-		this.setState({ button_status: status })
+		setButtonStatus(status)
 	}
 
-	handleGameStatus = (status) => {
+	const handleGameStatus = (status) => {
 		switch (status) {
 			case constants.GAME_STATUS_START:
-				this.timer = setInterval(() => this.setState({ time: this.state.time + 1 }), 1000)
-				this.setState({ win: false })
+				timer = () => setInterval(() => setTime(time + 1), 1000)
 				break
 			case constants.GAME_STATUS_WIN:
-				clearInterval(this.timer)
-				this.setState({ win: true })
+				clearInterval(timer)
 				break
 			case constants.GAME_STATUS_LOSE:
-				clearInterval(this.timer)
+				clearInterval(timer)
 				break
 			default:
 		}
 
-		this.setState({ button_status: status })
+		setButtonStatus(status)
 	}
 
-	handleFlagChange = (flagged) => {
-		flagged ?
-			this.setState({ flag_count: this.state.flag_count + 1 }) :
-			this.setState({ flag_count: this.state.flag_count - 1 })
+	const handleFlagChange = (flagged) => {
+		flagged ? setFlagCount(flag_count + 1) : setFlagCount(flag_count - 1)
 	}
 
-	handleDropdownChange = (mode) => {
+	const handleDropdownChange = (mode) => {
 		let width, height, bombs
 
 		switch (mode) {
@@ -105,119 +89,117 @@ export default class App extends React.Component {
 			default: // Do Nothing
 		}
 
-		this.settings = {
+		settings = {
 			board_width: width,
 			board_height: height,
 			bomb_count: bombs,
 			mode: mode,
 		}
 
-		this.restartGame()
+		restartGame()
 	}
 
-	handleNumberInputChange = (obj) => {
+	const handleNumberInputChange = (obj) => {
 		const key = Object.keys(obj)[0]
-		this.settings[key] = obj[key]
-		this.settings.bomb_count = Math.min(this.settings.bomb_count, this.settings.board_width * this.settings.board_height - 1)
-		this.settings.mode = constants.MODE_CUSTOM
-		this.restartGame()
+		settings[key] = obj[key]
+		settings.bomb_count = Math.min(settings.bomb_count, settings.board_width * settings.board_height - 1)
+		settings.mode = constants.MODE_CUSTOM
+		restartGame()
 	}
 
-	render() {
-		return (
-			<div
-				id='app'
-				className='noselect'
-				onKeyDown={this.handleKeyDown}
-				tabIndex={0}
-			>
-				<BaseStack gap={2}>
-					<BaseDropdown
-						label='mode'
-						value={this.settings.mode}
-						options={[
-							{
-								value: 0,
-								label: 'Easy',
-							},
-							{
-								value: 1,
-								label: 'Medium',
-							},
-							{
-								value: 2,
-								label: 'Hard',
-							},
-							{
-								value: 3,
-								label: 'Custom',
-							},
-						]}
-						onChange={this.handleDropdownChange}
-					/>
+	return (
+		<div
+			id='app'
+			className='noselect'
+			onKeyDown={handleKeyDown}
+			tabIndex={0}
+		>
+			<BaseStack gap={2}>
+				<BaseDropdown
+					label='mode'
+					value={settings.mode}
+					options={[
+						{
+							value: 0,
+							label: 'Easy',
+						},
+						{
+							value: 1,
+							label: 'Medium',
+						},
+						{
+							value: 2,
+							label: 'Hard',
+						},
+						{
+							value: 3,
+							label: 'Custom',
+						},
+					]}
+					onChange={handleDropdownChange}
+				/>
 
-					<NumericTextField
-						label='Width'
-						value={this.settings.board_width}
-						min={constants.BOARD_WIDTH_MIN}
-						max={constants.BOARD_WIDTH_MAX}
-						onBlur={(val) => { this.handleNumberInputChange({ board_width: val }) }}
-					/>
+				<NumericTextField
+					label='Width'
+					value={settings.board_width}
+					min={constants.BOARD_WIDTH_MIN}
+					max={constants.BOARD_WIDTH_MAX}
+					onBlur={(val) => { handleNumberInputChange({ board_width: val }) }}
+				/>
 
-					<NumericTextField
-						label='Height'
-						value={this.settings.board_height}
-						min={constants.BOARD_HEIGHT_MIN}
-						max={constants.BOARD_HEIGHT_MAX}
-						onBlur={(val) => { this.handleNumberInputChange({ board_height: val }) }}
-					/>
+				<NumericTextField
+					label='Height'
+					value={settings.board_height}
+					min={constants.BOARD_HEIGHT_MIN}
+					max={constants.BOARD_HEIGHT_MAX}
+					onBlur={(val) => { handleNumberInputChange({ board_height: val }) }}
+				/>
 
-					<NumericTextField
-						label='Bombs'
-						value={this.settings.bomb_count}
-						min={1}
-						max={this.settings.board_width * this.settings.board_height - 1} // Allow one non-bomb tile
-						onBlur={(val) => { this.handleNumberInputChange({ bomb_count: val }) }}
-					/>
+				<NumericTextField
+					label='Bombs'
+					value={settings.bomb_count}
+					min={1}
+					max={settings.board_width * settings.board_height - 1} // Allow one non-bomb tile
+					onBlur={(val) => { handleNumberInputChange({ bomb_count: val }) }}
+				/>
 
+				<Box
+					onContextMenu={(e) => { e.preventDefault() }}
+					sx={{
+						width: 'fit-content',
+					}}
+				>
 					<Box
-						onContextMenu={(e) => { e.preventDefault() }}
 						sx={{
-							width: 'fit-content',
+							display: 'flex',
+							justifyContent: 'space-between',
+							alignItems: 'center',
 						}}
 					>
-						<Box
-							sx={{
-								display: 'flex',
-								justifyContent: 'space-between',
-								alignItems: 'center',
-							}}
+						<Counter value={settings.bomb_count - flag_count} />
+						<FaceButton
+							onClick={handleSmileyClick}
+							status={button_status}
 						>
-							<Counter value={this.settings.bomb_count - this.state.flag_count} />
-							<FaceButton
-								onClick={this.handleSmileyClick}
-								status={this.state.button_status}
-							>
-								{this.state.button_status === constants.BUTTON_INIT && <FaSmile />}
-								{this.state.button_status === constants.BUTTON_PEEK && <FaSurprise />}
-								{this.state.button_status === constants.BUTTON_GAME_WIN && <BsFillEmojiSunglassesFill />}
-								{this.state.button_status === constants.BUTTON_GAME_LOSE && <ImSad2 />}
-							</FaceButton>
-							<Counter value={this.state.time} />
-						</Box>
-
-						<Board
-							key={this.restart_count}
-							board_width={this.settings.board_width}
-							board_height={this.settings.board_height}
-							bomb_count={this.settings.bomb_count}
-							notifyFlagChange={this.handleFlagChange}
-							notifyGameStatus={this.handleGameStatus}
-							notifyTilePeek={this.handleTilePeek}
-						/>
+							{button_status === constants.BUTTON_INIT && <FaSmile />}
+							{button_status === constants.BUTTON_PEEK && <FaSurprise />}
+							{button_status === constants.BUTTON_GAME_WIN && <BsFillEmojiSunglassesFill />}
+							{button_status === constants.BUTTON_GAME_LOSE && <ImSad2 />}
+						</FaceButton>
+						<Counter value={time} />
 					</Box>
-				</BaseStack>
-			</div>
-		)
-	}
+
+					<Board
+						key={restart_count}
+						board_width={settings.board_width}
+						board_height={settings.board_height}
+						bomb_count={settings.bomb_count}
+						notifyFlagChange={handleFlagChange}
+						notifyGameStatus={handleGameStatus}
+						notifyTilePeek={handleTilePeek}
+					/>
+				</Box>
+			</BaseStack>
+		</div>
+	)
 }
