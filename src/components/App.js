@@ -1,5 +1,5 @@
 import React from 'react'
-import Board from './Board'
+import { Board } from './Board'
 import { Counter } from './molecules/Counter'
 import { NumericTextField } from './molecules/NumericTextField'
 import { BaseDropdown } from './atoms/Dropdowns'
