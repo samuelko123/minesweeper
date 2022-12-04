@@ -1,3 +1,4 @@
+import seedrandom from 'seedrandom'
 import {
 	CELL_STATE,
 	CELL_VALUE,
@@ -5,20 +6,12 @@ import {
 } from './minesweeper'
 
 describe('minesweeper', () => {
-	describe('constructor', () => {
-		it('throws if bomb count is too high', () => {
-			const fn = () => {
-				new Minesweeper(10, 20, 999)
-			}
-
-			expect(fn).toThrow()
-		})
-	})
-
 	describe('initBoards', () => {
 		it('populates boards with 2d array', () => {
 			// arrange
-			const m = new Minesweeper(10, 20, 30)
+			const m = new Minesweeper()
+			m.rowCount = 10
+			m.colCount = 20
 
 			// action
 			m._initBoards()
@@ -32,7 +25,11 @@ describe('minesweeper', () => {
 	describe('placeBombs', () => {
 		it('places bomb onto the board, starting from top left', () => {
 			// arrange
-			const m = new Minesweeper(4, 3, 5)
+			const m = new Minesweeper()
+			m.rowCount = 4
+			m.colCount = 3
+			m.bombCount = 5
+			m.random = seedrandom('seed')
 			m._initBoards()
 
 			// action
@@ -51,7 +48,11 @@ describe('minesweeper', () => {
 	describe('shuffle', () => {
 		it('shuffle the bombs on the board', () => {
 			// arrange
-			const m = new Minesweeper(4, 3, 5, 'seed')
+			const m = new Minesweeper()
+			m.rowCount = 4
+			m.colCount = 3
+			m.bombCount = 5
+			m.random = seedrandom('seed')
 			m._initBoards()
 			m._placeBombs()
 
@@ -68,10 +69,31 @@ describe('minesweeper', () => {
 		})
 	})
 
+	describe('createNewGame', () => {
+		it('throws if bomb count is too high', () => {
+			const m = new Minesweeper()
+			const fn = () => {
+				m.createNewGame(10, 20, 999)
+			}
+
+			expect(fn).toThrow()
+		})
+
+		it('does not throw', () => {
+			const m = new Minesweeper()
+			const fn = () => {
+				m.createNewGame(30, 10, 99)
+			}
+
+			expect(fn).not.toThrow()
+		})
+	})
+
 	describe('fillAdjBombCount', () => {
 		it('fills the correct adjacent bomb count on each cell', () => {
 			// arrange
-			const m = new Minesweeper(4, 3, 5, 'seed')
+			const m = new Minesweeper()
+			m.createNewGame(4, 3, 5, 'seed')
 			m.boardValue = [
 				[CELL_VALUE.EMPTY, CELL_VALUE.EMPTY, CELL_VALUE.EMPTY],
 				[CELL_VALUE.EMPTY, CELL_VALUE.BOMB, CELL_VALUE.EMPTY],
@@ -92,22 +114,11 @@ describe('minesweeper', () => {
 		})
 	})
 
-	describe('createNewGame', () => {
-		it('does not throw', () => {
-			const fn = () => {
-				const m = new Minesweeper(30, 10, 99)
-				m.createNewGame()
-			}
-
-			expect(fn).not.toThrow()
-		})
-	})
-
 	describe('openCell', () => {
 		it('moves bomb away from first click', () => {
 			// arrange
-			const m = new Minesweeper(4, 3, 5, 'seed')
-			m.createNewGame()
+			const m = new Minesweeper()
+			m.createNewGame(4, 3, 5, 'seed')
 			m.boardValue = [
 				[CELL_VALUE.EMPTY, CELL_VALUE.EMPTY, CELL_VALUE.EMPTY],
 				[CELL_VALUE.EMPTY, CELL_VALUE.BOMB, CELL_VALUE.EMPTY],
@@ -128,8 +139,8 @@ describe('minesweeper', () => {
 
 		it('does nothing if clicked on flagged cell', () => {
 			// arrange
-			const m = new Minesweeper(4, 3, 5, 'seed')
-			m.createNewGame()
+			const m = new Minesweeper()
+			m.createNewGame(4, 3, 5, 'seed')
 			m.boardState[0][2] = CELL_STATE.FLAGGED
 
 			// action
@@ -146,8 +157,8 @@ describe('minesweeper', () => {
 
 		it('handles lose game if clicked on bomb', () => {
 			// arrange
-			const m = new Minesweeper(4, 3, 5, 'seed')
-			m.createNewGame()
+			const m = new Minesweeper()
+			m.createNewGame(4, 3, 5, 'seed')
 			m.boardValue = [
 				[CELL_VALUE.EMPTY, CELL_VALUE.EMPTY, CELL_VALUE.EMPTY],
 				[CELL_VALUE.EMPTY, CELL_VALUE.BOMB, CELL_VALUE.EMPTY],
@@ -166,8 +177,8 @@ describe('minesweeper', () => {
 
 		it('handles win game if happened', () => {
 			// arrange
-			const m = new Minesweeper(4, 3, 5, 'seed')
-			m.createNewGame()
+			const m = new Minesweeper()
+			m.createNewGame(4, 3, 5, 'seed')
 			m.boardValue = [
 				[CELL_VALUE.EMPTY, CELL_VALUE.EMPTY, CELL_VALUE.EMPTY],
 				[CELL_VALUE.EMPTY, CELL_VALUE.BOMB, CELL_VALUE.EMPTY],
@@ -193,7 +204,8 @@ describe('minesweeper', () => {
 	describe('moveBombToEmptyCell', () => {
 		it('moves bomb to an empty cell', () => {
 			// arrange
-			const m = new Minesweeper(4, 3, 5, 'seed')
+			const m = new Minesweeper()
+			m.createNewGame(4, 3, 5, 'seed')
 			m.boardValue = [
 				[CELL_VALUE.BOMB, CELL_VALUE.BOMB, CELL_VALUE.BOMB],
 				[CELL_VALUE.BOMB, CELL_VALUE.BOMB, CELL_VALUE.EMPTY],
@@ -217,7 +229,8 @@ describe('minesweeper', () => {
 	describe('openSafeAdjClosedCells', () => {
 		it('opens safe adjacent closed cells recursively', () => {
 			// arrange
-			const m = new Minesweeper(4, 3, 5, 'seed')
+			const m = new Minesweeper()
+			m.createNewGame(4, 3, 5, 'seed')
 
 			m.boardValue = [
 				[CELL_VALUE.EMPTY, CELL_VALUE.EMPTY, CELL_VALUE.EMPTY],
@@ -249,7 +262,8 @@ describe('minesweeper', () => {
 	describe('checkWin', () => {
 		it('returns true if all non-bomb cells are opened', () => {
 			// arrange
-			const m = new Minesweeper(4, 3, 5, 'seed')
+			const m = new Minesweeper()
+			m.createNewGame(4, 3, 5, 'seed')
 
 			m.boardValue = [
 				[CELL_VALUE.EMPTY, CELL_VALUE.EMPTY, CELL_VALUE.EMPTY],
@@ -274,7 +288,8 @@ describe('minesweeper', () => {
 
 		it('returns false if not all non-bomb cells are opened', () => {
 			// arrange
-			const m = new Minesweeper(4, 3, 5, 'seed')
+			const m = new Minesweeper()
+			m.createNewGame(4, 3, 5, 'seed')
 
 			m.boardValue = [
 				[CELL_VALUE.EMPTY, CELL_VALUE.EMPTY, CELL_VALUE.EMPTY],
@@ -301,7 +316,8 @@ describe('minesweeper', () => {
 	describe('_handleLose', () => {
 		it('reveals all bombs and marks wrong flags', () => {
 			// arrange
-			const m = new Minesweeper(4, 3, 5, 'seed')
+			const m = new Minesweeper()
+			m.createNewGame(4, 3, 5, 'seed')
 
 			m.boardValue = [
 				[CELL_VALUE.EMPTY, CELL_VALUE.EMPTY, CELL_VALUE.EMPTY],
@@ -333,7 +349,8 @@ describe('minesweeper', () => {
 	describe('_handleWin', () => {
 		it('flags all the bombs', () => {
 			// arrange
-			const m = new Minesweeper(4, 3, 5, 'seed')
+			const m = new Minesweeper()
+			m.createNewGame(4, 3, 5, 'seed')
 
 			m.boardValue = [
 				[CELL_VALUE.EMPTY, CELL_VALUE.EMPTY, CELL_VALUE.EMPTY],
@@ -365,7 +382,8 @@ describe('minesweeper', () => {
 	describe('peekOneCell', () => {
 		it('resets and peeks if cell is closed', () => {
 			// arrange
-			const m = new Minesweeper(4, 3, 5, 'seed')
+			const m = new Minesweeper()
+			m.createNewGame(4, 3, 5, 'seed')
 
 			m.boardState = [
 				[CELL_STATE.CLOSED, CELL_STATE.OPENED, CELL_STATE.OPENED],
@@ -388,7 +406,8 @@ describe('minesweeper', () => {
 
 		it('resets and does not peek if cell is closed', () => {
 			// arrange
-			const m = new Minesweeper(4, 3, 5, 'seed')
+			const m = new Minesweeper()
+			m.createNewGame(4, 3, 5, 'seed')
 
 			m.boardState = [
 				[CELL_STATE.CLOSED, CELL_STATE.OPENED, CELL_STATE.OPENED],
@@ -412,7 +431,8 @@ describe('minesweeper', () => {
 	describe('peekAdjCells', () => {
 		it('resets and peeks if cell is closed', () => {
 			// arrange
-			const m = new Minesweeper(4, 3, 5, 'seed')
+			const m = new Minesweeper()
+			m.createNewGame(4, 3, 5, 'seed')
 
 			m.boardState = [
 				[CELL_STATE.CLOSED, CELL_STATE.CLOSED, CELL_STATE.CLOSED],
@@ -437,8 +457,9 @@ describe('minesweeper', () => {
 	describe('chordCell', () => {
 		it('does nothing if cell is closed', () => {
 			// arrange
-			const m = new Minesweeper(4, 3, 5, 'seed')
-			m.createNewGame()
+			const m = new Minesweeper()
+			m.createNewGame(4, 3, 5, 'seed')
+
 			m.boardState = [
 				[CELL_STATE.CLOSED, CELL_STATE.CLOSED, CELL_STATE.CLOSED],
 				[CELL_STATE.FLAGGED, CELL_STATE.CLOSED, CELL_STATE.FLAGGED],
@@ -456,7 +477,9 @@ describe('minesweeper', () => {
 
 		it('opens adjacent cells if cell value equal adjacent flag count', () => {
 			// arrange
-			const m = new Minesweeper(4, 3, 5, 'seed')
+			const m = new Minesweeper()
+			m.createNewGame(4, 3, 5, 'seed')
+
 			m.boardValue = [
 				[CELL_VALUE.EMPTY, CELL_VALUE.EMPTY, CELL_VALUE.EMPTY],
 				[CELL_VALUE.EMPTY, CELL_VALUE.BOMB, CELL_VALUE.EMPTY],
@@ -483,7 +506,9 @@ describe('minesweeper', () => {
 	describe('flagCell', () => {
 		it('puts flag on closed cell', () => {
 			// arrange
-			const m = new Minesweeper(4, 3, 5, 'seed')
+			const m = new Minesweeper()
+			m.createNewGame(4, 3, 5, 'seed')
+
 			m.boardState = [
 				[CELL_STATE.CLOSED, CELL_STATE.CLOSED, CELL_STATE.CLOSED],
 				[CELL_STATE.FLAGGED, CELL_STATE.CLOSED, CELL_STATE.FLAGGED],

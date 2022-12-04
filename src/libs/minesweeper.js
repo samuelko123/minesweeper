@@ -1,7 +1,9 @@
 import seedrandom from 'seedrandom'
 
 export class Minesweeper {
-	constructor(rowCount, colCount, bombCount, seed) {
+	createNewGame(rowCount, colCount, bombCount, seed) {
+		this.gameState = GAME_STATE.INIT
+
 		this.rowCount = rowCount
 		this.colCount = colCount
 		this.bombCount = bombCount
@@ -16,10 +18,7 @@ export class Minesweeper {
 		} else {
 			this.random = seedrandom(seed)
 		}
-	}
 
-	createNewGame() {
-		this.gameState = GAME_STATE.INIT
 		this._initBoards()
 		this._placeBombs()
 		this._shuffle()
