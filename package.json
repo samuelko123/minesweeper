@@ -7,7 +7,8 @@
 		"export": "next export",
 		"build": "next build",
 		"start": "next start",
-		"lint": "eslint src --fix"
+		"lint": "eslint src --fix",
+		"test": "jest"
 	},
 	"dependencies": {
 		"@emotion/react": "^11.10.5",
@@ -16,7 +17,8 @@
 		"next": "13.0.6",
 		"react": "18.2.0",
 		"react-dom": "18.2.0",
-		"react-icons": "^4.7.1"
+		"react-icons": "^4.7.1",
+		"seedrandom": "^3.0.5"
 	},
 	"devDependencies": {
 		"@types/jest": "^29.2.2",
