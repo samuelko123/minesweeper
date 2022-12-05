@@ -11,6 +11,22 @@ import {
 	toggleFlag,
 } from './minesweeper'
 
+const map2D = (arr, fn) => {
+	return arr.map(row => row.map(fn))
+}
+
+const getStates = (board) => map2D(board, cell => cell.state)
+const getValues = (board) => map2D(board, cell => cell.value)
+
+const buildBoard = (states, values) => {
+	return states.map((row, i) => row.map((elem, j) => {
+		return {
+			state: elem,
+			value: values ? values[i][j] : null,
+		}
+	}))
+}
+
 describe('minesweeper', () => {
 	describe('createGame', () => {
 		it('populates settings and randomised mines', () => {
@@ -26,26 +42,24 @@ describe('minesweeper', () => {
 			const newState = reducer(undefined, createGame(payload))
 
 			// assert
-			expect(newState).toEqual({
-				status: GAME_STATUS.READY,
-				settings: payload,
-				statistics: {
-					cellCount: 12,
-					safeCount: 7,
-				},
-				board: [
-					[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
-					[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
-					[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
-					[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
-				],
-				mines: [
-					[CELL_VALUE.EMPTY, CELL_VALUE.EMPTY, CELL_VALUE.EMPTY],
-					[CELL_VALUE.EMPTY, CELL_VALUE.MINED, CELL_VALUE.EMPTY],
-					[CELL_VALUE.MINED, CELL_VALUE.EMPTY, CELL_VALUE.EMPTY],
-					[CELL_VALUE.MINED, CELL_VALUE.MINED, CELL_VALUE.MINED],
-				],
+			expect(newState.status).toEqual(GAME_STATUS.READY)
+			expect(newState.settings).toEqual(payload)
+			expect(newState.data).toEqual({
+				cellCount: 12,
+				safeCount: 7,
 			})
+			expect(getStates(newState.board)).toEqual([
+				[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
+				[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
+				[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
+				[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
+			])
+			expect(getValues(newState.board)).toEqual([
+				[CELL_VALUE.MINED, CELL_VALUE.MINED, CELL_VALUE.EMPTY],
+				[CELL_VALUE.EMPTY, CELL_VALUE.EMPTY, CELL_VALUE.EMPTY],
+				[CELL_VALUE.MINED, CELL_VALUE.EMPTY, CELL_VALUE.EMPTY],
+				[CELL_VALUE.MINED, CELL_VALUE.MINED, CELL_VALUE.EMPTY],
+			])
 		})
 	})
 
@@ -60,22 +74,22 @@ describe('minesweeper', () => {
 					mineCount: 5,
 					seed: 'seed',
 				},
-				statistics: {
-					cellCount: 12,
+				data: {
 					safeCount: 7,
 				},
-				board: [
-					[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
-					[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
-					[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
-					[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
-				],
-				mines: [
-					[CELL_VALUE.MINED, CELL_VALUE.MINED, CELL_VALUE.MINED],
-					[CELL_VALUE.MINED, CELL_VALUE.MINED, CELL_VALUE.EMPTY],
-					[CELL_VALUE.MINED, CELL_VALUE.MINED, CELL_VALUE.MINED],
-					[CELL_VALUE.MINED, CELL_VALUE.MINED, CELL_VALUE.MINED],
-				],
+				board: buildBoard(
+					[
+						[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
+						[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
+						[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
+						[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
+					],
+					[
+						[CELL_VALUE.MINED, CELL_VALUE.MINED, CELL_VALUE.MINED],
+						[CELL_VALUE.MINED, CELL_VALUE.MINED, CELL_VALUE.EMPTY],
+						[CELL_VALUE.MINED, CELL_VALUE.MINED, CELL_VALUE.MINED],
+						[CELL_VALUE.MINED, CELL_VALUE.MINED, CELL_VALUE.MINED],
+					]),
 			}
 
 			const payload = {
@@ -87,7 +101,7 @@ describe('minesweeper', () => {
 			const newState = reducer(oldState, revealCell(payload))
 
 			// assert
-			expect(newState.mines).toEqual([
+			expect(getValues(newState.board)).toEqual([
 				[CELL_VALUE.MINED, CELL_VALUE.MINED, CELL_VALUE.MINED],
 				[CELL_VALUE.MINED, 8, CELL_VALUE.MINED],
 				[CELL_VALUE.MINED, CELL_VALUE.MINED, CELL_VALUE.MINED],
@@ -105,22 +119,22 @@ describe('minesweeper', () => {
 					mineCount: 5,
 					seed: 'seed',
 				},
-				statistics: {
-					cellCount: 12,
+				data: {
 					safeCount: 7,
 				},
-				board: [
-					[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
-					[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
-					[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
-					[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
-				],
-				mines: [
-					[CELL_VALUE.EMPTY, CELL_VALUE.EMPTY, CELL_VALUE.EMPTY],
-					[CELL_VALUE.EMPTY, CELL_VALUE.MINED, CELL_VALUE.EMPTY],
-					[CELL_VALUE.MINED, CELL_VALUE.EMPTY, CELL_VALUE.EMPTY],
-					[CELL_VALUE.MINED, CELL_VALUE.MINED, CELL_VALUE.MINED],
-				],
+				board: buildBoard(
+					[
+						[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
+						[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
+						[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
+						[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
+					],
+					[
+						[CELL_VALUE.EMPTY, CELL_VALUE.EMPTY, CELL_VALUE.EMPTY],
+						[CELL_VALUE.EMPTY, CELL_VALUE.MINED, CELL_VALUE.EMPTY],
+						[CELL_VALUE.MINED, CELL_VALUE.EMPTY, CELL_VALUE.EMPTY],
+						[CELL_VALUE.MINED, CELL_VALUE.MINED, CELL_VALUE.MINED],
+					]),
 			}
 
 			const payload = {
@@ -133,7 +147,7 @@ describe('minesweeper', () => {
 
 			// assert
 			expect(newState.status).toEqual(GAME_STATUS.PLAYING)
-			expect(newState.mines).toEqual([
+			expect(getValues(newState.board)).toEqual([
 				[1, 1, 1],
 				[2, -1, 1],
 				[-1, 5, 3],
@@ -151,22 +165,22 @@ describe('minesweeper', () => {
 					mineCount: 5,
 					seed: 'seed',
 				},
-				statistics: {
-					cellCount: 12,
+				data: {
 					safeCount: 7,
 				},
-				board: [
-					[CELL_STATE.HIDDEN, CELL_STATE.FLAGGED, CELL_STATE.HIDDEN],
-					[CELL_STATE.HIDDEN, CELL_STATE.REVEALED, CELL_STATE.HIDDEN],
-					[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
-					[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
-				],
-				mines: [
-					[0, 0, 0],
-					[1, 2, 1],
-					[-1, 5, -1],
-					[-1, -1, -1],
-				],
+				board: buildBoard(
+					[
+						[CELL_STATE.HIDDEN, CELL_STATE.FLAGGED, CELL_STATE.HIDDEN],
+						[CELL_STATE.HIDDEN, CELL_STATE.REVEALED, CELL_STATE.HIDDEN],
+						[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
+						[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
+					],
+					[
+						[0, 0, 0],
+						[1, 2, 1],
+						[-1, 5, -1],
+						[-1, -1, -1],
+					]),
 			}
 
 			const payload = {
@@ -191,22 +205,22 @@ describe('minesweeper', () => {
 					mineCount: 5,
 					seed: 'seed',
 				},
-				statistics: {
-					cellCount: 12,
+				data: {
 					safeCount: 7,
 				},
-				board: [
-					[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
-					[CELL_STATE.HIDDEN, CELL_STATE.REVEALED, CELL_STATE.HIDDEN],
-					[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
-					[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
-				],
-				mines: [
-					[0, 0, 0],
-					[1, 2, 1],
-					[-1, 5, -1],
-					[-1, -1, -1],
-				],
+				board: buildBoard(
+					[
+						[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
+						[CELL_STATE.HIDDEN, CELL_STATE.REVEALED, CELL_STATE.HIDDEN],
+						[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
+						[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
+					],
+					[
+						[0, 0, 0],
+						[1, 2, 1],
+						[-1, 5, -1],
+						[-1, -1, -1],
+					]),
 			}
 
 			const payload = {
@@ -219,7 +233,7 @@ describe('minesweeper', () => {
 
 			// assert
 			expect(newState.status).toEqual(GAME_STATUS.PLAYING)
-			expect(newState.board).toEqual([
+			expect(getStates(newState.board)).toEqual([
 				[CELL_STATE.REVEALED, CELL_STATE.REVEALED, CELL_STATE.REVEALED],
 				[CELL_STATE.REVEALED, CELL_STATE.REVEALED, CELL_STATE.REVEALED],
 				[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
@@ -237,22 +251,22 @@ describe('minesweeper', () => {
 					mineCount: 5,
 					seed: 'seed',
 				},
-				statistics: {
-					cellCount: 12,
+				data: {
 					safeCount: 7,
 				},
-				board: [
-					[CELL_STATE.REVEALED, CELL_STATE.HIDDEN, CELL_STATE.REVEALED],
-					[CELL_STATE.REVEALED, CELL_STATE.REVEALED, CELL_STATE.REVEALED],
-					[CELL_STATE.HIDDEN, CELL_STATE.FLAGGED, CELL_STATE.HIDDEN],
-					[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
-				],
-				mines: [
-					[0, 0, 0],
-					[1, 2, 1],
-					[-1, 5, -1],
-					[-1, -1, -1],
-				],
+				board: buildBoard(
+					[
+						[CELL_STATE.REVEALED, CELL_STATE.HIDDEN, CELL_STATE.REVEALED],
+						[CELL_STATE.REVEALED, CELL_STATE.REVEALED, CELL_STATE.REVEALED],
+						[CELL_STATE.HIDDEN, CELL_STATE.FLAGGED, CELL_STATE.HIDDEN],
+						[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
+					],
+					[
+						[0, 0, 0],
+						[1, 2, 1],
+						[-1, 5, -1],
+						[-1, -1, -1],
+					]),
 			}
 
 			const payload = {
@@ -265,7 +279,7 @@ describe('minesweeper', () => {
 
 			// assert
 			expect(newState.status).toEqual(GAME_STATUS.LOSE)
-			expect(newState.board).toEqual([
+			expect(getStates(newState.board)).toEqual([
 				[CELL_STATE.REVEALED, CELL_STATE.HIDDEN, CELL_STATE.REVEALED],
 				[CELL_STATE.REVEALED, CELL_STATE.REVEALED, CELL_STATE.REVEALED],
 				[CELL_STATE.EXPLODED, CELL_STATE.WRONG, CELL_STATE.REVEALED],
@@ -283,22 +297,22 @@ describe('minesweeper', () => {
 					mineCount: 5,
 					seed: 'seed',
 				},
-				statistics: {
-					cellCount: 12,
+				data: {
 					safeCount: 7,
 				},
-				board: [
-					[CELL_STATE.REVEALED, CELL_STATE.HIDDEN, CELL_STATE.REVEALED],
-					[CELL_STATE.REVEALED, CELL_STATE.REVEALED, CELL_STATE.REVEALED],
-					[CELL_STATE.HIDDEN, CELL_STATE.REVEALED, CELL_STATE.HIDDEN],
-					[CELL_STATE.HIDDEN, CELL_STATE.FLAGGED, CELL_STATE.HIDDEN],
-				],
-				mines: [
-					[0, 0, 0],
-					[1, 2, 1],
-					[-1, 5, -1],
-					[-1, -1, -1],
-				],
+				board: buildBoard(
+					[
+						[CELL_STATE.REVEALED, CELL_STATE.HIDDEN, CELL_STATE.REVEALED],
+						[CELL_STATE.REVEALED, CELL_STATE.REVEALED, CELL_STATE.REVEALED],
+						[CELL_STATE.HIDDEN, CELL_STATE.REVEALED, CELL_STATE.HIDDEN],
+						[CELL_STATE.HIDDEN, CELL_STATE.FLAGGED, CELL_STATE.HIDDEN],
+					],
+					[
+						[0, 0, 0],
+						[1, 2, 1],
+						[-1, 5, -1],
+						[-1, -1, -1],
+					]),
 			}
 
 			const payload = {
@@ -311,7 +325,7 @@ describe('minesweeper', () => {
 
 			// assert
 			expect(newState.status).toEqual(GAME_STATUS.WIN)
-			expect(newState.board).toEqual([
+			expect(getStates(newState.board)).toEqual([
 				[CELL_STATE.REVEALED, CELL_STATE.REVEALED, CELL_STATE.REVEALED],
 				[CELL_STATE.REVEALED, CELL_STATE.REVEALED, CELL_STATE.REVEALED],
 				[CELL_STATE.FLAGGED, CELL_STATE.REVEALED, CELL_STATE.FLAGGED],
@@ -325,12 +339,13 @@ describe('minesweeper', () => {
 			// arrange
 			const oldState = {
 				status: GAME_STATUS.PLAYING,
-				board: [
-					[CELL_STATE.HIDDEN, CELL_STATE.REVEALED, CELL_STATE.REVEALED],
-					[CELL_STATE.FLAGGED, CELL_STATE.PEEKED, CELL_STATE.FLAGGED],
-					[CELL_STATE.REVEALED, CELL_STATE.FLAGGED, CELL_STATE.FLAGGED],
-					[CELL_STATE.FLAGGED, CELL_STATE.HIDDEN, CELL_STATE.REVEALED],
-				],
+				board: buildBoard(
+					[
+						[CELL_STATE.HIDDEN, CELL_STATE.REVEALED, CELL_STATE.REVEALED],
+						[CELL_STATE.FLAGGED, CELL_STATE.PEEKED, CELL_STATE.FLAGGED],
+						[CELL_STATE.REVEALED, CELL_STATE.FLAGGED, CELL_STATE.FLAGGED],
+						[CELL_STATE.FLAGGED, CELL_STATE.HIDDEN, CELL_STATE.REVEALED],
+					]),
 			}
 
 			const payload = {
@@ -342,19 +357,20 @@ describe('minesweeper', () => {
 			const newState = reducer(oldState, toggleFlag(payload))
 
 			// assert
-			expect(newState.board[0][0]).toEqual(CELL_STATE.FLAGGED)
+			expect(newState.board[0][0].state).toEqual(CELL_STATE.FLAGGED)
 		})
 
 		it('removes flag from flagged cell', () => {
 			// arrange
 			const oldState = {
 				status: GAME_STATUS.PLAYING,
-				board: [
-					[CELL_STATE.HIDDEN, CELL_STATE.REVEALED, CELL_STATE.REVEALED],
-					[CELL_STATE.FLAGGED, CELL_STATE.PEEKED, CELL_STATE.FLAGGED],
-					[CELL_STATE.REVEALED, CELL_STATE.FLAGGED, CELL_STATE.FLAGGED],
-					[CELL_STATE.FLAGGED, CELL_STATE.HIDDEN, CELL_STATE.REVEALED],
-				],
+				board: buildBoard(
+					[
+						[CELL_STATE.HIDDEN, CELL_STATE.REVEALED, CELL_STATE.REVEALED],
+						[CELL_STATE.FLAGGED, CELL_STATE.PEEKED, CELL_STATE.FLAGGED],
+						[CELL_STATE.REVEALED, CELL_STATE.FLAGGED, CELL_STATE.FLAGGED],
+						[CELL_STATE.FLAGGED, CELL_STATE.HIDDEN, CELL_STATE.REVEALED],
+					]),
 			}
 
 			const payload = {
@@ -366,7 +382,7 @@ describe('minesweeper', () => {
 			const newState = reducer(oldState, toggleFlag(payload))
 
 			// assert
-			expect(newState.board[1][0]).toEqual(CELL_STATE.HIDDEN)
+			expect(newState.board[1][0].state).toEqual(CELL_STATE.HIDDEN)
 		})
 	})
 
@@ -381,22 +397,22 @@ describe('minesweeper', () => {
 					mineCount: 5,
 					seed: 'seed',
 				},
-				statistics: {
-					cellCount: 12,
+				data: {
 					safeCount: 7,
 				},
-				board: [
-					[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
-					[CELL_STATE.FLAGGED, CELL_STATE.HIDDEN, CELL_STATE.FLAGGED],
-					[CELL_STATE.REVEALED, CELL_STATE.FLAGGED, CELL_STATE.FLAGGED],
-					[CELL_STATE.FLAGGED, CELL_STATE.HIDDEN, CELL_STATE.REVEALED],
-				],
-				mines: [
-					[0, 0, 0],
-					[1, 2, 1],
-					[-1, 5, -1],
-					[-1, -1, -1],
-				],
+				board: buildBoard(
+					[
+						[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
+						[CELL_STATE.FLAGGED, CELL_STATE.HIDDEN, CELL_STATE.FLAGGED],
+						[CELL_STATE.REVEALED, CELL_STATE.FLAGGED, CELL_STATE.FLAGGED],
+						[CELL_STATE.FLAGGED, CELL_STATE.HIDDEN, CELL_STATE.REVEALED],
+					],
+					[
+						[0, 0, 0],
+						[1, 2, 1],
+						[-1, 5, -1],
+						[-1, -1, -1],
+					]),
 			}
 
 			const payload = {
@@ -421,22 +437,22 @@ describe('minesweeper', () => {
 					mineCount: 5,
 					seed: 'seed',
 				},
-				statistics: {
-					cellCount: 12,
+				data: {
 					safeCount: 7,
 				},
-				board: [
-					[CELL_STATE.REVEALED, CELL_STATE.HIDDEN, CELL_STATE.FLAGGED],
-					[CELL_STATE.REVEALED, CELL_STATE.HIDDEN, CELL_STATE.REVEALED],
-					[CELL_STATE.FLAGGED, CELL_STATE.REVEALED, CELL_STATE.HIDDEN],
-					[CELL_STATE.FLAGGED, CELL_STATE.FLAGGED, CELL_STATE.FLAGGED],
-				],
-				mines: [
-					[0, 0, 0],
-					[1, 2, 1],
-					[-1, 5, -1],
-					[-1, -1, -1],
-				],
+				board: buildBoard(
+					[
+						[CELL_STATE.REVEALED, CELL_STATE.HIDDEN, CELL_STATE.FLAGGED],
+						[CELL_STATE.REVEALED, CELL_STATE.HIDDEN, CELL_STATE.REVEALED],
+						[CELL_STATE.FLAGGED, CELL_STATE.REVEALED, CELL_STATE.HIDDEN],
+						[CELL_STATE.FLAGGED, CELL_STATE.FLAGGED, CELL_STATE.FLAGGED],
+					],
+					[
+						[0, 0, 0],
+						[1, 2, 1],
+						[-1, 5, -1],
+						[-1, -1, -1],
+					]),
 			}
 
 			const payload = {
@@ -448,7 +464,7 @@ describe('minesweeper', () => {
 			const newState = reducer(oldState, chordCell(payload))
 
 			// assert
-			expect(newState.board).toEqual([
+			expect(getStates(newState.board)).toEqual([
 				[CELL_STATE.REVEALED, CELL_STATE.REVEALED, CELL_STATE.FLAGGED],
 				[CELL_STATE.REVEALED, CELL_STATE.REVEALED, CELL_STATE.REVEALED],
 				[CELL_STATE.FLAGGED, CELL_STATE.REVEALED, CELL_STATE.HIDDEN],
@@ -468,16 +484,16 @@ describe('minesweeper', () => {
 					mineCount: 5,
 					seed: 'seed',
 				},
-				statistics: {
-					cellCount: 12,
+				data: {
 					safeCount: 7,
 				},
-				board: [
-					[CELL_STATE.HIDDEN, CELL_STATE.REVEALED, CELL_STATE.REVEALED],
-					[CELL_STATE.FLAGGED, CELL_STATE.PEEKED, CELL_STATE.FLAGGED],
-					[CELL_STATE.REVEALED, CELL_STATE.FLAGGED, CELL_STATE.FLAGGED],
-					[CELL_STATE.FLAGGED, CELL_STATE.HIDDEN, CELL_STATE.REVEALED],
-				],
+				board: buildBoard(
+					[
+						[CELL_STATE.HIDDEN, CELL_STATE.REVEALED, CELL_STATE.REVEALED],
+						[CELL_STATE.FLAGGED, CELL_STATE.PEEKED, CELL_STATE.FLAGGED],
+						[CELL_STATE.REVEALED, CELL_STATE.FLAGGED, CELL_STATE.FLAGGED],
+						[CELL_STATE.FLAGGED, CELL_STATE.HIDDEN, CELL_STATE.REVEALED],
+					]),
 			}
 
 			const payload = {
@@ -489,7 +505,7 @@ describe('minesweeper', () => {
 			const newState = reducer(oldState, peekOneCell(payload))
 
 			// assert
-			expect(newState.board).toEqual([
+			expect(getStates(newState.board)).toEqual([
 				[CELL_STATE.PEEKED, CELL_STATE.REVEALED, CELL_STATE.REVEALED],
 				[CELL_STATE.FLAGGED, CELL_STATE.HIDDEN, CELL_STATE.FLAGGED],
 				[CELL_STATE.REVEALED, CELL_STATE.FLAGGED, CELL_STATE.FLAGGED],
@@ -507,16 +523,16 @@ describe('minesweeper', () => {
 					mineCount: 5,
 					seed: 'seed',
 				},
-				statistics: {
-					cellCount: 12,
+				data: {
 					safeCount: 7,
 				},
-				board: [
-					[CELL_STATE.HIDDEN, CELL_STATE.REVEALED, CELL_STATE.REVEALED],
-					[CELL_STATE.FLAGGED, CELL_STATE.PEEKED, CELL_STATE.FLAGGED],
-					[CELL_STATE.REVEALED, CELL_STATE.FLAGGED, CELL_STATE.FLAGGED],
-					[CELL_STATE.FLAGGED, CELL_STATE.HIDDEN, CELL_STATE.REVEALED],
-				],
+				board: buildBoard(
+					[
+						[CELL_STATE.HIDDEN, CELL_STATE.REVEALED, CELL_STATE.REVEALED],
+						[CELL_STATE.FLAGGED, CELL_STATE.PEEKED, CELL_STATE.FLAGGED],
+						[CELL_STATE.REVEALED, CELL_STATE.FLAGGED, CELL_STATE.FLAGGED],
+						[CELL_STATE.FLAGGED, CELL_STATE.HIDDEN, CELL_STATE.REVEALED],
+					]),
 			}
 
 			const payload = {
@@ -528,7 +544,7 @@ describe('minesweeper', () => {
 			const newState = reducer(oldState, peekOneCell(payload))
 
 			// assert
-			expect(newState.board).toEqual([
+			expect(getStates(newState.board)).toEqual([
 				[CELL_STATE.HIDDEN, CELL_STATE.REVEALED, CELL_STATE.REVEALED],
 				[CELL_STATE.FLAGGED, CELL_STATE.HIDDEN, CELL_STATE.FLAGGED],
 				[CELL_STATE.REVEALED, CELL_STATE.FLAGGED, CELL_STATE.FLAGGED],
@@ -549,16 +565,16 @@ describe('minesweeper', () => {
 					mineCount: 5,
 					seed: 'seed',
 				},
-				statistics: {
-					cellCount: 12,
+				data: {
 					safeCount: 7,
 				},
-				board: [
-					[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
-					[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.FLAGGED],
-					[CELL_STATE.REVEALED, CELL_STATE.FLAGGED, CELL_STATE.FLAGGED],
-					[CELL_STATE.FLAGGED, CELL_STATE.PEEKED, CELL_STATE.REVEALED],
-				],
+				board: buildBoard(
+					[
+						[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
+						[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.FLAGGED],
+						[CELL_STATE.REVEALED, CELL_STATE.FLAGGED, CELL_STATE.FLAGGED],
+						[CELL_STATE.FLAGGED, CELL_STATE.PEEKED, CELL_STATE.REVEALED],
+					]),
 			}
 
 			const payload = {
@@ -570,7 +586,7 @@ describe('minesweeper', () => {
 			const newState = reducer(oldState, peekNeighborCells(payload))
 
 			// assert
-			expect(newState.board).toEqual([
+			expect(getStates(newState.board)).toEqual([
 				[CELL_STATE.PEEKED, CELL_STATE.PEEKED, CELL_STATE.PEEKED],
 				[CELL_STATE.PEEKED, CELL_STATE.PEEKED, CELL_STATE.FLAGGED],
 				[CELL_STATE.REVEALED, CELL_STATE.FLAGGED, CELL_STATE.FLAGGED],
