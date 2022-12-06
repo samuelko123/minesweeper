@@ -81,6 +81,26 @@ export const Board = () => {
 		setButtons(null)
 	}
 
+	const handleMouseEnter = (e, row, col) => {
+		e.preventDefault()
+		setButtons(e.buttons)
+		switch (e.buttons) {
+			case MOUSE_CLICK.LEFT:
+				dispatch(peekOneCell({
+					row,
+					col,
+				}))
+				break
+			case MOUSE_CLICK.MIDDLE:
+			case MOUSE_CLICK.BOTH:
+				dispatch(peekNeighborCells({
+					row,
+					col,
+				}))
+				break
+		}
+	}
+
 	const handleMouseLeave = (e, row, col) => {
 		e.preventDefault()
 		dispatch(resetPeek({
@@ -101,7 +121,7 @@ export const Board = () => {
 								cell={cell}
 								onMouseDown={(e) => handleMouseDown(e, row, col)}
 								onMouseUp={(e) => handleMouseUp(e, row, col)}
-								onMouseEnter={(e) => handleMouseDown(e, row, col)}
+								onMouseEnter={(e) => handleMouseEnter(e, row, col)}
 								onMouseLeave={(e) => handleMouseLeave(e, row, col)}
 							/>
 						))}
