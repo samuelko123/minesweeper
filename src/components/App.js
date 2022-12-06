@@ -43,9 +43,10 @@ export const App = (props) => {
 	React.useEffect(() => {
 		if (status === GAME_STATUS.PLAYING) {
 			timer.current = setInterval(() => setTime(time + 1), 1000)
+		} else if (status === GAME_STATUS.READY) {
+			setTime(0)
 		} else {
 			clearInterval(timer.current)
-			setTime(0)
 		}
 
 		return () => clearInterval(timer.current)
