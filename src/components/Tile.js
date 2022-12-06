@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import {
@@ -11,6 +10,20 @@ import {
 	revealCell,
 	toggleFlag,
 } from '../slices/minesweeper'
+import Zero from '../images/0.svg'
+import One from '../images/1.svg'
+import Two from '../images/2.svg'
+import Three from '../images/3.svg'
+import Four from '../images/4.svg'
+import Five from '../images/5.svg'
+import Six from '../images/6.svg'
+import Seven from '../images/7.svg'
+import Eight from '../images/8.svg'
+import Explode from '../images/explode.svg'
+import Flag from '../images/flag.svg'
+import Hidden from '../images/hidden.svg'
+import Mine from '../images/mine.svg'
+import Wrong from '../images/wrong.svg'
 
 const MOUSE_CLICK = Object.freeze({
 	LEFT: 1,
@@ -29,27 +42,63 @@ export const Tile = (props) => {
 		col,
 	} = cell
 
+	const width = 30
+	const height = 30
+
 	const [buttons, setButtons] = React.useState(null)
 
 	const dispatch = useDispatch()
 
 	let img
-	if (cell.state === CELL_STATE.HIDDEN) {
-		img = 'hidden'
-	} else if (cell.state === CELL_STATE.FLAGGED) {
-		img = 'flag'
-	} else if (cell.state === CELL_STATE.PEEKED) {
-		img = '0'
-	} else {
-		if (cell.state === CELL_STATE.EXPLODED) {
-			img = 'explode'
-		} else if (cell.state === CELL_STATE.WRONG) {
-			img = 'wrong'
-		} else if (cell.value === CELL_VALUE.MINED) {
-			img = 'mine'
-		} else {
-			img = cell.value
-		}
+	switch (cell.state) {
+		case CELL_STATE.HIDDEN:
+			img = <Hidden viewBox='0 0 100 100' width={width} height={height} />
+			break
+		case CELL_STATE.FLAGGED:
+			img = <Flag viewBox='0 0 100 100' width={width} height={height} />
+			break
+		case CELL_STATE.PEEKED:
+			img = <Zero viewBox='0 0 100 100' width={width} height={height} />
+			break
+		case CELL_STATE.EXPLODED:
+			img = <Explode viewBox='0 0 100 100' width={width} height={height} />
+			break
+		case CELL_STATE.WRONG:
+			img = <Wrong viewBox='0 0 100 100' width={width} height={height} />
+			break
+		case CELL_STATE.REVEALED:
+			switch (cell.value) {
+				case CELL_VALUE.MINED:
+					img = <Mine viewBox='0 0 100 100' width={width} height={height} />
+					break
+				case CELL_VALUE.EMPTY:
+					img = <Zero viewBox='0 0 100 100' width={width} height={height} />
+					break
+				case 1:
+					img = <One viewBox='0 0 100 100' width={width} height={height} />
+					break
+				case 2:
+					img = <Two viewBox='0 0 100 100' width={width} height={height} />
+					break
+				case 3:
+					img = <Three viewBox='0 0 100 100' width={width} height={height} />
+					break
+				case 4:
+					img = <Four viewBox='0 0 100 100' width={width} height={height} />
+					break
+				case 5:
+					img = <Five viewBox='0 0 100 100' width={width} height={height} />
+					break
+				case 6:
+					img = <Six viewBox='0 0 100 100' width={width} height={height} />
+					break
+				case 7:
+					img = <Seven viewBox='0 0 100 100' width={width} height={height} />
+					break
+				case 8:
+					img = <Eight viewBox='0 0 100 100' width={width} height={height} />
+					break
+			}
 	}
 
 	const handleMouseDown = (e) => {
@@ -118,11 +167,7 @@ export const Tile = (props) => {
 			onMouseEnter={handleMouseDown}
 			onMouseLeave={handleMouseLeave}
 		>
-			<Image
-				src={`/images/${img}.svg`}
-				width={20}
-				height={20}
-			/>
+			{img}
 		</td>
 	)
 }
