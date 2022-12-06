@@ -3,7 +3,7 @@ import { CssBaseline } from '@mui/material'
 import { store } from '../slices'
 import '../styles/global.css'
 import { BaseAppBar } from '../components/atoms/AppBar'
-import { BrandHeader } from '../components/molecules/BrandHeader'
+import { BrandHeader } from '../components/atoms/BrandHeader'
 
 export default function App(props) {
 	const {

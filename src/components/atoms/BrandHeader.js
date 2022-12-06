@@ -1,6 +1,6 @@
 import React from 'react'
-import { BaseLink } from '../atoms/Links'
-import { BaseHeader } from '../atoms/Header'
+import { BaseLink } from './Links'
+import { BaseHeader } from './Header'
 
 export const BrandHeader = (props) => {
 	const {

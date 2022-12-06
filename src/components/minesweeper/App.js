@@ -10,17 +10,17 @@ import {
 	initGame,
 	minesweeperSelector,
 	setMode,
-} from '../slices/minesweeper'
-import { BaseDropdown } from './atoms/Dropdowns'
-import { BaseStack } from './atoms/Stack'
+} from '../../slices/minesweeper'
+import { BaseDropdown } from '../atoms/Dropdowns'
+import { BaseStack } from '../atoms/Stack'
 import {
 	FaSmile,
 	FaSurprise,
 } from 'react-icons/fa'
 import { BsFillEmojiSunglassesFill } from 'react-icons/bs'
 import { ImSad2 } from 'react-icons/im'
-import { Counter } from './molecules/Counter'
-import { FaceButton } from './molecules/FaceButton'
+import { Counter } from './Counter'
+import { FaceButton } from './FaceButton'
 import { Board } from './Board'
 
 const KEYBOARD = Object.freeze({

@@ -11,7 +11,7 @@ import {
 	resetPeek,
 	revealCell,
 	toggleFlag,
-} from '../slices/minesweeper'
+} from '../../slices/minesweeper'
 
 import { Tile } from './Tile'
 
