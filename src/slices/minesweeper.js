@@ -5,6 +5,80 @@ import seedrandom from 'seedrandom'
 //  helper functions
 // =============
 
+const initGameHelper = (settings) => {
+	const {
+		rowCount,
+		colCount,
+		mineCount,
+		seed,
+		mode,
+	} = settings
+
+	// init empty board
+	const arr = Array(rowCount).fill(null)
+		.map(() => Array(colCount).fill(null))
+
+	// put mines
+	let minesLeft = mineCount
+	for (let i = 0; i < rowCount; i++) {
+		for (let j = 0; j < colCount; j++) {
+			arr[i][j] = {
+				value: minesLeft > 0 ? CELL_VALUE.MINED : CELL_VALUE.EMPTY,
+				state: CELL_STATE.HIDDEN,
+				row: i,
+				col: j,
+			}
+
+			minesLeft--
+		}
+	}
+
+	// randomise mines
+	const randomFn = seedrandom(seed)
+	for (let i = 0; i < rowCount; i++) {
+		for (let j = 0; j < colCount; j++) {
+
+			const x = Math.floor(randomFn() * rowCount)
+			const y = Math.floor(randomFn() * colCount)
+			const temp = arr[i][j].value
+			arr[i][j].value = arr[x][y].value
+			arr[x][y].value = temp
+		}
+	}
+
+	return {
+		status: GAME_STATUS.READY,
+		settings: {
+			rowCount,
+			colCount,
+			mineCount,
+			seed,
+			mode,
+		},
+		data: {
+			cellCount: rowCount * colCount,
+			safeCount: rowCount * colCount - mineCount,
+			flagCount: 0,
+			peeking: false,
+		},
+		board: arr,
+	}
+}
+
+const restartGame = (state) => {
+	const {
+		status,
+		settings,
+		data,
+		board,
+	} = initGameHelper(state.settings)
+
+	state.status = status
+	state.settings = settings
+	state.data = data
+	state.board = board
+}
+
 const callFnOnNeighborCells = (state, row, col, fn) => {
 	const {
 		rowCount,
@@ -36,7 +110,8 @@ const callFnOnAllCells = (state, fn) => {
 	}
 }
 
-const resetPeek = (state) => {
+const resetPeekHelper = (state) => {
+	state.data.peeking = false
 	callFnOnAllCells(state, (i, j) => {
 		if (state.board[i][j].state === CELL_STATE.PEEKED) {
 			state.board[i][j].state = CELL_STATE.HIDDEN
@@ -90,8 +165,11 @@ const revealCellHelper = (state, row, col) => {
 		})
 	}
 
-	// do nothing if cell is not hidden
-	if (state.board[row][col].state !== CELL_STATE.HIDDEN) {
+	// do nothing if cell is not hidden or peeked
+	if (
+		state.board[row][col].state !== CELL_STATE.HIDDEN &&
+		state.board[row][col].state !== CELL_STATE.PEEKED
+	) {
 		return
 	}
 
@@ -194,23 +272,18 @@ export const GAME_STATUS = Object.freeze({
 	LOSE: 4,
 })
 
-// =============
-//  initial state
-// =============
+export const LIMIT = {
+	MIN_COL: 1,
+	MAX_COL: 99,
+	MIN_ROW: 1,
+	MAX_ROW: 99,
+}
 
-const INITIAL_STATE = Object.freeze({
-	status: GAME_STATUS.INIT,
-	settings: {
-		rowCount: 0,
-		colCount: 0,
-		mineCount: 0,
-		seed: undefined,
-	},
-	data: {
-		safeCount: 0,
-	},
-	mines: [[]],
-	board: [[]],
+export const GAME_MODE = Object.freeze({
+	EASY: 0,
+	MEDIUM: 1,
+	HARD: 2,
+	CUSTOM: 3,
 })
 
 // =============
@@ -219,62 +292,39 @@ const INITIAL_STATE = Object.freeze({
 
 const minesweeperSlice = createSlice({
 	name: 'minesweeper',
-	initialState: INITIAL_STATE,
+	initialState: initGameHelper({
+		rowCount: 9,
+		colCount: 9,
+		mineCount: 10,
+		mode: GAME_MODE.EASY,
+		seed: undefined,
+	}),
 	reducers: {
-		createGame: (state, { payload }) => {
+		initGame: (state, { payload }) => {
 			const {
-				rowCount,
-				colCount,
-				mineCount,
-				seed,
-			} = payload
+				status,
+				settings,
+				data,
+				board,
+			} = initGameHelper(payload)
 
-			state.settings = {
-				rowCount: rowCount,
-				colCount: colCount,
-				mineCount: mineCount,
-				seed: seed,
-			}
-
-			state.data = {
-				cellCount: rowCount * colCount,
-				safeCount: rowCount * colCount - mineCount,
-			}
-
-			const arr = Array(state.data.cellCount)
-			arr.fill({
-				value: CELL_VALUE.EMPTY,
-				state: CELL_STATE.HIDDEN,
-			})
-			arr.fill({
-				value: CELL_VALUE.MINED,
-				state: CELL_STATE.HIDDEN,
-			}, 0, mineCount)
-
-			const randomFn = seedrandom(seed)
-			arr.forEach((_, i, arr) => {
-				const x = Math.floor(randomFn() * state.data.cellCount)
-				const temp = arr[x]
-				arr[x] = arr[i]
-				arr[i] = temp
-			})
-
-			state.status = GAME_STATUS.READY
-			state.board = arr.reduce((rows, elem, index) =>{
-				if (index % colCount === 0) {
-					rows.push([elem])
-				} else {
-					rows[rows.length - 1].push(elem)
-				}
-
-				return rows
-			}, [])
+			state.status = status
+			state.settings = settings
+			state.data = data
+			state.board = board
 		},
 		revealCell: (state, { payload }) => {
 			const {
 				row,
 				col,
 			} = payload
+
+			if (
+				state.status !== GAME_STATUS.PLAYING &&
+				state.status !== GAME_STATUS.READY
+			) {
+				return
+			}
 
 			revealCellHelper(state, row, col)
 		},
@@ -284,10 +334,16 @@ const minesweeperSlice = createSlice({
 				col,
 			} = payload
 
+			if (state.status !== GAME_STATUS.PLAYING) {
+				return
+			}
+
 			if (state.board[row][col].state === CELL_STATE.HIDDEN) {
 				state.board[row][col].state = CELL_STATE.FLAGGED
+				state.data.flagCount++
 			} else if (state.board[row][col].state === CELL_STATE.FLAGGED) {
 				state.board[row][col].state = CELL_STATE.HIDDEN
+				state.data.flagCount--
 			}
 		},
 		chordCell: (state, { payload }) => {
@@ -295,6 +351,10 @@ const minesweeperSlice = createSlice({
 				row,
 				col,
 			} = payload
+
+			if (state.status !== GAME_STATUS.PLAYING) {
+				return
+			}
 
 			const cellValue = state.board[row][col].value
 			const cellState = state.board[row][col].state
@@ -327,7 +387,15 @@ const minesweeperSlice = createSlice({
 				col,
 			} = payload
 
-			resetPeek(state)
+			if (
+				state.status !== GAME_STATUS.PLAYING &&
+				state.status !== GAME_STATUS.READY
+			) {
+				return
+			}
+
+			resetPeekHelper(state)
+			state.data.peeking = true
 			if (state.board[row][col].state === CELL_STATE.HIDDEN) {
 				state.board[row][col].state = CELL_STATE.PEEKED
 			}
@@ -338,23 +406,60 @@ const minesweeperSlice = createSlice({
 				col,
 			} = payload
 
-			resetPeek(state)
+			if (
+				state.status !== GAME_STATUS.PLAYING &&
+				state.status !== GAME_STATUS.READY
+			) {
+				return
+			}
+
+			resetPeekHelper(state)
+			state.data.peeking = true
 			callFnOnNeighborCells(state, row, col, (i, j) => {
 				if (state.board[i][j].state === CELL_STATE.HIDDEN) {
 					state.board[i][j].state = CELL_STATE.PEEKED
 				}
 			})
 		},
+		resetPeek: (state) => {
+			resetPeekHelper(state)
+		},
+		setMode: (state, { payload }) => {
+			const { mode } = payload
+
+			state.settings.mode = mode
+			switch (mode) {
+				case GAME_MODE.EASY:
+					state.settings.colCount = 9
+					state.settings.rowCount = 9
+					state.settings.mineCount = 10
+					break
+				case GAME_MODE.MEDIUM:
+					state.settings.colCount = 16
+					state.settings.rowCount = 16
+					state.settings.mineCount = 40
+					break
+				case GAME_MODE.HARD:
+					state.settings.colCount = 30
+					state.settings.rowCount = 16
+					state.settings.mineCount = 99
+					break
+			}
+
+			restartGame(state)
+		},
 	},
 })
 
 export const {
-	createGame,
+	initGame,
 	revealCell,
 	toggleFlag,
 	chordCell,
 	peekOneCell,
 	peekNeighborCells,
+	resetPeek,
+	setMode,
 } = minesweeperSlice.actions
 
 export const minesweeperReducer = minesweeperSlice.reducer

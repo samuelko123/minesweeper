@@ -1,13 +1,16 @@
 import {
 	CELL_STATE,
 	CELL_VALUE,
+	GAME_MODE,
 	GAME_STATUS,
 	chordCell,
-	createGame,
+	initGame,
 	peekNeighborCells,
 	peekOneCell,
 	minesweeperReducer as reducer,
+	resetPeek,
 	revealCell,
+	setMode,
 	toggleFlag,
 } from './minesweeper'
 
@@ -28,7 +31,7 @@ const buildBoard = (states, values) => {
 }
 
 describe('minesweeper', () => {
-	describe('createGame', () => {
+	describe('initGame', () => {
 		it('populates settings and randomised mines', () => {
 			// arrange
 			const payload = {
@@ -39,7 +42,7 @@ describe('minesweeper', () => {
 			}
 
 			// action
-			const newState = reducer(undefined, createGame(payload))
+			const newState = reducer(undefined, initGame(payload))
 
 			// assert
 			expect(newState.status).toEqual(GAME_STATUS.READY)
@@ -47,6 +50,8 @@ describe('minesweeper', () => {
 			expect(newState.data).toEqual({
 				cellCount: 12,
 				safeCount: 7,
+				flagCount: 0,
+				peeking: false,
 			})
 			expect(getStates(newState.board)).toEqual([
 				[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
@@ -55,15 +60,29 @@ describe('minesweeper', () => {
 				[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
 			])
 			expect(getValues(newState.board)).toEqual([
-				[CELL_VALUE.MINED, CELL_VALUE.MINED, CELL_VALUE.EMPTY],
 				[CELL_VALUE.EMPTY, CELL_VALUE.EMPTY, CELL_VALUE.EMPTY],
+				[CELL_VALUE.EMPTY, CELL_VALUE.MINED, CELL_VALUE.EMPTY],
 				[CELL_VALUE.MINED, CELL_VALUE.EMPTY, CELL_VALUE.EMPTY],
-				[CELL_VALUE.MINED, CELL_VALUE.MINED, CELL_VALUE.EMPTY],
+				[CELL_VALUE.MINED, CELL_VALUE.MINED, CELL_VALUE.MINED],
 			])
 		})
 	})
 
 	describe('revealCell', () => {
+		it('does nothing if game is not ready/playing', () => {
+			const oldState = {
+				status: GAME_STATUS.WIN,
+			}
+
+			const payload = {
+				row: 1,
+				col: 1,
+			}
+
+			const newState = reducer(oldState, revealCell(payload))
+			expect(newState).toEqual(oldState)
+		})
+
 		it('removes mine from first-click cell', () => {
 			// arrange
 			const oldState = {
@@ -335,6 +354,20 @@ describe('minesweeper', () => {
 	})
 
 	describe('toggleFlag', () => {
+		it('does nothing if game is not playing', () => {
+			const oldState = {
+				status: GAME_STATUS.WIN,
+			}
+
+			const payload = {
+				row: 1,
+				col: 1,
+			}
+
+			const newState = reducer(oldState, toggleFlag(payload))
+			expect(newState).toEqual(oldState)
+		})
+
 		it('puts flag on hidden cell', () => {
 			// arrange
 			const oldState = {
@@ -346,6 +379,9 @@ describe('minesweeper', () => {
 						[CELL_STATE.REVEALED, CELL_STATE.FLAGGED, CELL_STATE.FLAGGED],
 						[CELL_STATE.FLAGGED, CELL_STATE.HIDDEN, CELL_STATE.REVEALED],
 					]),
+				data: {
+					flagCount: 5,
+				},
 			}
 
 			const payload = {
@@ -358,6 +394,7 @@ describe('minesweeper', () => {
 
 			// assert
 			expect(newState.board[0][0].state).toEqual(CELL_STATE.FLAGGED)
+			expect(newState.data.flagCount).toEqual(oldState.data.flagCount + 1)
 		})
 
 		it('removes flag from flagged cell', () => {
@@ -371,6 +408,9 @@ describe('minesweeper', () => {
 						[CELL_STATE.REVEALED, CELL_STATE.FLAGGED, CELL_STATE.FLAGGED],
 						[CELL_STATE.FLAGGED, CELL_STATE.HIDDEN, CELL_STATE.REVEALED],
 					]),
+				data: {
+					flagCount: 5,
+				},
 			}
 
 			const payload = {
@@ -383,10 +423,25 @@ describe('minesweeper', () => {
 
 			// assert
 			expect(newState.board[1][0].state).toEqual(CELL_STATE.HIDDEN)
+			expect(newState.data.flagCount).toEqual(oldState.data.flagCount - 1)
 		})
 	})
 
 	describe('chordCell', () => {
+		it('does nothing if game is not playing', () => {
+			const oldState = {
+				status: GAME_STATUS.WIN,
+			}
+
+			const payload = {
+				row: 1,
+				col: 1,
+			}
+
+			const newState = reducer(oldState, chordCell(payload))
+			expect(newState).toEqual(oldState)
+		})
+
 		it('does nothing if cell is not revealed', () => {
 			// arrange
 			const oldState = {
@@ -474,6 +529,20 @@ describe('minesweeper', () => {
 	})
 
 	describe('peekOneCell', () => {
+		it('does nothing if game is not ready/playing', () => {
+			const oldState = {
+				status: GAME_STATUS.WIN,
+			}
+
+			const payload = {
+				row: 1,
+				col: 1,
+			}
+
+			const newState = reducer(oldState, peekOneCell(payload))
+			expect(newState).toEqual(oldState)
+		})
+
 		it('resets and peeks if cell is hidden', () => {
 			// arrange
 			const oldState = {
@@ -554,8 +623,21 @@ describe('minesweeper', () => {
 	})
 
 	describe('peekNeighborCells', () => {
+		it('does nothing if game is not ready/playing', () => {
+			const oldState = {
+				status: GAME_STATUS.WIN,
+			}
+
+			const payload = {
+				row: 1,
+				col: 1,
+			}
+
+			const newState = reducer(oldState, peekNeighborCells(payload))
+			expect(newState).toEqual(oldState)
+		})
+
 		it('resets and peeks if cell is hidden', () => {
-			// arrange
 			// arrange
 			const oldState = {
 				status: GAME_STATUS.PLAYING,
@@ -593,5 +675,95 @@ describe('minesweeper', () => {
 				[CELL_STATE.FLAGGED, CELL_STATE.HIDDEN, CELL_STATE.REVEALED],
 			])
 		})
+	})
+
+	describe('resetPeek', () => {
+		it('resets peek status', () => {
+			// arrange
+			const oldState = {
+				status: GAME_STATUS.PLAYING,
+				settings: {
+					rowCount: 4,
+					colCount: 3,
+					mineCount: 5,
+					seed: 'seed',
+				},
+				data: {
+					safeCount: 7,
+					peeking: true,
+				},
+				board: buildBoard(
+					[
+						[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
+						[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.FLAGGED],
+						[CELL_STATE.REVEALED, CELL_STATE.FLAGGED, CELL_STATE.FLAGGED],
+						[CELL_STATE.FLAGGED, CELL_STATE.PEEKED, CELL_STATE.REVEALED],
+					]),
+			}
+
+			// action
+			const newState = reducer(oldState, resetPeek())
+
+			// assert
+			expect(getStates(newState.board)).toEqual([
+				[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
+				[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.FLAGGED],
+				[CELL_STATE.REVEALED, CELL_STATE.FLAGGED, CELL_STATE.FLAGGED],
+				[CELL_STATE.FLAGGED, CELL_STATE.HIDDEN, CELL_STATE.REVEALED],
+			])
+		})
+	})
+
+	describe('setMode', () => {
+		const testCases = [
+			['easy', GAME_MODE.EASY],
+			['medium', GAME_MODE.MEDIUM],
+			['hard', GAME_MODE.HARD],
+		]
+
+		test.each(testCases)(
+			'%s',
+			(_, mode) => {
+				// arrange
+				const oldState = {
+					status: GAME_STATUS.PLAYING,
+					settings: {
+						rowCount: 4,
+						colCount: 3,
+						mineCount: 5,
+						seed: 'seed',
+					},
+					data: {
+						safeCount: 7,
+					},
+					board: buildBoard(
+						[
+							[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
+							[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.FLAGGED],
+							[CELL_STATE.REVEALED, CELL_STATE.FLAGGED, CELL_STATE.FLAGGED],
+							[CELL_STATE.FLAGGED, CELL_STATE.PEEKED, CELL_STATE.REVEALED],
+						]),
+				}
+
+				const payload = {
+					mode: mode,
+				}
+
+				// action
+				const newState = reducer(oldState, setMode(payload))
+
+				// assert
+				expect(newState.status).toEqual(GAME_STATUS.READY)
+				expect(newState.settings.mode).toEqual(mode)
+				expect(newState.data.peeking).toEqual(false)
+				expect(newState.data.flagCount).toEqual(0)
+				expect(getStates(newState.board).flat()).toEqual(
+					expect.arrayContaining([CELL_STATE.HIDDEN]),
+				)
+				expect(getValues(newState.board).flat()).toEqual(
+					expect.arrayContaining([CELL_VALUE.EMPTY, CELL_VALUE.MINED]),
+				)
+			},
+		)
 	})
 })

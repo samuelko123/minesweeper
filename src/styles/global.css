@@ -13,21 +13,17 @@
 }
 
 #board {
+	display: table;
+	border-spacing: 0;
 	margin: 0;
 	padding: 0;
-	border: 0;
-	display: block;
-	border-collapse: collapse;
 }
 
 #board td {
-	height: 16px;
-	width: 16px;
+	display: table-cell;
+	font-size: 0;
 	margin: 0;
 	padding: 0;
-	border: 0;
-	background-image: url('../sprite.png');
-	background-repeat: no-repeat;
 }
 
 footer {

@@ -10,11 +10,15 @@ import { IconContext } from 'react-icons'
 export default function Page() {
 	return (
 		<BaseStack gap={2}>
-			<Box sx={{
-				display: 'flex',
-				justifyContent: 'center',
-				alignItems: 'center',
-			}}>
+			<Box
+				component='main'
+				sx={{
+					display: 'flex',
+					justifyContent: 'center',
+					alignItems: 'center',
+					padding: 2,
+				}}
+			>
 				<App />
 			</Box>
 			<footer>

@@ -1,73 +1,127 @@
 import React from 'react'
-const constants = require('../lib/constants')
+import { useDispatch } from 'react-redux'
+import {
+	CELL_STATE,
+	CELL_VALUE,
+	chordCell,
+	peekNeighborCells,
+	peekOneCell,
+	resetPeek,
+	revealCell,
+	toggleFlag,
+} from '../slices/minesweeper'
+
+const MOUSE_CLICK = Object.freeze({
+	LEFT: 1,
+	RIGHT: 2,
+	BOTH: 3,
+	MIDDLE: 4,
+})
 
 export const Tile = (props) => {
 	const {
-		peek,
-		tile_value,
-		tile_state,
-		notifyMouseEvent,
-		notifyTouchEvent,
-		notifyLongTouchEvent,
-		row,
-		col,
+		cell,
 	} = props
 
-	let timer = null
-	let touch = false
-	let touch_start_time = 0
+	const {
+		row,
+		col,
+	} = cell
 
-	const handleMouseEvent = (e, mouse_event) => {
-		e.preventDefault()
-		if (!touch && notifyMouseEvent) {
-			notifyMouseEvent(row, col, e.buttons, mouse_event, e.ctrlKey)
-			touch = false
+	const [buttons, setButtons] = React.useState(null)
+
+	const dispatch = useDispatch()
+
+	let img
+	if (cell.state === CELL_STATE.HIDDEN) {
+		img = 'hidden'
+	} else if (cell.state === CELL_STATE.FLAGGED) {
+		img = 'flag'
+	} else if (cell.state === CELL_STATE.PEEKED) {
+		img = '0'
+	} else {
+		if (cell.state === CELL_STATE.EXPLODED) {
+			img = 'explode'
+		} else if (cell.state === CELL_STATE.WRONG) {
+			img = 'wrong'
+		} else if (cell.value === CELL_VALUE.MINED) {
+			img = 'mine'
+		} else {
+			img = cell.value
 		}
 	}
 
-	const handleTouchStart = () => {
-		touch = true // Workaround to prevent mouse event
-
-		// Set timer for touch event
-		timer = setTimeout(() => {
-			if (notifyLongTouchEvent) { notifyLongTouchEvent(row, col) }
-		}, constants.LONG_TOUCH_DURATION)
-		touch_start_time = new Date()
+	const handleMouseDown = (e) => {
+		e.preventDefault()
+		setButtons(e.buttons)
+		switch (e.buttons) {
+			case MOUSE_CLICK.LEFT:
+				dispatch(peekOneCell({
+					row,
+					col,
+				}))
+				break
+			case MOUSE_CLICK.RIGHT:
+				dispatch(toggleFlag({
+					row,
+					col,
+				}))
+				break
+			case MOUSE_CLICK.MIDDLE:
+			case MOUSE_CLICK.BOTH:
+				dispatch(peekNeighborCells({
+					row,
+					col,
+				}))
+				break
+		}
 	}
 
-	const handleTouchEnd = () => {
-		// If short touch, halt the long touch event
-		clearTimeout(timer)
-
-		// If short touch, call touch event
-		// (Long touch has been handled by timer)
-		if (((new Date()).getTime() - touch_start_time.getTime()) < constants.LONG_TOUCH_DURATION) { notifyTouchEvent(row, col) }
+	const handleMouseUp = (e) => {
+		e.preventDefault()
+		dispatch(resetPeek({
+			row,
+			col,
+		}))
+		switch (buttons) {
+			case MOUSE_CLICK.LEFT:
+				dispatch(revealCell({
+					row,
+					col,
+				}))
+				break
+			case MOUSE_CLICK.MIDDLE:
+			case MOUSE_CLICK.BOTH:
+				dispatch(chordCell({
+					row,
+					col,
+				}))
+				break
+		}
+		setButtons(null)
 	}
 
-	let offset
-	switch (tile_state) {
-		case constants.TILE_STATE_CLICKED:
-			offset = (tile_value === constants.BOMB_VALUE ? constants.TILE_STATE_BOMB : tile_value)
-			break
-		case constants.TILE_STATE_RED_BOMB:
-		case constants.TILE_STATE_NO_BOMB:
-		case constants.TILE_STATE_FLAGGED:
-			offset = tile_state
-			break
-		default:
-			if (peek) { offset = constants.TILE_STATE_CLICKED }
-			else { offset = constants.TILE_STATE_INIT }
+	const handleMouseLeave = (e) => {
+		e.preventDefault()
+		dispatch(resetPeek({
+			row,
+			col,
+		}))
+		setButtons(null)
 	}
 
 	return (
 		<td
-			style={{ backgroundPosition: '0px -' + offset * constants.TILE_HEIGHT + 'px' }}
-			onMouseDown={(e) => handleMouseEvent(e, constants.MOUSE_DOWN)}
-			onMouseUp={(e) => handleMouseEvent(e, constants.MOUSE_UP)}
-			onMouseEnter={(e) => handleMouseEvent(e, constants.MOUSE_ENTER)}
-			onMouseLeave={(e) => handleMouseEvent(e, constants.MOUSE_LEAVE)}
-			onTouchStart={handleTouchStart}
-			onTouchEnd={handleTouchEnd}
-		/>
+			onMouseDown={handleMouseDown}
+			onMouseUp={handleMouseUp}
+			onMouseEnter={handleMouseDown}
+			onMouseLeave={handleMouseLeave}
+		>
+			<img
+				src={`/images/${img}.svg`}
+				width={20}
+				height={20}
+			/>
+		</td>
 	)
 }
