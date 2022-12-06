@@ -11,6 +11,7 @@ export default function App(props) {
 
 	return (
 		<ReduxProvider store={store}>
+			<title>Minesweeper</title>
 			<CssBaseline />
 			<Component {...pageProps} />
 		</ReduxProvider>
