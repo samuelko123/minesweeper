@@ -27,22 +27,32 @@ export const Board = () => {
 		board,
 	} = useSelector(minesweeperSelector)
 
+	const tableRef = React.useRef(null)
 	const [buttons, setButtons] = React.useState(null)
+
+	const [tableLeft, setTableLeft] = React.useState(0)
+	const [tableTop, setTableTop] = React.useState(0)
+	const [cellWidth] = React.useState(30)
+	const [cellHeight] = React.useState(30)
+	const [currentRow, setCurrentRow] = React.useState(0)
+	const [currentCol, setCurrentCol] = React.useState(0)
+
+	React.useEffect(() => {
+		setTableLeft(tableRef.current.offsetLeft)
+		setTableTop(tableRef.current.offsetTop)
+	}, [])
 
 	const dispatch = useDispatch()
 
-	const handleMouseDown = (e, row, col) => {
-		e.preventDefault()
-		setButtons(e.buttons)
+	const handleMouseMove = (e) => {
+		const row = Math.floor((e.pageY - tableTop) / cellHeight)
+		const col = Math.floor((e.pageX - tableLeft) / cellWidth)
+		setCurrentRow(row)
+		setCurrentCol(col)
+
 		switch (e.buttons) {
 			case MOUSE_CLICK.LEFT:
 				dispatch(peekOneCell({
-					row,
-					col,
-				}))
-				break
-			case MOUSE_CLICK.RIGHT:
-				dispatch(toggleFlag({
 					row,
 					col,
 				}))
@@ -57,45 +67,49 @@ export const Board = () => {
 		}
 	}
 
-	const handleMouseUp = (e, row, col) => {
+	const handleMouseDown = (e) => {
 		e.preventDefault()
-		dispatch(resetPeek({
-			row,
-			col,
-		}))
+		setButtons(e.buttons)
+
+		switch (e.buttons) {
+			case MOUSE_CLICK.LEFT:
+				dispatch(peekOneCell({
+					row: currentRow,
+					col: currentCol,
+				}))
+				break
+			case MOUSE_CLICK.RIGHT:
+				dispatch(toggleFlag({
+					row: currentRow,
+					col: currentCol,
+				}))
+				break
+			case MOUSE_CLICK.MIDDLE:
+			case MOUSE_CLICK.BOTH:
+				dispatch(peekNeighborCells({
+					row: currentRow,
+					col: currentCol,
+				}))
+				break
+		}
+	}
+
+	const handleMouseUp = (e) => {
+		e.preventDefault()
+		dispatch(resetPeek())
+
 		switch (buttons) {
 			case MOUSE_CLICK.LEFT:
 				dispatch(revealCell({
-					row,
-					col,
+					row: currentRow,
+					col: currentCol,
 				}))
 				break
 			case MOUSE_CLICK.MIDDLE:
 			case MOUSE_CLICK.BOTH:
 				dispatch(chordCell({
-					row,
-					col,
-				}))
-				break
-		}
-		setButtons(null)
-	}
-
-	const handleMouseEnter = (e, row, col) => {
-		e.preventDefault()
-		setButtons(e.buttons)
-		switch (e.buttons) {
-			case MOUSE_CLICK.LEFT:
-				dispatch(peekOneCell({
-					row,
-					col,
-				}))
-				break
-			case MOUSE_CLICK.MIDDLE:
-			case MOUSE_CLICK.BOTH:
-				dispatch(peekNeighborCells({
-					row,
-					col,
+					row: currentRow,
+					col: currentCol,
 				}))
 				break
 		}
@@ -104,27 +118,33 @@ export const Board = () => {
 	const handleMouseLeave = (e) => {
 		e.preventDefault()
 		dispatch(resetPeek())
-		setButtons(null)
 	}
 
 	return (
-		<table id='board'>
-			<tbody>
-				{board && board.map((arr, row) => (
-					<tr key={row}>
-						{arr.map((cell, col) => (
-							<Tile
-								key={`${col},${row}`}
-								cell={cell}
-								onMouseDown={(e) => handleMouseDown(e, row, col)}
-								onMouseUp={(e) => handleMouseUp(e, row, col)}
-								onMouseEnter={(e) => handleMouseEnter(e, row, col)}
-								onMouseLeave={(e) => handleMouseLeave(e, row, col)}
-							/>
-						))}
-					</tr>
-				))}
-			</tbody>
-		</table>
+		<>
+			<table
+				id='board'
+				onMouseMove={handleMouseMove}
+				onMouseDown={handleMouseDown}
+				onMouseUp={handleMouseUp}
+				onMouseLeave={handleMouseLeave}
+				ref={tableRef}
+			>
+				<tbody>
+					{board && board.map((arr, row) => (
+						<tr key={row}>
+							{arr.map((cell, col) => (
+								<Tile
+									key={`${col},${row}`}
+									cell={cell}
+									width={cellWidth}
+									height={cellHeight}
+								/>
+							))}
+						</tr>
+					))}
+				</tbody>
+			</table>
+		</>
 	)
 }

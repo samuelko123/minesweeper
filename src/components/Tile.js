@@ -21,14 +21,9 @@ import Wrong from '../images/wrong.svg'
 export const Tile = (props) => {
 	const {
 		cell,
-		onMouseDown: handleMouseDown,
-		onMouseUp: handleMouseUp,
-		onMouseEnter: handleMouseEnter,
-		onMouseLeave: handleMouseLeave,
+		width,
+		height,
 	} = props
-
-	const width = 30
-	const height = 30
 
 	let img
 	switch (cell.state) {
@@ -83,12 +78,7 @@ export const Tile = (props) => {
 	}
 
 	return (
-		<td
-			onMouseDown={handleMouseDown}
-			onMouseUp={handleMouseUp}
-			onMouseEnter={handleMouseEnter}
-			onMouseLeave={handleMouseLeave}
-		>
+		<td>
 			{img}
 		</td>
 	)
