@@ -101,12 +101,9 @@ export const Board = () => {
 		}
 	}
 
-	const handleMouseLeave = (e, row, col) => {
+	const handleMouseLeave = (e) => {
 		e.preventDefault()
-		dispatch(resetPeek({
-			row,
-			col,
-		}))
+		dispatch(resetPeek())
 		setButtons(null)
 	}
 
