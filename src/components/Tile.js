@@ -1,14 +1,7 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
 import {
 	CELL_STATE,
 	CELL_VALUE,
-	chordCell,
-	peekNeighborCells,
-	peekOneCell,
-	resetPeek,
-	revealCell,
-	toggleFlag,
 } from '../slices/minesweeper'
 import Zero from '../images/0.svg'
 import One from '../images/1.svg'
@@ -25,29 +18,17 @@ import Hidden from '../images/hidden.svg'
 import Mine from '../images/mine.svg'
 import Wrong from '../images/wrong.svg'
 
-const MOUSE_CLICK = Object.freeze({
-	LEFT: 1,
-	RIGHT: 2,
-	BOTH: 3,
-	MIDDLE: 4,
-})
-
 export const Tile = (props) => {
 	const {
 		cell,
+		onMouseDown: handleMouseDown,
+		onMouseUp: handleMouseUp,
+		onMouseEnter: handleMouseEnter,
+		onMouseLeave: handleMouseLeave,
 	} = props
-
-	const {
-		row,
-		col,
-	} = cell
 
 	const width = 30
 	const height = 30
-
-	const [buttons, setButtons] = React.useState(null)
-
-	const dispatch = useDispatch()
 
 	let img
 	switch (cell.state) {
@@ -101,70 +82,11 @@ export const Tile = (props) => {
 			}
 	}
 
-	const handleMouseDown = (e) => {
-		e.preventDefault()
-		setButtons(e.buttons)
-		switch (e.buttons) {
-			case MOUSE_CLICK.LEFT:
-				dispatch(peekOneCell({
-					row,
-					col,
-				}))
-				break
-			case MOUSE_CLICK.RIGHT:
-				dispatch(toggleFlag({
-					row,
-					col,
-				}))
-				break
-			case MOUSE_CLICK.MIDDLE:
-			case MOUSE_CLICK.BOTH:
-				dispatch(peekNeighborCells({
-					row,
-					col,
-				}))
-				break
-		}
-	}
-
-	const handleMouseUp = (e) => {
-		e.preventDefault()
-		dispatch(resetPeek({
-			row,
-			col,
-		}))
-		switch (buttons) {
-			case MOUSE_CLICK.LEFT:
-				dispatch(revealCell({
-					row,
-					col,
-				}))
-				break
-			case MOUSE_CLICK.MIDDLE:
-			case MOUSE_CLICK.BOTH:
-				dispatch(chordCell({
-					row,
-					col,
-				}))
-				break
-		}
-		setButtons(null)
-	}
-
-	const handleMouseLeave = (e) => {
-		e.preventDefault()
-		dispatch(resetPeek({
-			row,
-			col,
-		}))
-		setButtons(null)
-	}
-
 	return (
 		<td
 			onMouseDown={handleMouseDown}
 			onMouseUp={handleMouseUp}
-			onMouseEnter={handleMouseDown}
+			onMouseEnter={handleMouseEnter}
 			onMouseLeave={handleMouseLeave}
 		>
 			{img}

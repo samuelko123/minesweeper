@@ -12,7 +12,6 @@ import {
 } from '../slices/minesweeper'
 import { BaseDropdown } from './atoms/Dropdowns'
 import { BaseStack } from './atoms/Stack'
-import { Tile } from './Tile'
 import {
 	FaSmile,
 	FaSurprise,
@@ -21,6 +20,7 @@ import { BsFillEmojiSunglassesFill } from 'react-icons/bs'
 import { ImSad2 } from 'react-icons/im'
 import { Counter } from './molecules/Counter'
 import { FaceButton } from './molecules/FaceButton'
+import { Board } from './Board'
 
 const KEYBOARD = Object.freeze({
 	F2: 113,
@@ -29,7 +29,6 @@ const KEYBOARD = Object.freeze({
 export const App = () => {
 	const dispatch = useDispatch()
 	const {
-		board,
 		settings,
 		status,
 		data,
@@ -128,21 +127,7 @@ export const App = () => {
 					</FaceButton>
 					<Counter value={time} />
 				</Box>
-
-				<table id='board'>
-					<tbody>
-						{board && board.map((arr, row) => (
-							<tr key={row}>
-								{arr.map((cell, col) => (
-									<Tile
-										key={`${col},${row}`}
-										cell={cell}
-									/>
-								))}
-							</tr>
-						))}
-					</tbody>
-				</table>
+				<Board />
 			</Box>
 		</BaseStack>
 	)
