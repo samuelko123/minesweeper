@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import {
@@ -117,7 +118,7 @@ export const Tile = (props) => {
 			onMouseEnter={handleMouseDown}
 			onMouseLeave={handleMouseLeave}
 		>
-			<img
+			<Image
 				src={`/images/${img}.svg`}
 				width={20}
 				height={20}
