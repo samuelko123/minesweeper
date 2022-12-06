@@ -8,6 +8,7 @@ export const BaseDropdown = (props) => {
 		value,
 		options,
 		onChange,
+		inputProps,
 	} = props
 
 	return (
@@ -16,6 +17,7 @@ export const BaseDropdown = (props) => {
 			value={value}
 			label={label}
 			onChange={(val) => onChange(val)}
+			{...inputProps}
 		>
 			{
 				options.map(option => {

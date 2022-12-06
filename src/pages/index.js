@@ -13,25 +13,23 @@ export default function Page() {
 			<BaseStack gap={2}>
 				<Box
 					component='main'
-					sx={{
-						display: 'flex',
-						justifyContent: 'center',
-						alignItems: 'center',
-						padding: 2,
-					}}
+					sx={{ padding: 2 }}
 				>
-					<App />
+					<App
+						footer={
+							<footer>
+								<span>Samuel Ko | </span>
+								<Tooltip title='Source code'>
+									<a target='_blank' rel='noopener noreferrer' href='https://github.com/samuelko123/minesweeper'>
+										<IconContext.Provider value={{ size: 20 }}>
+											<FaGithub />
+										</IconContext.Provider>
+									</a>
+								</Tooltip>
+							</footer>
+						}
+					/>
 				</Box>
-				<footer>
-					<span>Samuel Ko | </span>
-					<Tooltip title='Source code'>
-						<a target='_blank' rel='noopener noreferrer' href='https://github.com/samuelko123/minesweeper'>
-							<IconContext.Provider value={{ size: 20 }}>
-								<FaGithub />
-							</IconContext.Provider>
-						</a>
-					</Tooltip>
-				</footer>
 			</BaseStack>
 		</>
 	)

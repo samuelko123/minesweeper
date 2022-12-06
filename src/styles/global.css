@@ -12,6 +12,10 @@
 	user-select: none;
 }
 
+.MuiList-padding {
+	padding: 0;
+}
+
 #board {
 	display: table;
 	border-spacing: 0;

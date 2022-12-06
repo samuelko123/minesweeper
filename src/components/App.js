@@ -5,6 +5,7 @@ import {
 	useSelector,
 } from 'react-redux'
 import {
+	GAME_MODE,
 	GAME_STATUS,
 	initGame,
 	minesweeperSelector,
@@ -26,7 +27,9 @@ const KEYBOARD = Object.freeze({
 	F2: 113,
 })
 
-export const App = () => {
+export const App = (props) => {
+	const { footer } = props
+
 	const dispatch = useDispatch()
 	const {
 		settings,
@@ -73,27 +76,32 @@ export const App = () => {
 			className='noselect'
 			gap={2}
 			onKeyDown={handleKeyDown}
-			sx={{ alignItems: 'center' }}
+			sx={{
+				alignItems: 'flex-start',
+			}}
 		>
 			<BaseDropdown
 				label='mode'
 				value={settings.mode}
 				options={[
 					{
-						value: 0,
+						value: GAME_MODE.EASY,
 						label: 'Easy',
 					},
 					{
-						value: 1,
+						value: GAME_MODE.MEDIUM,
 						label: 'Medium',
 					},
 					{
-						value: 2,
+						value: GAME_MODE.HARD,
 						label: 'Hard',
 					},
 				]}
 				onChange={handleDropdownChange}
 				tabIndex={0}
+				inputProps={{
+					fullWidth: false,
+				}}
 			/>
 
 			<Box
@@ -129,6 +137,7 @@ export const App = () => {
 				</Box>
 				<Board />
 			</Box>
+			{footer}
 		</BaseStack>
 	)
 }
