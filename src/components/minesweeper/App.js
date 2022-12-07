@@ -1,4 +1,3 @@
-import { Box } from '@mui/material'
 import React from 'react'
 import {
 	useDispatch,
@@ -16,6 +15,7 @@ import { BaseStack } from '../atoms/Stack'
 import { Counter } from './Counter'
 import { FaceButton } from './FaceButton'
 import { Board } from './Board'
+import { BorderedBox } from '../molecules/BorderedBox'
 
 const KEYBOARD = Object.freeze({
 	F2: 113,
@@ -59,7 +59,7 @@ export const App = (props) => {
 		}
 	}
 
-	const handleSmileyClick = () => {
+	const handleFaceClick = () => {
 		startNewGame()
 	}
 
@@ -111,43 +111,67 @@ export const App = (props) => {
 					tabIndex={1}
 				/>
 			</BaseStack>
-
-			<Box
-				onContextMenu={(e) => { e.preventDefault() }}
-				sx={{
-					width: 'fit-content',
-				}}
+			<BorderedBox
+				borderWidth={6}
+				raised={true}
 			>
-				<Box
+				<BaseStack
+					onContextMenu={(e) => { e.preventDefault() }}
+					gap={2}
 					sx={{
-						display: 'flex',
-						justifyContent: 'space-between',
-						alignItems: 'center',
+						padding: 1.5,
+						backgroundColor: '#ccc',
 					}}
 				>
-					<Counter value={settings.mineCount - data.flagCount} />
-					<FaceButton
-						onClick={handleSmileyClick}
-						status={status}
-						label='Start New Game'
+					<BorderedBox
+						borderWidth={6}
+						sunken={true}
+						sx={{
+							display: 'flex',
+							justifyContent: 'space-between',
+							alignItems: 'center',
+							padding: 1,
+						}}
 					>
-						{
-							data.peeking ? <span>😮</span> : (
-								<>
-									{status === GAME_STATUS.READY && <span>🙂</span>}
-									{status === GAME_STATUS.PLAYING && <span>🙂</span>}
-									{status === GAME_STATUS.WIN && <span>😎</span>}
-									{status === GAME_STATUS.LOSE && <span>🙃</span>}
-								</>
-							)
-						}
-					</FaceButton>
-					<Counter value={time} />
-				</Box>
-				<Board
-					tileSize={size}
-				/>
-			</Box>
+						<BorderedBox
+							borderWidth={2}
+							sunken={true}
+						>
+							<Counter value={settings.mineCount - data.flagCount} />
+						</BorderedBox>
+						<FaceButton
+							onClick={handleFaceClick}
+							status={status}
+							label='Start New Game'
+						>
+							{
+								data.peeking ? <span>😮</span> : (
+									<>
+										{status === GAME_STATUS.READY && <span>🙂</span>}
+										{status === GAME_STATUS.PLAYING && <span>🙂</span>}
+										{status === GAME_STATUS.WIN && <span>😎</span>}
+										{status === GAME_STATUS.LOSE && <span>🙃</span>}
+									</>
+								)
+							}
+						</FaceButton>
+						<BorderedBox
+							borderWidth={2}
+							sunken={true}
+						>
+							<Counter value={time} />
+						</BorderedBox>
+					</BorderedBox>
+					<BorderedBox
+						borderWidth={6}
+						sunken={true}
+					>
+						<Board
+							tileSize={size}
+						/>
+					</BorderedBox>
+				</BaseStack>
+			</BorderedBox>
 			{footer}
 		</BaseStack>
 	)

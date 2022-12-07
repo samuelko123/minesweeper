@@ -1,5 +1,10 @@
 import React from 'react'
 import { Button } from '@mui/material'
+import { BorderedBox } from '../molecules/BorderedBox'
+
+const MOUSE_CLICK = Object.freeze({
+	LEFT: 1,
+})
 
 export const FaceButton = (props) => {
 	const {
@@ -8,33 +13,43 @@ export const FaceButton = (props) => {
 		children,
 	} = props
 
+	const [pressed, setPressed] = React.useState(false)
+
+	const handleMouseDown = (e) => {
+		if (e.buttons === MOUSE_CLICK.LEFT) {
+			setPressed(true)
+		}
+	}
+
+	const handleMouseUp = () => {
+		setPressed(false)
+	}
+
 	return (
-		<Button
-			onClick={handleClick}
-			size='small'
-			aria-label={label}
-			disableFocusRipple
-			disableRipple
-			sx={{
-				minWidth: 24,
-				width: 30,
-				height: 30,
-				padding: 0,
-				borderRadius: 0,
-				fontSize: 20,
-
-				backgroundColor: '#c0c0c0',
-				':hover': {
-					backgroundColor: '#c0c0c0',
-				},
-
-				boxShadow: '1px 1px 2px #555',
-				':active': {
-					boxShadow: '1px 1px 2px #555 inset',
-				},
-			}}
+		<BorderedBox
+			borderWidth={4}
+			raised={!pressed}
+			sunken={pressed}
 		>
-			{children}
-		</Button>
+			<Button
+				onClick={handleClick}
+				onMouseDown={handleMouseDown}
+				onMouseUp={handleMouseUp}
+				size='small'
+				aria-label={label}
+				disableFocusRipple
+				disableRipple
+				sx={{
+					minWidth: 24,
+					width: 36,
+					height: 36,
+					padding: 0,
+					borderRadius: 0,
+					fontSize: 24,
+				}}
+			>
+				{children}
+			</Button>
+		</BorderedBox>
 	)
 }
