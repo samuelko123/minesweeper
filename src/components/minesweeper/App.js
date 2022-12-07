@@ -39,6 +39,7 @@ export const App = (props) => {
 
 	const timer = React.useRef()
 	const [time, setTime] = React.useState(0)
+	const [size, setSize] = React.useState(30)
 
 	React.useEffect(() => {
 		if (status === GAME_STATUS.PLAYING) {
@@ -68,7 +69,7 @@ export const App = (props) => {
 		startNewGame()
 	}
 
-	const handleDropdownChange = (mode) => {
+	const handleModeChange = (mode) => {
 		dispatch(setMode({ mode }))
 	}
 
@@ -81,26 +82,41 @@ export const App = (props) => {
 				alignItems: 'flex-start',
 			}}
 		>
-			<BaseDropdown
-				label='mode'
-				value={settings.mode}
-				options={[
-					{
-						value: GAME_MODE.EASY,
-						label: 'Easy',
-					},
-					{
-						value: GAME_MODE.MEDIUM,
-						label: 'Medium',
-					},
-					{
-						value: GAME_MODE.HARD,
-						label: 'Hard',
-					},
-				]}
-				onChange={handleDropdownChange}
-				tabIndex={0}
-			/>
+			<BaseStack
+				flexDirection='row'
+				gap={2}
+			>
+				<BaseDropdown
+					label='mode'
+					value={settings.mode}
+					options={[
+						{
+							value: GAME_MODE.EASY,
+							label: 'Easy',
+						},
+						{
+							value: GAME_MODE.MEDIUM,
+							label: 'Medium',
+						},
+						{
+							value: GAME_MODE.HARD,
+							label: 'Hard',
+						},
+					]}
+					onChange={handleModeChange}
+					tabIndex={0}
+				/>
+				<BaseDropdown
+					label='size'
+					value={size}
+					options={Array(21).fill(null).map((_, index) => ({
+						value: index + 20,
+						label: index + 20,
+					}))}
+					onChange={setSize}
+					tabIndex={1}
+				/>
+			</BaseStack>
 
 			<Box
 				onContextMenu={(e) => { e.preventDefault() }}
@@ -133,7 +149,9 @@ export const App = (props) => {
 					</FaceButton>
 					<Counter value={time} />
 				</Box>
-				<Board />
+				<Board
+					tileSize={size}
+				/>
 			</Box>
 			{footer}
 		</BaseStack>

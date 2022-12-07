@@ -22,7 +22,9 @@ const MOUSE_CLICK = Object.freeze({
 	MIDDLE: 4,
 })
 
-export const Board = () => {
+export const Board = (props) => {
+	const { tileSize } = props
+
 	const {
 		board,
 	} = useSelector(minesweeperSelector)
@@ -32,8 +34,6 @@ export const Board = () => {
 
 	const [tableLeft, setTableLeft] = React.useState(0)
 	const [tableTop, setTableTop] = React.useState(0)
-	const [cellWidth] = React.useState(30)
-	const [cellHeight] = React.useState(30)
 	const [currentRow, setCurrentRow] = React.useState(0)
 	const [currentCol, setCurrentCol] = React.useState(0)
 
@@ -45,8 +45,8 @@ export const Board = () => {
 	const dispatch = useDispatch()
 
 	const handleMouseMove = (e) => {
-		const row = Math.floor((e.pageY - tableTop) / cellHeight)
-		const col = Math.floor((e.pageX - tableLeft) / cellWidth)
+		const row = Math.floor((e.pageY - tableTop) / tileSize)
+		const col = Math.floor((e.pageX - tableLeft) / tileSize)
 		setCurrentRow(row)
 		setCurrentCol(col)
 
@@ -143,8 +143,8 @@ export const Board = () => {
 							<Tile
 								key={`${col},${row}`}
 								cell={cell}
-								width={cellWidth}
-								height={cellHeight}
+								width={tileSize}
+								height={tileSize}
 							/>
 						))}
 					</tr>
