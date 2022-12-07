@@ -13,11 +13,20 @@ export default function App(props) {
 	} = props
 
 	const title = 'Minesweeper'
+	const desc = 'The classic Minesweeper game built by Samuel Ko'
 
 	return (
 		<ReduxProvider store={store}>
 			<Head>
 				<title>{title}</title>
+				<meta charSet='utf-8' />
+				<meta name='viewport' content='width=device-width, initial-scale=1' />
+				<meta name='description' content={desc} />
+				<meta property='og:title' content='Minesweeper' />
+				<meta property='og:url' content='https://minesweeper.samuelko123.com/' />
+				<meta property='og:type' content='website' />
+				<meta property='og:description' content={desc} />
+				<link rel='manifest' href='manifest.json' />
 			</Head>
 			<CssBaseline />
 			<BaseAppBar>
