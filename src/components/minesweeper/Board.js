@@ -121,30 +121,35 @@ export const Board = () => {
 	}
 
 	return (
-		<>
-			<table
-				id='board'
-				onMouseMove={handleMouseMove}
-				onMouseDown={handleMouseDown}
-				onMouseUp={handleMouseUp}
-				onMouseLeave={handleMouseLeave}
-				ref={tableRef}
-			>
-				<tbody>
-					{board && board.map((arr, row) => (
-						<tr key={row}>
-							{arr.map((cell, col) => (
-								<Tile
-									key={`${col},${row}`}
-									cell={cell}
-									width={cellWidth}
-									height={cellHeight}
-								/>
-							))}
-						</tr>
-					))}
-				</tbody>
-			</table>
-		</>
+		<table
+			ref={tableRef}
+			onMouseMove={handleMouseMove}
+			onMouseDown={handleMouseDown}
+			onMouseUp={handleMouseUp}
+			onMouseLeave={handleMouseLeave}
+			style={{
+				display: 'table',
+				borderSpacing: 0,
+				fontSize: 0,
+				border: 0,
+				margin: 0,
+				padding: 0,
+			}}
+		>
+			<tbody>
+				{board && board.map((arr, row) => (
+					<tr key={row}>
+						{arr.map((cell, col) => (
+							<Tile
+								key={`${col},${row}`}
+								cell={cell}
+								width={cellWidth}
+								height={cellHeight}
+							/>
+						))}
+					</tr>
+				))}
+			</tbody>
+		</table>
 	)
 }

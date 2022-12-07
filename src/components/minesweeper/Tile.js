@@ -78,7 +78,12 @@ export const Tile = (props) => {
 	}
 
 	return (
-		<td>
+		<td
+			style={{
+				margin: 0,
+				padding: 0,
+			}}
+		>
 			{img}
 		</td>
 	)
