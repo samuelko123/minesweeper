@@ -1,6 +1,7 @@
 @font-face {
 	font-family: "Digital Dismay";
 	src: url("/fonts/digital-dismay.otf");
+	font-display: swap;
 }
 
 .noselect {
