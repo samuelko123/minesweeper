@@ -100,9 +100,6 @@ export const App = (props) => {
 				]}
 				onChange={handleDropdownChange}
 				tabIndex={0}
-				inputProps={{
-					fullWidth: false,
-				}}
 			/>
 
 			<Box
