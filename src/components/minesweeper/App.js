@@ -135,6 +135,7 @@ export const App = (props) => {
 					<FaceButton
 						onClick={handleSmileyClick}
 						status={status}
+						label='Start New Game'
 					>
 						{
 							data.peeking ? <FaSurprise /> : (

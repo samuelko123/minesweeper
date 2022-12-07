@@ -5,6 +5,7 @@ import { IconContext } from 'react-icons'
 export const FaceButton = (props) => {
 	const {
 		onClick: handleClick,
+		label,
 		children,
 	} = props
 
@@ -12,6 +13,7 @@ export const FaceButton = (props) => {
 		<Button
 			onClick={handleClick}
 			size='small'
+			aria-label={label}
 			disableFocusRipple
 			disableRipple
 			sx={{
