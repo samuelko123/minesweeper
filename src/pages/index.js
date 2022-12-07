@@ -1,11 +1,7 @@
 import { App } from '../components/minesweeper/App'
-import {
-	Box,
-	Tooltip,
-} from '@mui/material'
-import { FaGithub } from 'react-icons/fa'
+import { Box } from '@mui/material'
 import { BaseStack } from '../components/atoms/Stack'
-import { IconContext } from 'react-icons'
+import { Footer } from '../components/molecules/Footer'
 
 export default function Page() {
 	return (
@@ -17,16 +13,10 @@ export default function Page() {
 				>
 					<App
 						footer={
-							<footer>
-								<span>Samuel Ko | </span>
-								<Tooltip title='Source code'>
-									<a target='_blank' rel='noopener noreferrer' href='https://github.com/samuelko123/minesweeper'>
-										<IconContext.Provider value={{ size: 20 }}>
-											<FaGithub />
-										</IconContext.Provider>
-									</a>
-								</Tooltip>
-							</footer>
+							<Footer
+								githubHref='https://github.com/samuelko123/minesweeper'
+								iconSize={20}
+							/>
 						}
 					/>
 				</Box>
