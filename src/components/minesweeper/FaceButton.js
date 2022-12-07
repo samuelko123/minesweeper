@@ -1,6 +1,5 @@
 import React from 'react'
 import { Button } from '@mui/material'
-import { IconContext } from 'react-icons'
 
 export const FaceButton = (props) => {
 	const {
@@ -22,6 +21,7 @@ export const FaceButton = (props) => {
 				height: 30,
 				padding: 0,
 				borderRadius: 0,
+				fontSize: 20,
 
 				backgroundColor: '#c0c0c0',
 				':hover': {
@@ -34,14 +34,7 @@ export const FaceButton = (props) => {
 				},
 			}}
 		>
-			<IconContext.Provider
-				value={{
-					color: '#ffff00',
-					size: 24,
-				}}
-			>
-				{children}
-			</IconContext.Provider>
+			{children}
 		</Button>
 	)
 }

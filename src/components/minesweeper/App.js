@@ -13,12 +13,6 @@ import {
 } from '../../slices/minesweeper'
 import { BaseDropdown } from '../atoms/Dropdowns'
 import { BaseStack } from '../atoms/Stack'
-import {
-	FaSmile,
-	FaSurprise,
-} from 'react-icons/fa'
-import { BsFillEmojiSunglassesFill } from 'react-icons/bs'
-import { ImSad2 } from 'react-icons/im'
 import { Counter } from './Counter'
 import { FaceButton } from './FaceButton'
 import { Board } from './Board'
@@ -138,12 +132,12 @@ export const App = (props) => {
 						label='Start New Game'
 					>
 						{
-							data.peeking ? <FaSurprise /> : (
+							data.peeking ? <span>😮</span> : (
 								<>
-									{status === GAME_STATUS.READY && <FaSmile />}
-									{status === GAME_STATUS.PLAYING && <FaSmile />}
-									{status === GAME_STATUS.WIN && <BsFillEmojiSunglassesFill />}
-									{status === GAME_STATUS.LOSE && <ImSad2 />}
+									{status === GAME_STATUS.READY && <span>🙂</span>}
+									{status === GAME_STATUS.PLAYING && <span>🙂</span>}
+									{status === GAME_STATUS.WIN && <span>😎</span>}
+									{status === GAME_STATUS.LOSE && <span>🙃</span>}
 								</>
 							)
 						}
