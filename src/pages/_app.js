@@ -26,7 +26,7 @@ export default function App(props) {
 				<meta property='og:url' content='https://minesweeper.samuelko123.com/' />
 				<meta property='og:type' content='website' />
 				<meta property='og:description' content={desc} />
-				<link rel='manifest' href='manifest.json' />
+				<link rel='manifest' href='site.webmanifest' />
 			</Head>
 			<CssBaseline />
 			<BaseAppBar>
