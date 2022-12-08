@@ -16,7 +16,7 @@ import { Counter } from './Counter'
 import { FaceButton } from './FaceButton'
 import { Board } from './Board'
 import { BorderedBox } from '../molecules/BorderedBox'
-import { BaseCheckbox } from '../atoms/Checkbox'
+import { BaseSwitch } from '../atoms/Switch'
 
 const KEYBOARD = Object.freeze({
 	F2: 113,
@@ -112,8 +112,8 @@ export const App = (props) => {
 					onChange={setSize}
 					tabIndex={1}
 				/>
-				<BaseCheckbox
-					label='flag mode'
+				<BaseSwitch
+					label='flag'
 					checked={flagMode}
 					onChange={() => setFlagMode(!flagMode)}
 				/>
