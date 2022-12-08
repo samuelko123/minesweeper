@@ -325,7 +325,10 @@ const minesweeperSlice = createSlice({
 				col,
 			} = payload
 
-			if (state.status !== GAME_STATUS.PLAYING) {
+			if (
+				state.status !== GAME_STATUS.PLAYING &&
+				state.status !== GAME_STATUS.READY
+			) {
 				return
 			}
 
