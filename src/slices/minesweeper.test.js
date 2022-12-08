@@ -38,7 +38,6 @@ describe('minesweeper', () => {
 				rowCount: 4,
 				colCount: 3,
 				mineCount: 5,
-				seed: 'seed',
 			}
 
 			// action
@@ -53,18 +52,16 @@ describe('minesweeper', () => {
 				flagCount: 0,
 				peeking: false,
 			})
-			expect(getStates(newState.board)).toEqual([
-				[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
-				[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
-				[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
-				[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
-			])
-			expect(getValues(newState.board)).toEqual([
-				[CELL_VALUE.EMPTY, CELL_VALUE.EMPTY, CELL_VALUE.EMPTY],
-				[CELL_VALUE.EMPTY, CELL_VALUE.MINED, CELL_VALUE.EMPTY],
-				[CELL_VALUE.MINED, CELL_VALUE.EMPTY, CELL_VALUE.EMPTY],
-				[CELL_VALUE.MINED, CELL_VALUE.MINED, CELL_VALUE.MINED],
-			])
+			expect(newState.data.flagCount).toEqual(0)
+			expect(getStates(newState.board).flat()).toEqual(
+				expect.arrayContaining([CELL_STATE.HIDDEN]),
+			)
+
+			const arr = getValues(newState.board).flat()
+			expect(arr).toEqual(
+				expect.arrayContaining([CELL_VALUE.EMPTY, CELL_VALUE.MINED]),
+			)
+			expect(arr.filter(x => x === CELL_VALUE.MINED).length).toEqual(payload.mineCount)
 		})
 	})
 
@@ -91,7 +88,6 @@ describe('minesweeper', () => {
 					rowCount: 4,
 					colCount: 3,
 					mineCount: 5,
-					seed: 'seed',
 				},
 				data: {
 					safeCount: 7,
@@ -136,7 +132,6 @@ describe('minesweeper', () => {
 					rowCount: 4,
 					colCount: 3,
 					mineCount: 5,
-					seed: 'seed',
 				},
 				data: {
 					safeCount: 7,
@@ -182,7 +177,6 @@ describe('minesweeper', () => {
 					rowCount: 4,
 					colCount: 3,
 					mineCount: 5,
-					seed: 'seed',
 				},
 				data: {
 					safeCount: 7,
@@ -222,7 +216,6 @@ describe('minesweeper', () => {
 					rowCount: 4,
 					colCount: 3,
 					mineCount: 5,
-					seed: 'seed',
 				},
 				data: {
 					safeCount: 7,
@@ -268,7 +261,6 @@ describe('minesweeper', () => {
 					rowCount: 4,
 					colCount: 3,
 					mineCount: 5,
-					seed: 'seed',
 				},
 				data: {
 					safeCount: 7,
@@ -314,7 +306,6 @@ describe('minesweeper', () => {
 					rowCount: 4,
 					colCount: 3,
 					mineCount: 5,
-					seed: 'seed',
 				},
 				data: {
 					safeCount: 7,
@@ -450,7 +441,6 @@ describe('minesweeper', () => {
 					rowCount: 4,
 					colCount: 3,
 					mineCount: 5,
-					seed: 'seed',
 				},
 				data: {
 					safeCount: 7,
@@ -490,7 +480,6 @@ describe('minesweeper', () => {
 					rowCount: 4,
 					colCount: 3,
 					mineCount: 5,
-					seed: 'seed',
 				},
 				data: {
 					safeCount: 7,
@@ -551,7 +540,6 @@ describe('minesweeper', () => {
 					rowCount: 4,
 					colCount: 3,
 					mineCount: 5,
-					seed: 'seed',
 				},
 				data: {
 					safeCount: 7,
@@ -590,7 +578,6 @@ describe('minesweeper', () => {
 					rowCount: 4,
 					colCount: 3,
 					mineCount: 5,
-					seed: 'seed',
 				},
 				data: {
 					safeCount: 7,
@@ -645,7 +632,6 @@ describe('minesweeper', () => {
 					rowCount: 4,
 					colCount: 3,
 					mineCount: 5,
-					seed: 'seed',
 				},
 				data: {
 					safeCount: 7,
@@ -686,7 +672,6 @@ describe('minesweeper', () => {
 					rowCount: 4,
 					colCount: 3,
 					mineCount: 5,
-					seed: 'seed',
 				},
 				data: {
 					safeCount: 7,
@@ -731,7 +716,6 @@ describe('minesweeper', () => {
 						rowCount: 4,
 						colCount: 3,
 						mineCount: 5,
-						seed: 'seed',
 					},
 					data: {
 						safeCount: 7,

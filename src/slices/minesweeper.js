@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import seedrandom from 'seedrandom'
 
 // =============
 //  helper functions
@@ -10,7 +9,6 @@ const initGameHelper = (settings) => {
 		rowCount,
 		colCount,
 		mineCount,
-		seed,
 		mode,
 	} = settings
 
@@ -34,12 +32,11 @@ const initGameHelper = (settings) => {
 	}
 
 	// randomise mines
-	const randomFn = seedrandom(seed)
 	for (let i = 0; i < rowCount; i++) {
 		for (let j = 0; j < colCount; j++) {
 
-			const x = Math.floor(randomFn() * rowCount)
-			const y = Math.floor(randomFn() * colCount)
+			const x = Math.floor(Math.random() * rowCount)
+			const y = Math.floor(Math.random() * colCount)
 			const temp = arr[i][j].value
 			arr[i][j].value = arr[x][y].value
 			arr[x][y].value = temp
@@ -52,7 +49,6 @@ const initGameHelper = (settings) => {
 			rowCount,
 			colCount,
 			mineCount,
-			seed,
 			mode,
 		},
 		data: {
@@ -114,7 +110,6 @@ const revealCellHelper = (state, row, col) => {
 	const {
 		rowCount,
 		colCount,
-		seed,
 	} = state.settings
 
 	const {
@@ -127,12 +122,10 @@ const revealCellHelper = (state, row, col) => {
 
 		// move mine away
 		if (state.board[row][col].value === CELL_VALUE.MINED) {
-			const randomFn = seedrandom(seed)
-
 			let x, y
 			do {
-				x = Math.floor(randomFn() * rowCount)
-				y = Math.floor(randomFn() * colCount)
+				x = Math.floor(Math.random() * rowCount)
+				y = Math.floor(Math.random() * colCount)
 			} while (
 				state.board[x][y].value === CELL_VALUE.MINED ||
 				(x === row && y === col)
@@ -288,7 +281,6 @@ const minesweeperSlice = createSlice({
 		colCount: 9,
 		mineCount: 10,
 		mode: GAME_MODE.EASY,
-		seed: undefined,
 	}),
 	reducers: {
 		initGame: (state, { payload }) => {
