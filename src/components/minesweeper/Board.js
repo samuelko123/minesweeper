@@ -23,7 +23,10 @@ const MOUSE_CLICK = Object.freeze({
 })
 
 export const Board = (props) => {
-	const { tileSize } = props
+	const {
+		tileSize,
+		flagMode,
+	} = props
 
 	const {
 		board,
@@ -34,8 +37,6 @@ export const Board = (props) => {
 
 	const [tableLeft, setTableLeft] = React.useState(0)
 	const [tableTop, setTableTop] = React.useState(0)
-	const [currentRow, setCurrentRow] = React.useState(0)
-	const [currentCol, setCurrentCol] = React.useState(0)
 
 	React.useEffect(() => {
 		setTableLeft(tableRef.current.offsetLeft)
@@ -44,11 +45,12 @@ export const Board = (props) => {
 
 	const dispatch = useDispatch()
 
+	const calcRow = (pageY) => { return Math.floor((pageY - tableTop) / tileSize) }
+	const calcCol = (pageX) => { return Math.floor((pageX - tableLeft) / tileSize) }
+
 	const handleMouseMove = (e) => {
-		const row = Math.floor((e.pageY - tableTop) / tileSize)
-		const col = Math.floor((e.pageX - tableLeft) / tileSize)
-		setCurrentRow(row)
-		setCurrentCol(col)
+		const row = calcRow(e.pageY)
+		const col = calcCol(e.pageX)
 
 		switch (e.buttons) {
 			case MOUSE_CLICK.LEFT:
@@ -71,24 +73,34 @@ export const Board = (props) => {
 		e.preventDefault()
 		setButtons(e.buttons)
 
+		const row = calcRow(e.pageY)
+		const col = calcCol(e.pageX)
+
 		switch (e.buttons) {
 			case MOUSE_CLICK.LEFT:
-				dispatch(peekOneCell({
-					row: currentRow,
-					col: currentCol,
-				}))
+				if (flagMode) {
+					dispatch(toggleFlag({
+						row: row,
+						col: col,
+					}))
+				} else {
+					dispatch(peekOneCell({
+						row: row,
+						col: col,
+					}))
+				}
 				break
 			case MOUSE_CLICK.RIGHT:
 				dispatch(toggleFlag({
-					row: currentRow,
-					col: currentCol,
+					row: row,
+					col: col,
 				}))
 				break
 			case MOUSE_CLICK.MIDDLE:
 			case MOUSE_CLICK.BOTH:
 				dispatch(peekNeighborCells({
-					row: currentRow,
-					col: currentCol,
+					row: row,
+					col: col,
 				}))
 				break
 		}
@@ -98,18 +110,23 @@ export const Board = (props) => {
 		e.preventDefault()
 		dispatch(resetPeek())
 
+		const row = calcRow(e.pageY)
+		const col = calcCol(e.pageX)
+
 		switch (buttons) {
 			case MOUSE_CLICK.LEFT:
-				dispatch(revealCell({
-					row: currentRow,
-					col: currentCol,
-				}))
+				if (!flagMode) {
+					dispatch(revealCell({
+						row: row,
+						col: col,
+					}))
+				}
 				break
 			case MOUSE_CLICK.MIDDLE:
 			case MOUSE_CLICK.BOTH:
 				dispatch(chordCell({
-					row: currentRow,
-					col: currentCol,
+					row: row,
+					col: col,
 				}))
 				break
 		}
@@ -120,6 +137,16 @@ export const Board = (props) => {
 		dispatch(resetPeek())
 	}
 
+	const handleTouchStart = (e) => {
+		const row = calcRow(e.changedTouches[0].pageY)
+		const col = calcCol(e.changedTouches[0].pageX)
+
+		dispatch(chordCell({
+			row: row,
+			col: col,
+		}))
+	}
+
 	return (
 		<table
 			ref={tableRef}
@@ -127,6 +154,7 @@ export const Board = (props) => {
 			onMouseDown={handleMouseDown}
 			onMouseUp={handleMouseUp}
 			onMouseLeave={handleMouseLeave}
+			onTouchStart={handleTouchStart}
 			style={{
 				display: 'table',
 				borderSpacing: 0,

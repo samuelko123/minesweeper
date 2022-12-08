@@ -16,6 +16,7 @@ import { Counter } from './Counter'
 import { FaceButton } from './FaceButton'
 import { Board } from './Board'
 import { BorderedBox } from '../molecules/BorderedBox'
+import { BaseCheckbox } from '../atoms/Checkbox'
 
 const KEYBOARD = Object.freeze({
 	F2: 113,
@@ -34,6 +35,7 @@ export const App = (props) => {
 	const timer = React.useRef()
 	const [time, setTime] = React.useState(0)
 	const [size, setSize] = React.useState(30)
+	const [flagMode, setFlagMode] = React.useState(false)
 
 	React.useEffect(() => {
 		if (status === GAME_STATUS.PLAYING) {
@@ -110,6 +112,11 @@ export const App = (props) => {
 					onChange={setSize}
 					tabIndex={1}
 				/>
+				<BaseCheckbox
+					label='flag mode'
+					checked={flagMode}
+					onChange={() => setFlagMode(!flagMode)}
+				/>
 			</BaseStack>
 			<BorderedBox
 				borderWidth={6}
@@ -168,6 +175,7 @@ export const App = (props) => {
 					>
 						<Board
 							tileSize={size}
+							flagMode={flagMode}
 						/>
 					</BorderedBox>
 				</BaseStack>
