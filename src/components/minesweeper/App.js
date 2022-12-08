@@ -137,7 +137,7 @@ export const App = (props) => {
 							display: 'flex',
 							justifyContent: 'space-between',
 							alignItems: 'center',
-							padding: 1,
+							padding: size >= 22 ? 1 : 0,
 						}}
 					>
 						<BorderedBox

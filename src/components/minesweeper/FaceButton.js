@@ -41,8 +41,8 @@ export const FaceButton = (props) => {
 				disableRipple
 				sx={{
 					minWidth: 24,
-					width: 36,
-					height: 36,
+					width: 30,
+					height: 30,
 					padding: 0,
 					borderRadius: 0,
 					fontSize: 24,
