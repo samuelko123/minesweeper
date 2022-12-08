@@ -137,9 +137,24 @@ export const Board = (props) => {
 		dispatch(resetPeek())
 	}
 
+	// for mobile
 	const handleTouchStart = (e) => {
+		e.preventDefault()
+
 		const row = calcRow(e.changedTouches[0].pageY)
 		const col = calcCol(e.changedTouches[0].pageX)
+
+		if (flagMode) {
+			dispatch(toggleFlag({
+				row: row,
+				col: col,
+			}))
+		} else {
+			dispatch(revealCell({
+				row: row,
+				col: col,
+			}))
+		}
 
 		dispatch(chordCell({
 			row: row,
