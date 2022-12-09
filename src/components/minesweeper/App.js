@@ -23,6 +23,11 @@ import {
 	stopWatchSelector,
 	update as updateStopWatch,
 } from '../../slices/stopWatch'
+import {
+	setCellSize,
+	settingsSelector,
+	toggleFlagMode,
+} from '../../slices/settings'
 
 const KEYBOARD = Object.freeze({
 	F2: 113,
@@ -41,11 +46,12 @@ export const App = (props) => {
 		elapsedTimeMS,
 		startTimestamp,
 	} = useSelector(stopWatchSelector)
+	const {
+		cellSize,
+		flagMode,
+	} = useSelector(settingsSelector)
 
 	const timer = React.useRef()
-	const [size, setSize] = React.useState(30)
-	const [flagMode, setFlagMode] = React.useState(false)
-
 	React.useEffect(() => {
 		if (status === GAME_STATUS.PLAYING) {
 			if (startTimestamp === null) {
@@ -116,18 +122,18 @@ export const App = (props) => {
 				/>
 				<BaseDropdown
 					label='size'
-					value={size}
+					value={cellSize}
 					options={Array(21).fill(null).map((_, index) => ({
 						value: index + 20,
 						label: index + 20,
 					}))}
-					onChange={setSize}
+					onChange={(val) => dispatch(setCellSize({ size: val }))}
 					tabIndex={1}
 				/>
 				<BaseSwitch
 					label='flag'
 					checked={flagMode}
-					onChange={() => setFlagMode(!flagMode)}
+					onChange={() => dispatch(toggleFlagMode())}
 				/>
 			</BaseStack>
 			<BorderedBox
@@ -149,7 +155,7 @@ export const App = (props) => {
 							display: 'flex',
 							justifyContent: 'space-between',
 							alignItems: 'center',
-							padding: size >= 22 ? 1 : 0,
+							padding: cellSize >= 22 ? 1 : 0,
 						}}
 					>
 						<BorderedBox
@@ -186,7 +192,7 @@ export const App = (props) => {
 						sunken={true}
 					>
 						<Board
-							tileSize={size}
+							tileSize={cellSize}
 							flagMode={flagMode}
 						/>
 					</BorderedBox>

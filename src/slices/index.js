@@ -16,11 +16,13 @@ import {
 import storage from 'redux-persist/lib/storage'
 
 import { minesweeperReducer } from '../slices/minesweeper'
+import { settingsReducer } from './settings'
 import { stopWatchReducer } from './stopWatch'
 
 const rootReducer = combineReducers({
 	minesweeper: minesweeperReducer,
 	stopWatch: stopWatchReducer,
+	settings: settingsReducer,
 })
 
 const persistConfig = {
