@@ -25,54 +25,60 @@ export const Tile = (props) => {
 		height,
 	} = props
 
+	const componentProps = {
+		viewBox: '0 0 100 100',
+		width: width,
+		height: height,
+	}
+
 	let img
 	switch (cell.state) {
 		case CELL_STATE.HIDDEN:
-			img = <Hidden viewBox='0 0 100 100' width={width} height={height} />
+			img = <Hidden {...componentProps} />
 			break
 		case CELL_STATE.FLAGGED:
-			img = <Flag viewBox='0 0 100 100' width={width} height={height} />
+			img = <Flag {...componentProps} />
 			break
 		case CELL_STATE.PEEKED:
-			img = <Zero viewBox='0 0 100 100' width={width} height={height} />
+			img = <Zero {...componentProps} />
 			break
 		case CELL_STATE.EXPLODED:
-			img = <Explode viewBox='0 0 100 100' width={width} height={height} />
+			img = <Explode {...componentProps} />
 			break
 		case CELL_STATE.WRONG:
-			img = <Wrong viewBox='0 0 100 100' width={width} height={height} />
+			img = <Wrong {...componentProps} />
 			break
 		case CELL_STATE.REVEALED:
 			switch (cell.value) {
 				case CELL_VALUE.MINED:
-					img = <Mine viewBox='0 0 100 100' width={width} height={height} />
+					img = <Mine {...componentProps} />
 					break
 				case CELL_VALUE.EMPTY:
-					img = <Zero viewBox='0 0 100 100' width={width} height={height} />
+					img = <Zero {...componentProps} />
 					break
 				case 1:
-					img = <One viewBox='0 0 100 100' width={width} height={height} />
+					img = <One {...componentProps} />
 					break
 				case 2:
-					img = <Two viewBox='0 0 100 100' width={width} height={height} />
+					img = <Two {...componentProps} />
 					break
 				case 3:
-					img = <Three viewBox='0 0 100 100' width={width} height={height} />
+					img = <Three {...componentProps} />
 					break
 				case 4:
-					img = <Four viewBox='0 0 100 100' width={width} height={height} />
+					img = <Four {...componentProps} />
 					break
 				case 5:
-					img = <Five viewBox='0 0 100 100' width={width} height={height} />
+					img = <Five {...componentProps} />
 					break
 				case 6:
-					img = <Six viewBox='0 0 100 100' width={width} height={height} />
+					img = <Six {...componentProps} />
 					break
 				case 7:
-					img = <Seven viewBox='0 0 100 100' width={width} height={height} />
+					img = <Seven {...componentProps} />
 					break
 				case 8:
-					img = <Eight viewBox='0 0 100 100' width={width} height={height} />
+					img = <Eight {...componentProps} />
 					break
 			}
 	}
