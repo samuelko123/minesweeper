@@ -39,6 +39,7 @@ export const App = (props) => {
 	} = useSelector(minesweeperSelector)
 	const {
 		elapsedTimeMS,
+		startTimestamp,
 	} = useSelector(stopWatchSelector)
 
 	const timer = React.useRef()
@@ -47,7 +48,9 @@ export const App = (props) => {
 
 	React.useEffect(() => {
 		if (status === GAME_STATUS.PLAYING) {
-			dispatch(startStopWatch())
+			if (startTimestamp === null) {
+				dispatch(startStopWatch())
+			}
 			timer.current = setInterval(() => dispatch(updateStopWatch()), 100)
 		} else if (status === GAME_STATUS.READY) {
 			dispatch(resetStopWatch())
@@ -56,7 +59,7 @@ export const App = (props) => {
 		}
 
 		return () => clearInterval(timer.current)
-	}, [status, dispatch])
+	}, [status, dispatch, startTimestamp])
 
 	const startNewGame = () => {
 		clearInterval(timer.current)
