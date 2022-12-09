@@ -17,6 +17,9 @@ import Flag from '../../images/flag.svg'
 import Hidden from '../../images/hidden.svg'
 import Mine from '../../images/mine.svg'
 import Wrong from '../../images/wrong.svg'
+import { Box } from '@mui/material'
+import { useSelector } from 'react-redux'
+import { settingsSelector } from '../../slices/settings'
 
 export const Tile = (props) => {
 	const {
@@ -30,6 +33,8 @@ export const Tile = (props) => {
 		width: width,
 		height: height,
 	}
+
+	const settings = useSelector(settingsSelector)
 
 	let img
 	switch (cell.state) {
@@ -84,13 +89,17 @@ export const Tile = (props) => {
 	}
 
 	return (
-		<td
-			style={{
+		<Box
+			component='td'
+			sx={{
 				margin: 0,
 				padding: 0,
+				'& .tile-background': {
+					fill: settings.cell.color.background,
+				},
 			}}
 		>
 			{img}
-		</td>
+		</Box>
 	)
 }

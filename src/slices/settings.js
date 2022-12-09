@@ -3,6 +3,11 @@ import { createSlice } from '@reduxjs/toolkit'
 const INIT_STATE = {
 	cellSize: 30,
 	flagMode: false,
+	cell: {
+		color: {
+			background: '#b9b9b9',
+		},
+	},
 }
 
 const settingsSlice = createSlice({
@@ -15,12 +20,16 @@ const settingsSlice = createSlice({
 		toggleFlagMode: (state) => {
 			state.flagMode = !state.flagMode
 		},
+		setCellBackgroundColor: (state, { payload }) => {
+			state.cell.color.background = payload.color
+		},
 	},
 })
 
 export const {
 	setCellSize,
 	toggleFlagMode,
+	setCellBackgroundColor,
 } = settingsSlice.actions
 
 export const settingsReducer = settingsSlice.reducer
