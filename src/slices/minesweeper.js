@@ -93,19 +93,6 @@ const callFnOnNeighborCells = (state, row, col, fn) => {
 	}
 }
 
-const callFnOnAllCells = (state, fn) => {
-	const {
-		rowCount,
-		colCount,
-	} = state.settings
-
-	for (let i = 0; i < rowCount; i++) {
-		for (let j = 0; j < colCount; j++) {
-			fn(i, j)
-		}
-	}
-}
-
 const revealCellHelper = (state, row, col) => {
 	const {
 		rowCount,
@@ -136,17 +123,19 @@ const revealCellHelper = (state, row, col) => {
 		}
 
 		// calculate neighbor mine count
-		callFnOnAllCells(state, (i, j) => {
-			if (state.board[i][j].value !== CELL_VALUE.MINED) {
-				return
-			}
-
-			callFnOnNeighborCells(state, i, j, (i, j) => {
-				if (state.board[i][j].value !== CELL_VALUE.MINED) {
-					state.board[i][j].value++
+		for (const r of state.board) {
+			for (const cell of r) {
+				if (cell.value !== CELL_VALUE.MINED) {
+					continue
 				}
-			})
-		})
+
+				callFnOnNeighborCells(state, cell.row, cell.col, (i, j) => {
+					if (state.board[i][j].value !== CELL_VALUE.MINED) {
+						state.board[i][j].value++
+					}
+				})
+			}
+		}
 	}
 
 	// do nothing if cell is not hidden or peeked
@@ -162,25 +151,24 @@ const revealCellHelper = (state, row, col) => {
 		state.status = GAME_STATUS.LOSE
 		state.board[row][col].state = CELL_STATE.EXPLODED
 
-		callFnOnAllCells(state, (i, j) => {
-			const cellValue = state.board[i][j].value
-			const cellState = state.board[i][j].state
+		for (const r of state.board) {
+			for (const cell of r) {
+				if (
+					cell.value === CELL_VALUE.MINED &&
+					cell.state !== CELL_STATE.EXPLODED &&
+					cell.state !== CELL_STATE.FLAGGED
+				) {
+					cell.state = CELL_STATE.REVEALED
+				}
 
-			if (
-				cellValue === CELL_VALUE.MINED &&
-				cellState !== CELL_STATE.EXPLODED &&
-				cellState !== CELL_STATE.FLAGGED
-			) {
-				state.board[i][j].state = CELL_STATE.REVEALED
+				if (
+					cell.value !== CELL_VALUE.MINED &&
+					cell.state === CELL_STATE.FLAGGED
+				) {
+					cell.state = CELL_STATE.WRONG
+				}
 			}
-
-			if (
-				cellValue !== CELL_VALUE.MINED &&
-				cellState === CELL_STATE.FLAGGED
-			) {
-				state.board[i][j].state = CELL_STATE.WRONG
-			}
-		})
+		}
 
 		return
 	}
@@ -222,11 +210,13 @@ const revealCellHelper = (state, row, col) => {
 	if (isWin) {
 		state.status = GAME_STATUS.WIN
 
-		callFnOnAllCells(state, (i, j) => {
-			if (state.board[i][j].value === CELL_VALUE.MINED) {
-				state.board[i][j].state = CELL_STATE.FLAGGED
+		for (const r of state.board) {
+			for (const cell of r) {
+				if (cell.value === CELL_VALUE.MINED) {
+					cell.state = CELL_STATE.FLAGGED
+				}
 			}
-		})
+		}
 	}
 }
 
@@ -381,15 +371,18 @@ const minesweeperSlice = createSlice({
 			}
 
 			state.data.peeking = true
-			callFnOnAllCells(state, (i, j) => {
-				if (row === i && col === j) {
-					if (state.board[i][j].state === CELL_STATE.HIDDEN) {
-						state.board[i][j].state = CELL_STATE.PEEKED
+			for (const r of state.board) {
+				for (const cell of r) {
+					if (cell.state === CELL_STATE.PEEKED) {
+						cell.state = CELL_STATE.HIDDEN
 					}
-				} else if (state.board[i][j].state === CELL_STATE.PEEKED) {
-					state.board[i][j].state = CELL_STATE.HIDDEN
 				}
-			})
+			}
+
+			const cell = state.board[row][col]
+			if (cell.state === CELL_STATE.HIDDEN) {
+				cell.state = CELL_STATE.PEEKED
+			}
 		},
 		peekNeighborCells: (state, { payload }) => {
 			const {
@@ -405,23 +398,27 @@ const minesweeperSlice = createSlice({
 			}
 
 			state.data.peeking = true
-			callFnOnAllCells(state, (i, j) => {
-				if (Math.abs(row - i) <= 1 && Math.abs(col - j) <= 1) {
-					if (state.board[i][j].state === CELL_STATE.HIDDEN) {
-						state.board[i][j].state = CELL_STATE.PEEKED
+			for(const r of state.board){
+				for(const cell of r){
+					if (Math.abs(row - cell.row) <= 1 && Math.abs(col - cell.col) <= 1) {
+						if (cell.state === CELL_STATE.HIDDEN) {
+							cell.state = CELL_STATE.PEEKED
+						}
+					} else if (cell.state === CELL_STATE.PEEKED) {
+						cell.state = CELL_STATE.HIDDEN
 					}
-				} else if (state.board[i][j].state === CELL_STATE.PEEKED) {
-					state.board[i][j].state = CELL_STATE.HIDDEN
 				}
-			})
+			}
 		},
 		resetPeek: (state) => {
 			state.data.peeking = false
-			callFnOnAllCells(state, (i, j) => {
-				if (state.board[i][j].state === CELL_STATE.PEEKED) {
-					state.board[i][j].state = CELL_STATE.HIDDEN
+			for(const r of state.board){
+				for(const cell of r){
+					if (cell.state === CELL_STATE.PEEKED) {
+						cell.state = CELL_STATE.HIDDEN
+					}
 				}
-			})
+			}
 		},
 		setMode: (state, { payload }) => {
 			const { mode } = payload

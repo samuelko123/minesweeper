@@ -26,6 +26,8 @@ const buildBoard = (states, values) => {
 		return {
 			state: elem,
 			value: values ? values[i][j] : null,
+			row: i,
+			col: j,
 		}
 	}))
 }
@@ -253,7 +255,7 @@ describe('minesweeper', () => {
 			])
 		})
 
-		it('loses if cell is bomb', () => {
+		it('loses if cell is mined', () => {
 			// arrange
 			const oldState = {
 				status: GAME_STATUS.PLAYING,
