@@ -2,10 +2,6 @@ import React from 'react'
 import { Button } from '@mui/material'
 import { BorderedBox } from '../molecules/BorderedBox'
 
-const MOUSE_CLICK = Object.freeze({
-	LEFT: 1,
-})
-
 export const FaceButton = (props) => {
 	const {
 		onClick: handleClick,
@@ -15,10 +11,8 @@ export const FaceButton = (props) => {
 
 	const [pressed, setPressed] = React.useState(false)
 
-	const handleMouseDown = (e) => {
-		if (e.buttons === MOUSE_CLICK.LEFT) {
-			setPressed(true)
-		}
+	const handleMouseDown = () => {
+		setPressed(true)
 	}
 
 	const handleMouseUp = () => {
@@ -35,6 +29,8 @@ export const FaceButton = (props) => {
 				onClick={handleClick}
 				onMouseDown={handleMouseDown}
 				onMouseUp={handleMouseUp}
+				onTouchStart={handleMouseDown}
+				onTouchEnd={handleMouseUp}
 				size='small'
 				aria-label={label}
 				disableFocusRipple
