@@ -157,7 +157,7 @@ export const App = (props) => {
 										{status === GAME_STATUS.READY && <span>🙂</span>}
 										{status === GAME_STATUS.PLAYING && <span>🙂</span>}
 										{status === GAME_STATUS.WIN && <span>😎</span>}
-										{status === GAME_STATUS.LOSE && <span>🙃</span>}
+										{status === GAME_STATUS.LOSE && <span>🙁</span>}
 									</>
 								)
 							}
