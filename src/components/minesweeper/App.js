@@ -17,6 +17,12 @@ import { EmojiButton } from './EmojiButton'
 import { Board } from './Board'
 import { BorderedBox } from '../molecules/BorderedBox'
 import { BaseSwitch } from '../atoms/Switch'
+import {
+	reset as resetStopWatch,
+	start as startStopWatch,
+	stopWatchSelector,
+	update as updateStopWatch,
+} from '../../slices/stopWatch'
 
 const KEYBOARD = Object.freeze({
 	F2: 113,
@@ -31,27 +37,30 @@ export const App = (props) => {
 		status,
 		data,
 	} = useSelector(minesweeperSelector)
+	const {
+		elapsedTimeMS,
+	} = useSelector(stopWatchSelector)
 
 	const timer = React.useRef()
-	const [time, setTime] = React.useState(0)
 	const [size, setSize] = React.useState(30)
 	const [flagMode, setFlagMode] = React.useState(false)
 
 	React.useEffect(() => {
 		if (status === GAME_STATUS.PLAYING) {
-			timer.current = setInterval(() => setTime(time + 1), 1000)
+			dispatch(startStopWatch())
+			timer.current = setInterval(() => dispatch(updateStopWatch()), 100)
 		} else if (status === GAME_STATUS.READY) {
-			setTime(0)
+			dispatch(resetStopWatch())
 		} else {
 			clearInterval(timer.current)
 		}
 
 		return () => clearInterval(timer.current)
-	}, [status, time])
+	}, [status, dispatch])
 
 	const startNewGame = () => {
 		clearInterval(timer.current)
-		setTime(0)
+		dispatch(resetStopWatch())
 		dispatch(initGame(settings))
 	}
 
@@ -166,7 +175,7 @@ export const App = (props) => {
 							borderWidth={2}
 							sunken={true}
 						>
-							<Counter value={time} />
+							<Counter value={Math.floor(elapsedTimeMS / 1000)} />
 						</BorderedBox>
 					</BorderedBox>
 					<BorderedBox
