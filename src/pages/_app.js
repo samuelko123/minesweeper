@@ -24,8 +24,8 @@ export default function App(props) {
 				<meta name='description' content={desc} />
 				<meta property='og:title' content='Minesweeper' />
 				<meta property='og:type' content='website' />
-				<meta property='og:url' content='https://minesweeper.samuelko123.com/' />
-				<meta property='og:image' content='https://minesweeper.samuelko123.com/og-image.png' />
+				<meta property='og:url' content={process.env.NEXT_PUBLIC_URL} />
+				<meta property='og:image' content={process.env.NEXT_PUBLIC_URL + '/og-image.png'} />
 				<meta property='og:description' content={desc} />
 				<link rel='manifest' href='site.webmanifest' />
 			</Head>
