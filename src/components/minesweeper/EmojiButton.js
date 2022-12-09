@@ -2,7 +2,7 @@ import React from 'react'
 import { Button } from '@mui/material'
 import { BorderedBox } from '../molecules/BorderedBox'
 
-export const FaceButton = (props) => {
+export const EmojiButton = (props) => {
 	const {
 		onClick: handleClick,
 		label,

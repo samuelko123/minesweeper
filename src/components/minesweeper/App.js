@@ -13,7 +13,7 @@ import {
 import { BaseDropdown } from '../atoms/Dropdowns'
 import { BaseStack } from '../atoms/Stack'
 import { Counter } from './Counter'
-import { FaceButton } from './FaceButton'
+import { EmojiButton } from './EmojiButton'
 import { Board } from './Board'
 import { BorderedBox } from '../molecules/BorderedBox'
 import { BaseSwitch } from '../atoms/Switch'
@@ -146,7 +146,7 @@ export const App = (props) => {
 						>
 							<Counter value={settings.mineCount - data.flagCount} />
 						</BorderedBox>
-						<FaceButton
+						<EmojiButton
 							onClick={handleFaceClick}
 							status={status}
 							label='Start New Game'
@@ -161,7 +161,7 @@ export const App = (props) => {
 									</>
 								)
 							}
-						</FaceButton>
+						</EmojiButton>
 						<BorderedBox
 							borderWidth={2}
 							sunken={true}
