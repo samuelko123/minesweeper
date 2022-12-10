@@ -10,7 +10,7 @@ import '../styles/global.css'
 import { BaseAppBar } from '../components/atoms/AppBar'
 import { BrandHeader } from '../components/atoms/BrandHeader'
 import Head from 'next/head'
-import { MainMenu } from '../components/organisms/MainMenu'
+import { MenuButton } from '../components/organisms/MenuButton'
 
 export default function App(props) {
 	const {
@@ -42,7 +42,7 @@ export default function App(props) {
 						href='/'
 						title={title}
 					/>
-					<MainMenu buttonSize={32} />
+					<MenuButton size={32} />
 				</BaseAppBar>
 				<Component {...pageProps} />
 			</PersistGate>

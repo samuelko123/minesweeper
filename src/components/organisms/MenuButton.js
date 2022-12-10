@@ -12,8 +12,8 @@ import {
 	MdSettings,
 } from 'react-icons/md'
 
-export const MainMenu = (props) => {
-	const { buttonSize } = props
+export const MenuButton = (props) => {
+	const { size } = props
 
 	const [open, setOpen] = React.useState(false)
 	const [anchorEl, setAnchorEl] = React.useState(null)
@@ -33,7 +33,7 @@ export const MainMenu = (props) => {
 					setOpen(true)
 				}}
 			>
-				<MdMenu size={buttonSize} />
+				<MdMenu size={size} />
 			</Button>
 			<Menu
 				open={open}
