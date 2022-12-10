@@ -2,6 +2,7 @@ import React from 'react'
 import {
 	Box,
 	List,
+	ListItem,
 	ListItemText,
 	ListSubheader,
 	Paper,
@@ -10,7 +11,6 @@ import {
 
 import { BaseHeader } from '../components/atoms/Header'
 import { BackButton } from '../components/molecules/BackButton'
-import { BaseListItem } from '../components/atoms/ListItem'
 
 export default function Page() {
 	return (
@@ -21,7 +21,7 @@ export default function Page() {
 					Game Rules
 				</BaseHeader>
 				<List>
-					<BaseListItem divider={false}>
+					<ListItem divider={false}>
 						<ListItemText>
 							<a
 								target='_blank'
@@ -31,7 +31,7 @@ export default function Page() {
 								How To Play Minesweeper
 							</a>
 						</ListItemText>
-					</BaseListItem>
+					</ListItem>
 				</List>
 			</Box>
 			<Box>
@@ -43,10 +43,10 @@ export default function Page() {
 				</ListSubheader>
 				<Paper>
 					<List>
-						<BaseListItem>
+						<ListItem>
 							<ListItemText>F2</ListItemText>
 							<ListItemText>Start a new game</ListItemText>
-						</BaseListItem>
+						</ListItem>
 					</List>
 				</Paper>
 				<ListSubheader>
@@ -54,15 +54,15 @@ export default function Page() {
 				</ListSubheader>
 				<Paper>
 					<List>
-						<BaseListItem>
+						<ListItem>
 							<ListItemText>Left-click</ListItemText>
 							<ListItemText>Uncover</ListItemText>
-						</BaseListItem>
-						<BaseListItem>
+						</ListItem>
+						<ListItem>
 							<ListItemText>Right-click</ListItemText>
 							<ListItemText>Toggle flag</ListItemText>
-						</BaseListItem>
-						<BaseListItem>
+						</ListItem>
+						<ListItem>
 							<ListItemText>
 								<ListItemText>Both-click / Middle-click</ListItemText>
 							</ListItemText>
@@ -75,7 +75,7 @@ export default function Page() {
 									Chord
 								</a>
 							</ListItemText>
-						</BaseListItem>
+						</ListItem>
 					</List>
 				</Paper>
 				<ListSubheader>
@@ -83,13 +83,13 @@ export default function Page() {
 				</ListSubheader>
 				<Paper>
 					<List>
-						<BaseListItem>
+						<ListItem>
 							<ListItemText>Touch</ListItemText>
 							<ListItemText>
 								Uncover / Toggle flag
 							</ListItemText>
-						</BaseListItem>
-						<BaseListItem>
+						</ListItem>
+						<ListItem>
 							<ListItemText>Touch on a number</ListItemText>
 							<ListItemText>
 								<a
@@ -100,7 +100,7 @@ export default function Page() {
 									Chord
 								</a>
 							</ListItemText>
-						</BaseListItem>
+						</ListItem>
 					</List>
 				</Paper>
 			</Box>

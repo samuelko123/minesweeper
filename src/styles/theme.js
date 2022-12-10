@@ -33,6 +33,17 @@ export const theme = createTheme({
 				},
 			},
 		},
+		MuiListItem: {
+			defaultProps: {
+				divider: true,
+			},
+			styleOverrides: {
+				root: {
+					gap: 1,
+					alignItems: 'flex-start',
+				},
+			},
+		},
 		MuiListItemText: {
 			styleOverrides: {
 				root: {

@@ -4,6 +4,7 @@ import {
 	Button,
 	DialogContentText,
 	List,
+	ListItem,
 	ListItemText,
 	ListSubheader,
 	Paper,
@@ -31,7 +32,6 @@ import {
 import { Tile } from '../components/minesweeper/Tile'
 import { CELL_STATE } from '../slices/minesweeper'
 import { BaseDialog } from '../components/molecules/Dialogs'
-import { BaseListItem } from '../components/atoms/ListItem'
 
 export default function Page() {
 	const dispatch = useDispatch()
@@ -55,7 +55,7 @@ export default function Page() {
 					</ListSubheader>
 					<Paper>
 						<List>
-							<BaseListItem>
+							<ListItem>
 								<ListItemText>Cell Size</ListItemText>
 								<Box sx={{ flex: 1 }}>
 									<BaseDropdown
@@ -67,8 +67,8 @@ export default function Page() {
 										onChange={(val) => dispatch(setCellSize({ size: val }))}
 									/>
 								</Box>
-							</BaseListItem>
-							<BaseListItem>
+							</ListItem>
+							<ListItem>
 								<ListItemText>Cell Color</ListItemText>
 								<Stack
 									gap={2}
@@ -86,8 +86,8 @@ export default function Page() {
 									<HexColorPicker color={cell.color.background} onChange={(val) => dispatch(setCellBackgroundColor({ color: val }))} />
 									<HexColorInput color={cell.color.background} onChange={(val) => dispatch(setCellBackgroundColor({ color: val }))} />
 								</Stack>
-							</BaseListItem>
-							<BaseListItem>
+							</ListItem>
+							<ListItem>
 								<ListItemText>Reset to defaults</ListItemText>
 								<Box sx={{ flex: 1 }}>
 									<Button
@@ -99,7 +99,7 @@ export default function Page() {
 										Reset
 									</Button>
 								</Box>
-							</BaseListItem>
+							</ListItem>
 						</List>
 					</Paper>
 				</Box>
