@@ -195,7 +195,7 @@ export const App = (props) => {
 					gap={2}
 					sx={{
 						padding: 1.5,
-						backgroundColor: '#ccc',
+						backgroundColor: cell.color.background,
 					}}
 				>
 					<BorderedBox
