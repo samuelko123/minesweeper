@@ -4,6 +4,7 @@ import {
 	Button,
 	DialogContentText,
 	List,
+	ListItemText,
 	ListSubheader,
 	Paper,
 	Stack,
@@ -31,7 +32,6 @@ import { Tile } from '../components/minesweeper/Tile'
 import { CELL_STATE } from '../slices/minesweeper'
 import { BaseDialog } from '../components/molecules/Dialogs'
 import { BaseListItem } from '../components/atoms/ListItem'
-import { BaseListItemText } from '../components/atoms/ListItemText'
 
 export default function Page() {
 	const dispatch = useDispatch()
@@ -56,7 +56,7 @@ export default function Page() {
 					<Paper>
 						<List>
 							<BaseListItem>
-								<BaseListItemText>Cell Size</BaseListItemText>
+								<ListItemText>Cell Size</ListItemText>
 								<Box sx={{ flex: 1 }}>
 									<BaseDropdown
 										value={cellSize}
@@ -69,7 +69,7 @@ export default function Page() {
 								</Box>
 							</BaseListItem>
 							<BaseListItem>
-								<BaseListItemText>Cell Color</BaseListItemText>
+								<ListItemText>Cell Color</ListItemText>
 								<Stack
 									gap={2}
 									sx={{
@@ -88,7 +88,7 @@ export default function Page() {
 								</Stack>
 							</BaseListItem>
 							<BaseListItem>
-								<BaseListItemText>Reset to defaults</BaseListItemText>
+								<ListItemText>Reset to defaults</ListItemText>
 								<Box sx={{ flex: 1 }}>
 									<Button
 										variant='outlined'

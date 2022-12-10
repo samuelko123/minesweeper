@@ -2,6 +2,7 @@ import React from 'react'
 import {
 	Box,
 	List,
+	ListItemText,
 	ListSubheader,
 	Paper,
 	Stack,
@@ -10,7 +11,6 @@ import {
 import { BaseHeader } from '../components/atoms/Header'
 import { BackButton } from '../components/molecules/BackButton'
 import { BaseListItem } from '../components/atoms/ListItem'
-import { BaseListItemText } from '../components/atoms/ListItemText'
 
 export default function Page() {
 	return (
@@ -22,7 +22,7 @@ export default function Page() {
 				</BaseHeader>
 				<List>
 					<BaseListItem divider={false}>
-						<BaseListItemText>
+						<ListItemText>
 							<a
 								target='_blank'
 								rel='noreferrer'
@@ -30,7 +30,7 @@ export default function Page() {
 							>
 								How To Play Minesweeper
 							</a>
-						</BaseListItemText>
+						</ListItemText>
 					</BaseListItem>
 				</List>
 			</Box>
@@ -44,8 +44,8 @@ export default function Page() {
 				<Paper>
 					<List>
 						<BaseListItem>
-							<BaseListItemText>F2</BaseListItemText>
-							<BaseListItemText>Start a new game</BaseListItemText>
+							<ListItemText>F2</ListItemText>
+							<ListItemText>Start a new game</ListItemText>
 						</BaseListItem>
 					</List>
 				</Paper>
@@ -55,18 +55,18 @@ export default function Page() {
 				<Paper>
 					<List>
 						<BaseListItem>
-							<BaseListItemText>Left-click</BaseListItemText>
-							<BaseListItemText>Uncover</BaseListItemText>
+							<ListItemText>Left-click</ListItemText>
+							<ListItemText>Uncover</ListItemText>
 						</BaseListItem>
 						<BaseListItem>
-							<BaseListItemText>Right-click</BaseListItemText>
-							<BaseListItemText>Toggle flag</BaseListItemText>
+							<ListItemText>Right-click</ListItemText>
+							<ListItemText>Toggle flag</ListItemText>
 						</BaseListItem>
 						<BaseListItem>
-							<BaseListItemText>
-								<BaseListItemText>Both-click / Middle-click</BaseListItemText>
-							</BaseListItemText>
-							<BaseListItemText>
+							<ListItemText>
+								<ListItemText>Both-click / Middle-click</ListItemText>
+							</ListItemText>
+							<ListItemText>
 								<a
 									target='_blank'
 									rel='noreferrer'
@@ -74,7 +74,7 @@ export default function Page() {
 								>
 									Chord
 								</a>
-							</BaseListItemText>
+							</ListItemText>
 						</BaseListItem>
 					</List>
 				</Paper>
@@ -84,14 +84,14 @@ export default function Page() {
 				<Paper>
 					<List>
 						<BaseListItem>
-							<BaseListItemText>Touch</BaseListItemText>
-							<BaseListItemText>
+							<ListItemText>Touch</ListItemText>
+							<ListItemText>
 								Uncover / Toggle flag
-							</BaseListItemText>
+							</ListItemText>
 						</BaseListItem>
 						<BaseListItem>
-							<BaseListItemText>Touch on a number</BaseListItemText>
-							<BaseListItemText>
+							<ListItemText>Touch on a number</ListItemText>
+							<ListItemText>
 								<a
 									target='_blank'
 									rel='noreferrer'
@@ -99,7 +99,7 @@ export default function Page() {
 								>
 									Chord
 								</a>
-							</BaseListItemText>
+							</ListItemText>
 						</BaseListItem>
 					</List>
 				</Paper>

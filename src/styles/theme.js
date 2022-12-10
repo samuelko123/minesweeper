@@ -33,6 +33,13 @@ export const theme = createTheme({
 				},
 			},
 		},
+		MuiListItemText: {
+			styleOverrides: {
+				root: {
+					flex: 1,
+				},
+			},
+		},
 		MuiPaper: {
 			defaultProps: {
 				elevation: 0,
