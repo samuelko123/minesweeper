@@ -1,7 +1,9 @@
-import * as React from 'react'
-import FormGroup from '@mui/material/FormGroup'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Switch from '@mui/material/Switch'
+import React from 'react'
+import {
+	FormControlLabel,
+	FormGroup,
+	Switch,
+} from '@mui/material'
 
 export const BaseSwitch = (props) => {
 	const {
