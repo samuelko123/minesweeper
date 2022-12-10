@@ -1,6 +1,7 @@
 import React from 'react'
 import {
 	Box,
+	List,
 	ListSubheader,
 	Stack,
 } from '@mui/material'
@@ -9,7 +10,6 @@ import { BaseHeader } from '../components/atoms/Header'
 import { BackButton } from '../components/molecules/BackButton'
 import { BaseListItem } from '../components/atoms/ListItem'
 import { BaseSurface } from '../components/atoms/Surface'
-import { BaseList } from '../components/atoms/List'
 import { BaseListItemText } from '../components/atoms/ListItemText'
 
 export default function Page() {
@@ -20,7 +20,7 @@ export default function Page() {
 				<BaseHeader>
 					Game Rules
 				</BaseHeader>
-				<BaseList>
+				<List>
 					<BaseListItem divider={false}>
 						<BaseListItemText>
 							<a
@@ -32,7 +32,7 @@ export default function Page() {
 							</a>
 						</BaseListItemText>
 					</BaseListItem>
-				</BaseList>
+				</List>
 			</Box>
 			<Box>
 				<BaseHeader>
@@ -42,18 +42,18 @@ export default function Page() {
 					Keyboard
 				</ListSubheader>
 				<BaseSurface>
-					<BaseList>
+					<List>
 						<BaseListItem>
 							<BaseListItemText>F2</BaseListItemText>
 							<BaseListItemText>Start a new game</BaseListItemText>
 						</BaseListItem>
-					</BaseList>
+					</List>
 				</BaseSurface>
 				<ListSubheader>
 					Mouse
 				</ListSubheader>
 				<BaseSurface>
-					<BaseList>
+					<List>
 						<BaseListItem>
 							<BaseListItemText>Left-click</BaseListItemText>
 							<BaseListItemText>Uncover</BaseListItemText>
@@ -76,13 +76,13 @@ export default function Page() {
 								</a>
 							</BaseListItemText>
 						</BaseListItem>
-					</BaseList>
+					</List>
 				</BaseSurface>
 				<ListSubheader>
 					Mobile
 				</ListSubheader>
 				<BaseSurface>
-					<BaseList>
+					<List>
 						<BaseListItem>
 							<BaseListItemText>Touch</BaseListItemText>
 							<BaseListItemText>
@@ -101,7 +101,7 @@ export default function Page() {
 								</a>
 							</BaseListItemText>
 						</BaseListItem>
-					</BaseList>
+					</List>
 				</BaseSurface>
 			</Box>
 		</Stack>

@@ -19,6 +19,11 @@ export const theme = createTheme({
 		},
 	},
 	components: {
+		MuiList: {
+			defaultProps: {
+				disablePadding: true,
+			},
+		},
 		MuiListSubheader: {
 			styleOverrides: {
 				root: {
