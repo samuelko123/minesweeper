@@ -4,6 +4,7 @@ import { BaseMenuItem } from '../atoms/MenuItem'
 import { BaseLink } from '../atoms/Links'
 import {
 	MdHome,
+	MdOutlineHelp,
 	MdSettings,
 } from 'react-icons/md'
 
@@ -49,6 +50,14 @@ export const MainMenu = (props) => {
 					startIcon={<MdSettings />}
 				>
 					Settings
+				</BaseMenuItem>
+			</BaseLink>
+			<BaseLink href='/how-to-play'>
+				<BaseMenuItem
+					onClick={handleClose}
+					startIcon={<MdOutlineHelp />}
+				>
+					How To Play
 				</BaseMenuItem>
 			</BaseLink>
 		</Menu>
