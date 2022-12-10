@@ -1,5 +1,7 @@
 import { createTheme } from '@mui/material'
 
+const surfaceColor = '#fff'
+
 export const theme = createTheme({
 	typography: {
 		link: {
@@ -15,7 +17,7 @@ export const theme = createTheme({
 			default: '#eee',
 		},
 		surface: {
-			default: '#fff',
+			default: surfaceColor,
 		},
 	},
 	components: {
@@ -28,6 +30,16 @@ export const theme = createTheme({
 			styleOverrides: {
 				root: {
 					backgroundColor: 'inherit',
+				},
+			},
+		},
+		MuiPaper: {
+			defaultProps: {
+				elevation: 0,
+			},
+			styleOverrides: {
+				root: {
+					backgroundColor: surfaceColor,
 				},
 			},
 		},

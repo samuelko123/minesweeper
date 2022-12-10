@@ -5,6 +5,7 @@ import {
 	DialogContentText,
 	List,
 	ListSubheader,
+	Paper,
 	Stack,
 } from '@mui/material'
 import {
@@ -29,7 +30,6 @@ import {
 import { Tile } from '../components/minesweeper/Tile'
 import { CELL_STATE } from '../slices/minesweeper'
 import { BaseDialog } from '../components/molecules/Dialogs'
-import { BaseSurface } from '../components/atoms/Surface'
 import { BaseListItem } from '../components/atoms/ListItem'
 import { BaseListItemText } from '../components/atoms/ListItemText'
 
@@ -53,7 +53,7 @@ export default function Page() {
 					<ListSubheader>
 						Appearance
 					</ListSubheader>
-					<BaseSurface>
+					<Paper>
 						<List>
 							<BaseListItem>
 								<BaseListItemText>Cell Size</BaseListItemText>
@@ -101,7 +101,7 @@ export default function Page() {
 								</Box>
 							</BaseListItem>
 						</List>
-					</BaseSurface>
+					</Paper>
 				</Box>
 			</Stack>
 			<BaseDialog
