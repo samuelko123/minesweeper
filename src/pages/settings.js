@@ -3,11 +3,8 @@ import {
 	Box,
 	Button,
 	DialogContentText,
-	List,
-	ListItem,
 	ListSubheader,
 	Stack,
-	Typography,
 } from '@mui/material'
 import {
 	HexColorInput,
@@ -31,6 +28,10 @@ import {
 import { Tile } from '../components/minesweeper/Tile'
 import { CELL_STATE } from '../slices/minesweeper'
 import { BaseDialog } from '../components/molecules/Dialogs'
+import { BaseList } from '../components/atoms/List'
+import { BaseSurface } from '../components/atoms/Surface'
+import { BaseListItem } from '../components/atoms/ListItem'
+import { BaseListItemText } from '../components/atoms/ListItemText'
 
 export default function Page() {
 	const dispatch = useDispatch()
@@ -39,62 +40,73 @@ export default function Page() {
 		cell,
 	} = useSelector(settingsSelector)
 
-	const colWidth = 96
 	const [showDialog, setShowDialog] = React.useState(false)
 
 	return (
 		<>
-			<Box padding={2}>
+			<Stack
+				padding={2}
+				gap={2}
+			>
 				<BackButton href='/' />
-				<BaseHeader sx={{ marginTop: 2 }}>
-					Settings
-				</BaseHeader>
-				<List disablePadding>
+				<Box>
+					<BaseHeader>
+						Settings
+					</BaseHeader>
 					<ListSubheader>
 						Appearance
 					</ListSubheader>
-					<ListItem sx={{ gap: 2 }}>
-						<Typography sx={{ width: colWidth }}>Cell Size</Typography>
-						<BaseDropdown
-							value={cellSize}
-							options={Array(21).fill(null).map((_, index) => ({
-								value: index + 20,
-								label: index + 20,
-							}))}
-							onChange={(val) => dispatch(setCellSize({ size: val }))}
-							tabIndex={1}
-						/>
-					</ListItem>
-					<ListItem
-						sx={{
-							gap: 2,
-							alignItems: 'flex-start',
-						}}
-					>
-						<Typography sx={{ width: colWidth }}>Cell Color</Typography>
-						<Stack gap={1}>
-							<Tile
-								component='span'
-								cell={{ state: CELL_STATE.HIDDEN }}
-								width={cellSize}
-								height={cellSize}
-							/>
-							<HexColorPicker color={cell.color.background} onChange={(val) => dispatch(setCellBackgroundColor({ color: val }))} />
-							<HexColorInput color={cell.color.background} onChange={(val) => dispatch(setCellBackgroundColor({ color: val }))} />
-						</Stack>
-					</ListItem>
-					<ListItem>
-						<Button
-							variant='outlined'
-							size='small'
-							color='error'
-							onClick={() => setShowDialog(true)}
-						>
-							Reset to defaults
-						</Button>
-					</ListItem>
-				</List>
-			</Box>
+					<BaseSurface>
+						<BaseList>
+							<BaseListItem>
+								<BaseListItemText>Cell Size</BaseListItemText>
+								<Box sx={{ flex: 1 }}>
+									<BaseDropdown
+										value={cellSize}
+										options={Array(21).fill(null).map((_, index) => ({
+											value: index + 20,
+											label: index + 20,
+										}))}
+										onChange={(val) => dispatch(setCellSize({ size: val }))}
+									/>
+								</Box>
+							</BaseListItem>
+							<BaseListItem>
+								<BaseListItemText>Cell Color</BaseListItemText>
+								<Stack
+									gap={2}
+									sx={{
+										flex: 1,
+										alignItems: 'flex-start', 
+									}}
+								>
+									<Tile
+										component='span'
+										cell={{ state: CELL_STATE.HIDDEN }}
+										width={cellSize}
+										height={cellSize}
+									/>
+									<HexColorPicker color={cell.color.background} onChange={(val) => dispatch(setCellBackgroundColor({ color: val }))} />
+									<HexColorInput color={cell.color.background} onChange={(val) => dispatch(setCellBackgroundColor({ color: val }))} />
+								</Stack>
+							</BaseListItem>
+							<BaseListItem>
+								<BaseListItemText>Reset to defaults</BaseListItemText>
+								<Box sx={{ flex: 1 }}>
+									<Button
+										variant='outlined'
+										size='small'
+										color='error'
+										onClick={() => setShowDialog(true)}
+									>
+										Reset
+									</Button>
+								</Box>
+							</BaseListItem>
+						</BaseList>
+					</BaseSurface>
+				</Box>
+			</Stack>
 			<BaseDialog
 				open={showDialog}
 				onClose={() => setShowDialog(false)}

@@ -12,7 +12,10 @@ export const BaseListItem = React.forwardRef((props, ref) => {
 			ref={ref}
 			divider
 			{...otherProps}
-			sx={{ gap: 1 }}
+			sx={{
+				gap: 1,
+				alignItems: 'flex-start',
+			}}
 		>
 			{children}
 		</ListItem>
