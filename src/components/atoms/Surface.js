@@ -5,7 +5,6 @@ export const BaseSurface = (props) => {
 
 	return (
 		<Paper
-			rounded
 			elevation={2}
 			sx={{
 				backgroundColor: '#eee',
