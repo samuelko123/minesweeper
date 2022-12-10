@@ -2,8 +2,8 @@ import React from 'react'
 import {
 	Button,
 	Menu,
+	MenuItem,
 } from '@mui/material'
-import { BaseMenuItem } from '../atoms/MenuItem'
 import { BaseLink } from '../atoms/Links'
 import { MdMenu } from 'react-icons/md'
 
@@ -62,12 +62,10 @@ export const MenuButton = (props) => {
 							key={item.title}
 							href={item.href}
 						>
-							<BaseMenuItem
-								onClick={handleClose}
-								startIcon={item.icon}
-							>
+							<MenuItem onClick={handleClose}>
+								{item.icon}
 								{item.title}
-							</BaseMenuItem>
+							</MenuItem>
 						</BaseLink>
 					))
 				}

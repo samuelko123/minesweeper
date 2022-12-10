@@ -2,7 +2,9 @@ import { createTheme } from '@mui/material'
 
 const surfaceColor = '#fff'
 
-export const theme = createTheme({
+const defaultTheme = createTheme()
+
+export const theme = createTheme(defaultTheme, {
 	typography: {
 		link: {
 			color: (theme) => theme.palette.primary.main,
@@ -48,6 +50,19 @@ export const theme = createTheme({
 			styleOverrides: {
 				root: {
 					flex: 1,
+				},
+			},
+		},
+		MuiMenuItem: {
+			defaultProps: {
+				divider: true,
+			},
+			styleOverrides: {
+				root: {
+					display: 'flex',
+					flexDirection: 'row',
+					gap: defaultTheme.spacing(1),
+					padding: defaultTheme.spacing(2),
 				},
 			},
 		},

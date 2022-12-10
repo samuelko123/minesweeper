@@ -1,10 +1,10 @@
 import {
 	FormControl,
 	InputLabel,
+	MenuItem,
 	Select,
 } from '@mui/material'
 import React from 'react'
-import { BaseMenuItem } from './MenuItem'
 
 export const BaseDropdown = (props) => {
 	const {
@@ -38,12 +38,12 @@ export const BaseDropdown = (props) => {
 						}
 
 						return (
-							<BaseMenuItem
+							<MenuItem
 								key={option.value}
 								value={option.value}
 							>
 								{option.label}
-							</BaseMenuItem>
+							</MenuItem>
 						)
 					})
 				}
