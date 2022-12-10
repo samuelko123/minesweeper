@@ -11,7 +11,6 @@ import {
 	setMode,
 } from '../../slices/minesweeper'
 import { BaseDropdown } from '../atoms/Dropdowns'
-import { BaseStack } from '../atoms/Stack'
 import { Counter } from './Counter'
 import { EmojiButton } from './EmojiButton'
 import { Board } from './Board'
@@ -24,6 +23,7 @@ import {
 	update as updateStopWatch,
 } from '../../slices/stopWatch'
 import { settingsSelector } from '../../slices/settings'
+import { Stack } from '@mui/material'
 
 const KEYBOARD = Object.freeze({
 	F2: 113,
@@ -83,7 +83,7 @@ export const App = (props) => {
 	}
 
 	return (
-		<BaseStack
+		<Stack
 			className='noselect'
 			gap={2}
 			onKeyDown={handleKeyDown}
@@ -91,7 +91,7 @@ export const App = (props) => {
 				alignItems: 'flex-start',
 			}}
 		>
-			<BaseStack
+			<Stack
 				flexDirection='row'
 				gap={2}
 			>
@@ -120,12 +120,12 @@ export const App = (props) => {
 					checked={flagMode}
 					onChange={() => setFlagMode(!flagMode)}
 				/>
-			</BaseStack>
+			</Stack>
 			<BorderedBox
 				borderWidth={6}
 				raised={true}
 			>
-				<BaseStack
+				<Stack
 					onContextMenu={(e) => { e.preventDefault() }}
 					gap={2}
 					sx={{
@@ -181,9 +181,9 @@ export const App = (props) => {
 							flagMode={flagMode}
 						/>
 					</BorderedBox>
-				</BaseStack>
+				</Stack>
 			</BorderedBox>
 			{footer}
-		</BaseStack>
+		</Stack>
 	)
 }
