@@ -26,6 +26,7 @@ export const Tile = (props) => {
 		cell,
 		width,
 		height,
+		...otherProps
 	} = props
 
 	const componentProps = {
@@ -94,10 +95,13 @@ export const Tile = (props) => {
 			sx={{
 				margin: 0,
 				padding: 0,
+				width: width,
+				height: height,
 				'& .tile-background': {
 					fill: settings.cell.color.background,
 				},
 			}}
+			{...otherProps}
 		>
 			{img}
 		</Box>
