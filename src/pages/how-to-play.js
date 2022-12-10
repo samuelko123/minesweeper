@@ -14,11 +14,7 @@ import { BaseListItemText } from '../components/atoms/ListItemText'
 
 export default function Page() {
 	return (
-		<Stack
-			padding={2}
-			gap={2}
-		>
-
+		<Stack gap={2}>
 			<BackButton href='/' />
 			<Box>
 				<BaseHeader>

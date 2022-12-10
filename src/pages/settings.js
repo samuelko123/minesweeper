@@ -44,10 +44,7 @@ export default function Page() {
 
 	return (
 		<>
-			<Stack
-				padding={2}
-				gap={2}
-			>
+			<Stack gap={2}>
 				<BackButton href='/' />
 				<Box>
 					<BaseHeader>
@@ -77,7 +74,7 @@ export default function Page() {
 									gap={2}
 									sx={{
 										flex: 1,
-										alignItems: 'flex-start', 
+										alignItems: 'flex-start',
 									}}
 								>
 									<Tile

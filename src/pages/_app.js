@@ -2,7 +2,10 @@ import React from 'react'
 import Head from 'next/head'
 import { Provider as ReduxProvider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
-import { CssBaseline } from '@mui/material'
+import {
+	Box,
+	CssBaseline,
+} from '@mui/material'
 import {
 	persistor,
 	store,
@@ -53,22 +56,27 @@ export default function App(props) {
 							{
 								href: '/',
 								icon: <MdHome />,
-								title: 'Home', 
+								title: 'Home',
 							},
 							{
 								href: '/settings',
 								icon: <MdSettings />,
-								title: 'Settings', 
+								title: 'Settings',
 							},
 							{
 								href: '/how-to-play',
 								icon: <MdOutlineHelp />,
-								title: 'How To Play', 
+								title: 'How To Play',
 							},
 						]}
 					/>
 				</BaseAppBar>
-				<Component {...pageProps} />
+				<Box
+					component='main'
+					padding={2}
+				>
+					<Component {...pageProps} />
+				</Box>
 			</PersistGate>
 		</ReduxProvider>
 	)
