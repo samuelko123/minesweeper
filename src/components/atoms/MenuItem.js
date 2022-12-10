@@ -1,28 +1,33 @@
 import React from 'react'
 import { MenuItem } from '@mui/material'
-import { BaseStack } from './Stack'
 
-export const BaseMenuItem = React.forwardRef((props, ref) => {
+export const BaseMenuItem = (props) => {
 	const {
 		children,
 		startIcon,
 		...otherProps
 	} = props
 
+	const {
+		sx,
+		...remainingProps
+	} = otherProps
+
 	return (
 		<MenuItem
-			ref={ref}
-			{...otherProps}
 			divider
-			sx={{ padding: 2 }}
+			sx={{
+				display: 'flex',
+				flexDirection: 'row',
+				gap: 1,
+				width: '100%',
+				padding: 2,
+				...sx,
+			}}
+			{...remainingProps}
 		>
-			<BaseStack
-				gap={1}
-				flexDirection='row'
-			>
-				{startIcon || null}
-				{children}
-			</BaseStack>
+			{startIcon || null}
+			{children}
 		</MenuItem>
 	)
-})
+}

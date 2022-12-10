@@ -23,10 +23,7 @@ import {
 	stopWatchSelector,
 	update as updateStopWatch,
 } from '../../slices/stopWatch'
-import {
-	setCellSize,
-	settingsSelector,
-} from '../../slices/settings'
+import { settingsSelector } from '../../slices/settings'
 
 const KEYBOARD = Object.freeze({
 	F2: 113,
@@ -120,16 +117,6 @@ export const App = (props) => {
 					]}
 					onChange={handleModeChange}
 					tabIndex={0}
-				/>
-				<BaseDropdown
-					label='size'
-					value={cellSize}
-					options={Array(21).fill(null).map((_, index) => ({
-						value: index + 20,
-						label: index + 20,
-					}))}
-					onChange={(val) => dispatch(setCellSize({ size: val }))}
-					tabIndex={1}
 				/>
 				<BaseSwitch
 					label='flag'

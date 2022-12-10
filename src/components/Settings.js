@@ -13,6 +13,7 @@ import {
 } from 'react-redux'
 import {
 	setCellBackgroundColor,
+	setCellSize,
 	settingsSelector,
 } from '../slices/settings'
 import { BaseMenuItem } from './atoms/MenuItem'
@@ -24,17 +25,19 @@ import {
 const CURRENT_MENU = {
 	MAIN: 'main',
 	COLOR: 'color',
+	SIZE: 'size',
 }
 
 export const Settings = (props) => {
 	const {
 		open,
-		onClose,
+		onClose: handleClose,
 		anchorEl,
 	} = props
 
 	const dispatch = useDispatch()
 	const {
+		cellSize,
 		cell,
 	} = useSelector(settingsSelector)
 
@@ -43,7 +46,7 @@ export const Settings = (props) => {
 	return (
 		<Menu
 			open={open}
-			onClose={onClose}
+			onClose={handleClose}
 			anchorEl={anchorEl}
 			anchorOrigin={{
 				vertical: 'bottom',
@@ -62,25 +65,69 @@ export const Settings = (props) => {
 			}}
 		>
 			{currentMenu === CURRENT_MENU.MAIN &&
-				<BaseMenuItem onClick={() => setCurrentMenu(CURRENT_MENU.COLOR)}>
-					Color
-					<MdArrowForwardIos size={24} />
-				</BaseMenuItem>
+				[
+					<BaseMenuItem
+						key={CURRENT_MENU.COLOR}
+						onClick={() => setCurrentMenu(CURRENT_MENU.COLOR)}
+						sx={{ justifyContent: 'space-between' }}
+					>
+						<span>Color</span>
+						<MdArrowForwardIos size={24} />
+					</BaseMenuItem>
+					,
+					<BaseMenuItem
+						key={CURRENT_MENU.SIZE}
+						onClick={() => setCurrentMenu(CURRENT_MENU.SIZE)}
+						sx={{ justifyContent: 'space-between' }}
+					>
+						<span>Size</span>
+						<MdArrowForwardIos size={24} />
+					</BaseMenuItem>
+					,
+				]
 			}
 			{currentMenu === CURRENT_MENU.COLOR &&
-				<>
-					<BaseMenuItem onClick={() => setCurrentMenu(CURRENT_MENU.MAIN)}>
+				[
+					<BaseMenuItem
+						key={CURRENT_MENU.MAIN}
+						onClick={() => setCurrentMenu(CURRENT_MENU.MAIN)}
+					>
 						<MdArrowBackIos size={24} />
 						Color
 					</BaseMenuItem>
+					,
 					<Stack
+						key={CURRENT_MENU.COLOR}
 						gap={2}
 						padding={2}
 					>
 						<HexColorPicker color={cell.color.background} onChange={(val) => dispatch(setCellBackgroundColor({ color: val }))} />
 						<HexColorInput color={cell.color.background} onChange={(val) => dispatch(setCellBackgroundColor({ color: val }))} />
 					</Stack>
-				</>
+					,
+				]
+			}
+			{currentMenu === CURRENT_MENU.SIZE &&
+				[
+					<BaseMenuItem
+						key={CURRENT_MENU.MAIN}
+						onClick={() => setCurrentMenu(CURRENT_MENU.MAIN)}
+					>
+						<MdArrowBackIos size={24} />
+						Size
+					</BaseMenuItem>
+					,
+					...Array(21).fill(null).map((_, index) => (
+						<BaseMenuItem
+							key={index}
+							onClick={() => dispatch(setCellSize({ size: index + 20 }))}
+							selected={cellSize === index + 20}
+						>
+							{index + 20}
+						</BaseMenuItem>
+					))
+					,
+				]
 			}
 		</Menu>
 	)
