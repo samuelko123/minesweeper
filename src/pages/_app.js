@@ -13,8 +13,8 @@ import '../styles/global.css'
 import { BaseAppBar } from '../components/atoms/AppBar'
 import { BrandHeader } from '../components/atoms/BrandHeader'
 import Head from 'next/head'
-import { IoSettingsSharp } from 'react-icons/io5'
-import { Settings } from '../components/Settings'
+import { MdMenu } from 'react-icons/md'
+import { MainMenu } from '../components/organisms/MainMenu'
 
 export default function App(props) {
 	const {
@@ -26,7 +26,7 @@ export default function App(props) {
 	const desc = 'The classic Minesweeper game built by Samuel Ko'
 
 	const [anchorEl, setAnchorEl] = React.useState(null)
-	const [showSettings, setShowSettings] = React.useState(false)
+	const [showMenu, setShowMenu] = React.useState(false)
 
 	return (
 		<ReduxProvider store={store}>
@@ -57,14 +57,14 @@ export default function App(props) {
 						}}
 						onClick={(e) => {
 							setAnchorEl(e.currentTarget)
-							setShowSettings(!showSettings)
+							setShowMenu(!showMenu)
 						}}
 					>
-						<IoSettingsSharp size={32} />
+						<MdMenu size={32} />
 					</Button>
-					<Settings
-						open={showSettings}
-						onClose={() => setShowSettings(false)}
+					<MainMenu
+						open={showMenu}
+						onClose={() => setShowMenu(false)}
 						anchorEl={anchorEl}
 					/>
 				</BaseAppBar>
