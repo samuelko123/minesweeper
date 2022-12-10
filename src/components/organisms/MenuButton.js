@@ -1,4 +1,5 @@
 import React from 'react'
+import { useRouter } from 'next/router'
 import {
 	Button,
 	Menu,
@@ -12,6 +13,8 @@ export const MenuButton = (props) => {
 		size,
 		items,
 	} = props
+
+	const router = useRouter()
 
 	const [open, setOpen] = React.useState(false)
 	const [anchorEl, setAnchorEl] = React.useState(null)
@@ -62,7 +65,10 @@ export const MenuButton = (props) => {
 							key={item.title}
 							href={item.href}
 						>
-							<MenuItem onClick={handleClose}>
+							<MenuItem
+								onClick={handleClose}
+								selected={router.pathname === item.href}
+							>
 								{item.icon}
 								{item.title}
 							</MenuItem>
