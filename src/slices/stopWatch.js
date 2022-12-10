@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const INIT_STATE = {
 	startTimestamp: null,
 	elapsedTimeMS: 0,
+	prevElapsed: 0,
 }
 
 const stopWatchSlice = createSlice({
@@ -11,9 +12,10 @@ const stopWatchSlice = createSlice({
 	reducers: {
 		start: (state) => {
 			state.startTimestamp = Date.now()
+			state.prevElapsed = state.elapsedTimeMS
 		},
 		update: (state) => {
-			state.elapsedTimeMS = Date.now() - state.startTimestamp
+			state.elapsedTimeMS = Date.now() - state.startTimestamp + state.prevElapsed
 		},
 		reset: () => INIT_STATE,
 	},

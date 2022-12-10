@@ -40,7 +40,6 @@ export const App = (props) => {
 	} = useSelector(minesweeperSelector)
 	const {
 		elapsedTimeMS,
-		startTimestamp,
 	} = useSelector(stopWatchSelector)
 	const {
 		cellSize,
@@ -52,9 +51,7 @@ export const App = (props) => {
 	const timer = React.useRef()
 	React.useEffect(() => {
 		if (status === GAME_STATUS.PLAYING) {
-			if (startTimestamp === null) {
-				dispatch(startStopWatch())
-			}
+			dispatch(startStopWatch())
 			timer.current = setInterval(() => dispatch(updateStopWatch()), 100)
 		} else if (status === GAME_STATUS.READY) {
 			dispatch(resetStopWatch())
@@ -63,7 +60,7 @@ export const App = (props) => {
 		}
 
 		return () => clearInterval(timer.current)
-	}, [status, dispatch, startTimestamp])
+	}, [status, dispatch])
 
 	const startNewGame = () => {
 		clearInterval(timer.current)
