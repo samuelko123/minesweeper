@@ -2,7 +2,6 @@ import {
 	Box,
 	Tooltip,
 } from '@mui/material'
-import { IconContext } from 'react-icons'
 import { FaGithub } from 'react-icons/fa'
 
 export const Footer = (props) => {
@@ -32,9 +31,7 @@ export const Footer = (props) => {
 					<span
 						style={{ verticalAlign: 'text-top' }}
 					>
-						<IconContext.Provider value={{ size: iconSize }}>
-							<FaGithub />
-						</IconContext.Provider>
+						<FaGithub size={iconSize} />
 					</span>
 				</a>
 			</Tooltip>
