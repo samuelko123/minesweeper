@@ -1,6 +1,10 @@
+import React from 'react'
 import { Provider as ReduxProvider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
-import { CssBaseline } from '@mui/material'
+import {
+	Button,
+	CssBaseline,
+} from '@mui/material'
 import {
 	persistor,
 	store,
@@ -9,6 +13,8 @@ import '../styles/global.css'
 import { BaseAppBar } from '../components/atoms/AppBar'
 import { BrandHeader } from '../components/atoms/BrandHeader'
 import Head from 'next/head'
+import { IoSettingsSharp } from 'react-icons/io5'
+import { Settings } from '../components/Settings'
 
 export default function App(props) {
 	const {
@@ -18,6 +24,9 @@ export default function App(props) {
 
 	const title = 'Minesweeper'
 	const desc = 'The classic Minesweeper game built by Samuel Ko'
+
+	const [anchorEl, setAnchorEl] = React.useState(null)
+	const [showSettings, setShowSettings] = React.useState(false)
 
 	return (
 		<ReduxProvider store={store}>
@@ -39,6 +48,24 @@ export default function App(props) {
 					<BrandHeader
 						href='/'
 						title={title}
+					/>
+					<Button
+						color='inherit'
+						sx={{
+							padding: 0,
+							minWidth: 0,
+						}}
+						onClick={(e) => {
+							setAnchorEl(e.currentTarget)
+							setShowSettings(!showSettings)
+						}}
+					>
+						<IoSettingsSharp size={32} />
+					</Button>
+					<Settings
+						open={showSettings}
+						onClose={() => setShowSettings(false)}
+						anchorEl={anchorEl}
 					/>
 				</BaseAppBar>
 				<Component {...pageProps} />

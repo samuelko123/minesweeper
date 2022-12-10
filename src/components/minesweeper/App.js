@@ -4,11 +4,6 @@ import {
 	useSelector,
 } from 'react-redux'
 import {
-	HexColorInput,
-	HexColorPicker,
-} from 'react-colorful'
-import {
-	CELL_STATE,
 	GAME_MODE,
 	GAME_STATUS,
 	initGame,
@@ -29,12 +24,9 @@ import {
 	update as updateStopWatch,
 } from '../../slices/stopWatch'
 import {
-	setCellBackgroundColor,
 	setCellSize,
 	settingsSelector,
 } from '../../slices/settings'
-import { Tile } from './Tile'
-import { Popover } from '@mui/material'
 
 const KEYBOARD = Object.freeze({
 	F2: 113,
@@ -58,8 +50,6 @@ export const App = (props) => {
 		cell,
 	} = useSelector(settingsSelector)
 
-	const [anchorEl, setAnchorEl] = React.useState(null)
-	const [showColorPicker, setShowColorPicker] = React.useState(false)
 	const [flagMode, setFlagMode] = React.useState(false)
 
 	const timer = React.useRef()
@@ -146,44 +136,6 @@ export const App = (props) => {
 					checked={flagMode}
 					onChange={() => setFlagMode(!flagMode)}
 				/>
-			</BaseStack>
-			<BaseStack
-				flexDirection='row'
-				alignItems='center'
-				gap={1}
-				sx={{
-					height: cellSize,
-				}}
-			>
-				<span>Color:</span>
-				<Tile
-					component='span'
-					cell={{ state: CELL_STATE.HIDDEN }}
-					width={cellSize}
-					height={cellSize}
-					onClick={(e) => {
-						setAnchorEl(e.currentTarget)
-						setShowColorPicker(!showColorPicker)
-					}}
-				/>
-				{showColorPicker &&
-					<Popover
-						open={showColorPicker}
-						anchorEl={anchorEl}
-						onClose={() => setShowColorPicker(false)}
-						anchorOrigin={{
-							vertical: 'bottom',
-							horizontal: 'left',
-						}}
-						transformOrigin={{
-							vertical: 'top',
-							horizontal: 'left',
-						}}
-					>
-						<HexColorPicker color={cell.color.background} onChange={(val) => dispatch(setCellBackgroundColor({ color: val }))} />
-						<HexColorInput color={cell.color.background} onChange={(val) => dispatch(setCellBackgroundColor({ color: val }))} />
-					</Popover>
-				}
 			</BaseStack>
 			<BorderedBox
 				borderWidth={6}
