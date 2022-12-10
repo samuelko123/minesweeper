@@ -1,4 +1,5 @@
 import React from 'react'
+import Head from 'next/head'
 import { Provider as ReduxProvider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { CssBaseline } from '@mui/material'
@@ -9,8 +10,12 @@ import {
 import '../styles/global.css'
 import { BaseAppBar } from '../components/atoms/AppBar'
 import { BrandHeader } from '../components/atoms/BrandHeader'
-import Head from 'next/head'
 import { MenuButton } from '../components/organisms/MenuButton'
+import {
+	MdHome,
+	MdOutlineHelp,
+	MdSettings,
+} from 'react-icons/md'
 
 export default function App(props) {
 	const {
@@ -42,7 +47,26 @@ export default function App(props) {
 						href='/'
 						title={title}
 					/>
-					<MenuButton size={32} />
+					<MenuButton
+						size={32}
+						items={[
+							{
+								href: '/',
+								icon: <MdHome />,
+								title: 'Home', 
+							},
+							{
+								href: '/settings',
+								icon: <MdSettings />,
+								title: 'Settings', 
+							},
+							{
+								href: '/how-to-play',
+								icon: <MdOutlineHelp />,
+								title: 'How To Play', 
+							},
+						]}
+					/>
 				</BaseAppBar>
 				<Component {...pageProps} />
 			</PersistGate>

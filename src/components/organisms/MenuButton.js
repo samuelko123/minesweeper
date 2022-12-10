@@ -5,15 +5,13 @@ import {
 } from '@mui/material'
 import { BaseMenuItem } from '../atoms/MenuItem'
 import { BaseLink } from '../atoms/Links'
-import {
-	MdHome,
-	MdMenu,
-	MdOutlineHelp,
-	MdSettings,
-} from 'react-icons/md'
+import { MdMenu } from 'react-icons/md'
 
 export const MenuButton = (props) => {
-	const { size } = props
+	const {
+		size,
+		items,
+	} = props
 
 	const [open, setOpen] = React.useState(false)
 	const [anchorEl, setAnchorEl] = React.useState(null)
@@ -55,30 +53,21 @@ export const MenuButton = (props) => {
 					disablePadding: true,
 				}}
 			>
-				<BaseLink href='/'>
-					<BaseMenuItem
-						onClick={handleClose}
-						startIcon={<MdHome />}
-					>
-						Home
-					</BaseMenuItem>
-				</BaseLink>
-				<BaseLink href='/settings'>
-					<BaseMenuItem
-						onClick={handleClose}
-						startIcon={<MdSettings />}
-					>
-						Settings
-					</BaseMenuItem>
-				</BaseLink>
-				<BaseLink href='/how-to-play'>
-					<BaseMenuItem
-						onClick={handleClose}
-						startIcon={<MdOutlineHelp />}
-					>
-						How To Play
-					</BaseMenuItem>
-				</BaseLink>
+				{
+					items.map(item => (
+						<BaseLink
+							key={item.title}
+							href={item.href}
+						>
+							<BaseMenuItem
+								onClick={handleClose}
+								startIcon={item.icon}
+							>
+								{item.title}
+							</BaseMenuItem>
+						</BaseLink>
+					))
+				}
 			</Menu>
 		</>
 	)
