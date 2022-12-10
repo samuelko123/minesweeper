@@ -5,7 +5,7 @@ const INIT_STATE = {
 	flagMode: false,
 	cell: {
 		color: {
-			background: '#b9b9b9',
+			background: '#ccc',
 		},
 	},
 }
