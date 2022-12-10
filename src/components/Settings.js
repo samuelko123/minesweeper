@@ -23,11 +23,13 @@ import { BaseMenuItem } from './atoms/MenuItem'
 import {
 	MdArrowBackIos,
 	MdArrowForwardIos,
+	MdClose,
 } from 'react-icons/md'
 import { BaseDialog } from './molecules/Dialogs'
 
 const CURRENT_MENU = {
 	MAIN: 'main',
+	CLOSE: 'close',
 	COLOR: 'color',
 	SIZE: 'size',
 	RESET: 'reset',
@@ -73,6 +75,15 @@ export const Settings = (props) => {
 			>
 				{currentMenu === CURRENT_MENU.MAIN &&
 					[
+						<BaseMenuItem
+							key={CURRENT_MENU.CLOSE}
+							onClick={() => handleClose()}
+							sx={{ justifyContent: 'space-between' }}
+						>
+							Close
+							<MdClose size={24} />
+						</BaseMenuItem>
+						,
 						<BaseMenuItem
 							key={CURRENT_MENU.COLOR}
 							onClick={() => setCurrentMenu(CURRENT_MENU.COLOR)}
