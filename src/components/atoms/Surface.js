@@ -7,7 +7,7 @@ export const BaseSurface = (props) => {
 		<Paper
 			elevation={2}
 			sx={{
-				backgroundColor: '#eee',
+				backgroundColor: (theme) => theme.palette.surface,
 			}}
 		>
 			{children}

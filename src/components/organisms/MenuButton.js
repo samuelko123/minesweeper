@@ -31,7 +31,10 @@ export const MenuButton = (props) => {
 					setOpen(true)
 				}}
 			>
-				<MdMenu size={size} />
+				<MdMenu
+					color='inherit'
+					size={size}
+				/>
 			</Button>
 			<Menu
 				open={open}
