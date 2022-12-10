@@ -32,7 +32,6 @@ import {
 	setCellBackgroundColor,
 	setCellSize,
 	settingsSelector,
-	toggleFlagMode,
 } from '../../slices/settings'
 import { Tile } from './Tile'
 import { Popover } from '@mui/material'
@@ -56,12 +55,12 @@ export const App = (props) => {
 	} = useSelector(stopWatchSelector)
 	const {
 		cellSize,
-		flagMode,
 		cell,
 	} = useSelector(settingsSelector)
 
 	const [anchorEl, setAnchorEl] = React.useState(null)
 	const [showColorPicker, setShowColorPicker] = React.useState(false)
+	const [flagMode, setFlagMode] = React.useState(false)
 
 	const timer = React.useRef()
 	React.useEffect(() => {
@@ -145,7 +144,7 @@ export const App = (props) => {
 				<BaseSwitch
 					label='flag'
 					checked={flagMode}
-					onChange={() => dispatch(toggleFlagMode())}
+					onChange={() => setFlagMode(!flagMode)}
 				/>
 			</BaseStack>
 			<BaseStack
