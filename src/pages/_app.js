@@ -1,10 +1,7 @@
 import React from 'react'
 import { Provider as ReduxProvider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
-import {
-	Button,
-	CssBaseline,
-} from '@mui/material'
+import { CssBaseline } from '@mui/material'
 import {
 	persistor,
 	store,
@@ -13,7 +10,6 @@ import '../styles/global.css'
 import { BaseAppBar } from '../components/atoms/AppBar'
 import { BrandHeader } from '../components/atoms/BrandHeader'
 import Head from 'next/head'
-import { MdMenu } from 'react-icons/md'
 import { MainMenu } from '../components/organisms/MainMenu'
 
 export default function App(props) {
@@ -24,9 +20,6 @@ export default function App(props) {
 
 	const title = 'Minesweeper'
 	const desc = 'The classic Minesweeper game built by Samuel Ko'
-
-	const [anchorEl, setAnchorEl] = React.useState(null)
-	const [showMenu, setShowMenu] = React.useState(false)
 
 	return (
 		<ReduxProvider store={store}>
@@ -49,24 +42,7 @@ export default function App(props) {
 						href='/'
 						title={title}
 					/>
-					<Button
-						color='inherit'
-						sx={{
-							padding: 0,
-							minWidth: 0,
-						}}
-						onClick={(e) => {
-							setAnchorEl(e.currentTarget)
-							setShowMenu(!showMenu)
-						}}
-					>
-						<MdMenu size={32} />
-					</Button>
-					<MainMenu
-						open={showMenu}
-						onClose={() => setShowMenu(false)}
-						anchorEl={anchorEl}
-					/>
+					<MainMenu buttonSize={32} />
 				</BaseAppBar>
 				<Component {...pageProps} />
 			</PersistGate>
