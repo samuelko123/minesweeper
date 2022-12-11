@@ -3,6 +3,7 @@ import {
 	Tooltip,
 } from '@mui/material'
 import { FaGithub } from 'react-icons/fa'
+import { ExternalLink } from '../atoms/Links'
 
 export const Footer = (props) => {
 	const {
@@ -18,23 +19,26 @@ export const Footer = (props) => {
 				alignSelf: 'center',
 			}}
 		>
-			<span>Samuel Ko | </span>
-			<Tooltip
-				title='Source code'
-				placement='top'
+			<Box component='span'>Samuel Ko | </Box>
+			<ExternalLink
+				target='_blank'
+				rel='noopener noreferrer'
+				href={githubHref}
+				disableIcon
 			>
-				<a
-					target='_blank'
-					rel='noopener noreferrer'
-					href={githubHref}
+				<Tooltip
+					title='Source code'
+					placement='top'
 				>
-					<span
-						style={{ verticalAlign: 'text-top' }}
+
+					<Box
+						component='span'
+						sx={{ verticalAlign: 'text-top' }}
 					>
 						<FaGithub size={iconSize} />
-					</span>
-				</a>
-			</Tooltip>
+					</Box>
+				</Tooltip>
+			</ExternalLink>
 		</Box>
 	)
 }

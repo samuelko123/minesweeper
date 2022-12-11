@@ -5,12 +5,6 @@ const surfaceColor = '#fff'
 const defaultTheme = createTheme()
 
 export const theme = createTheme(defaultTheme, {
-	typography: {
-		link: {
-			color: (theme) => theme.palette.primary.main,
-			textDecoration: 'underline',
-		},
-	},
 	palette: {
 		primary: {
 			main: '#005aaa',

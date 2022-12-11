@@ -10,6 +10,7 @@ import {
 import { BaseHeader } from '../components/atoms/Header'
 import { BackButton } from '../components/molecules/BackButton'
 import { BaseList } from '../components/atoms/List'
+import { ExternalLink } from '../components/atoms/Links'
 
 export default function Page() {
 	return (
@@ -22,13 +23,9 @@ export default function Page() {
 				<List>
 					<ListItem divider={false}>
 						<ListItemText>
-							<a
-								target='_blank'
-								rel='noreferrer'
-								href='https://minesweepergame.com/strategy/how-to-play-minesweeper.php'
-							>
+							<ExternalLink href='https://minesweepergame.com/strategy/how-to-play-minesweeper.php'>
 								How To Play Minesweeper
-							</a>
+							</ExternalLink>
 						</ListItemText>
 					</ListItem>
 				</List>
@@ -58,13 +55,9 @@ export default function Page() {
 								<ListItemText>Both-click / Middle-click</ListItemText>
 							</ListItemText>
 							<ListItemText>
-								<a
-									target='_blank'
-									rel='noreferrer'
-									href='http://www.minesweeper.info/wiki/Chord'
-								>
+								<ExternalLink href='http://www.minesweeper.info/wiki/Chord'>
 									Chord
-								</a>
+								</ExternalLink>
 							</ListItemText>
 						</ListItem>
 					</BaseList>
@@ -78,13 +71,9 @@ export default function Page() {
 						<ListItem>
 							<ListItemText>Touch on a number</ListItemText>
 							<ListItemText>
-								<a
-									target='_blank'
-									rel='noreferrer'
-									href='http://www.minesweeper.info/wiki/Chord'
-								>
+								<ExternalLink href='http://www.minesweeper.info/wiki/Chord'>
 									Chord
-								</a>
+								</ExternalLink>
 							</ListItemText>
 						</ListItem>
 					</BaseList>
