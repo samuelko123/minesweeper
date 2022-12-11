@@ -4,13 +4,12 @@ import {
 	List,
 	ListItem,
 	ListItemText,
-	ListSubheader,
-	Paper,
 	Stack,
 } from '@mui/material'
 
 import { BaseHeader } from '../components/atoms/Header'
 import { BackButton } from '../components/molecules/BackButton'
+import { BaseList } from '../components/atoms/List'
 
 export default function Page() {
 	return (
@@ -38,22 +37,14 @@ export default function Page() {
 				<BaseHeader>
 					Controls
 				</BaseHeader>
-				<ListSubheader>
-					Keyboard
-				</ListSubheader>
-				<Paper>
-					<List>
+				<Stack gap={2}>
+					<BaseList title='Keyboard'>
 						<ListItem>
 							<ListItemText>F2</ListItemText>
 							<ListItemText>Start a new game</ListItemText>
 						</ListItem>
-					</List>
-				</Paper>
-				<ListSubheader>
-					Mouse
-				</ListSubheader>
-				<Paper>
-					<List>
+					</BaseList>
+					<BaseList title='Mouse'>
 						<ListItem>
 							<ListItemText>Left-click</ListItemText>
 							<ListItemText>Uncover</ListItemText>
@@ -76,13 +67,8 @@ export default function Page() {
 								</a>
 							</ListItemText>
 						</ListItem>
-					</List>
-				</Paper>
-				<ListSubheader>
-					Mobile
-				</ListSubheader>
-				<Paper>
-					<List>
+					</BaseList>
+					<BaseList title='Mobile'>
 						<ListItem>
 							<ListItemText>Touch</ListItemText>
 							<ListItemText>
@@ -101,8 +87,8 @@ export default function Page() {
 								</a>
 							</ListItemText>
 						</ListItem>
-					</List>
-				</Paper>
+					</BaseList>
+				</Stack>
 			</Box>
 		</Stack>
 	)

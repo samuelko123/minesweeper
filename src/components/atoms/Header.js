@@ -7,7 +7,7 @@ export const BaseHeader = React.forwardRef((props, ref) => {
 			ref={ref}
 			{...props}
 			variant='h6'
-			component='h6'
+			component='h1'
 			noWrap
 		/>
 	)
