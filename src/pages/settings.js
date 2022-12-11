@@ -3,6 +3,7 @@ import {
 	Box,
 	Button,
 	DialogContentText,
+	Grid,
 	ListItem,
 	ListItemText,
 	Stack,
@@ -27,7 +28,10 @@ import {
 	useSelector,
 } from 'react-redux'
 import { Tile } from '../components/minesweeper/Tile'
-import { CELL_STATE } from '../slices/minesweeper'
+import {
+	CELL_STATE,
+	CELL_VALUE,
+} from '../slices/minesweeper'
 import { BaseDialog } from '../components/molecules/Dialogs'
 import { BaseList } from '../components/atoms/List'
 
@@ -71,12 +75,63 @@ export default function Page() {
 									alignItems: 'flex-start',
 								}}
 							>
-								<Tile
-									component='span'
-									cell={{ state: CELL_STATE.HIDDEN }}
-									width={cellSize}
-									height={cellSize}
-								/>
+								<Grid container spacing={cellSize / 20}>
+									{[
+										{ state: CELL_STATE.HIDDEN },
+										{ state: CELL_STATE.FLAGGED },
+										{
+											state: CELL_STATE.REVEALED,
+											value: CELL_VALUE.EMPTY,
+										},
+										{
+											state: CELL_STATE.REVEALED,
+											value: 1,
+										},
+										{
+											state: CELL_STATE.REVEALED,
+											value: 2,
+										},
+										{
+											state: CELL_STATE.REVEALED,
+											value: 3,
+										},
+										{
+											state: CELL_STATE.REVEALED,
+											value: 4,
+										},
+										{
+											state: CELL_STATE.REVEALED,
+											value: 5,
+										},
+										{
+											state: CELL_STATE.REVEALED,
+											value: 6,
+										},
+										{
+											state: CELL_STATE.REVEALED,
+											value: 7,
+										},
+										{
+											state: CELL_STATE.REVEALED,
+											value: 8,
+										},
+										{
+											state: CELL_STATE.REVEALED,
+											value: CELL_VALUE.MINED,
+										},
+										{ state: CELL_STATE.WRONG },
+										{ state: CELL_STATE.EXPLODED },
+									].map((cell, index) => (
+										<Grid item key={index}>
+											<Tile
+												component='span'
+												cell={cell}
+												width={cellSize}
+												height={cellSize}
+											/>
+										</Grid>
+									))}
+								</Grid>
 								<HexColorPicker color={cell.color.background} onChange={(val) => dispatch(setCellBackgroundColor({ color: val }))} />
 								<HexColorInput color={cell.color.background} onChange={(val) => dispatch(setCellBackgroundColor({ color: val }))} />
 							</Stack>
