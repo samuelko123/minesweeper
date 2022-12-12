@@ -29,9 +29,7 @@ const KEYBOARD = Object.freeze({
 	F2: 113,
 })
 
-export const App = (props) => {
-	const { footer } = props
-
+export const App = () => {
 	const dispatch = useDispatch()
 	const {
 		settings,
@@ -183,7 +181,6 @@ export const App = (props) => {
 					</BorderedBox>
 				</Stack>
 			</BorderedBox>
-			{footer}
 		</Stack>
 	)
 }

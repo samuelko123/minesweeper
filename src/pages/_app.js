@@ -3,8 +3,8 @@ import Head from 'next/head'
 import { Provider as ReduxProvider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import {
-	Box,
 	CssBaseline,
+	Stack,
 	ThemeProvider,
 } from '@mui/material'
 import {
@@ -22,6 +22,7 @@ import {
 } from 'react-icons/md'
 import { theme } from '../styles/theme'
 import { IconContext } from 'react-icons'
+import { Footer } from '../components/molecules/Footer'
 
 export default function App(props) {
 	const {
@@ -76,12 +77,16 @@ export default function App(props) {
 								]}
 							/>
 						</BaseAppBar>
-						<Box
+						<Stack
 							component='main'
 							padding={2}
 						>
 							<Component {...pageProps} />
-						</Box>
+							<Footer
+								githubHref='https://github.com/samuelko123/minesweeper'
+								iconSize={20}
+							/>
+						</Stack>
 					</IconContext.Provider>
 				</ThemeProvider>
 			</PersistGate>
