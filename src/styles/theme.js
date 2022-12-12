@@ -27,6 +27,9 @@ export const theme = createTheme(defaultTheme, {
 			},
 		},
 		MuiListSubheader: {
+			defaultProps: {
+				disableSticky: true,
+			},
 			styleOverrides: {
 				root: {
 					backgroundColor: 'inherit',
