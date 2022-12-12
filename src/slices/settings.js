@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const INIT_STATE = {
-	cellSize: 30,
 	cell: {
+		size: 30,
 		color: {
 			background: '#ccc',
 		},
@@ -14,7 +14,7 @@ const settingsSlice = createSlice({
 	initialState: INIT_STATE,
 	reducers: {
 		setCellSize: (state, { payload }) => {
-			state.cellSize = payload.size
+			state.cell.size = payload.size
 		},
 		setCellBackgroundColor: (state, { payload }) => {
 			state.cell.color.background = payload.color

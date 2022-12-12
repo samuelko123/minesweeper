@@ -40,7 +40,6 @@ export const App = () => {
 		elapsedTimeMS,
 	} = useSelector(stopWatchSelector)
 	const {
-		cellSize,
 		cell,
 	} = useSelector(settingsSelector)
 
@@ -138,7 +137,7 @@ export const App = () => {
 							display: 'flex',
 							justifyContent: 'space-between',
 							alignItems: 'center',
-							padding: cellSize >= 22 ? 1 : 0,
+							padding: cell.size >= 22 ? 1 : 0,
 						}}
 					>
 						<BorderedBox
@@ -175,7 +174,7 @@ export const App = () => {
 						sunken={true}
 					>
 						<Board
-							tileSize={cellSize}
+							tileSize={cell.size}
 							flagMode={flagMode}
 						/>
 					</BorderedBox>

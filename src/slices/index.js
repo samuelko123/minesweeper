@@ -10,6 +10,7 @@ import {
 	PURGE,
 	REGISTER,
 	REHYDRATE,
+	createMigrate,
 	persistReducer,
 	persistStore,
 } from 'redux-persist'
@@ -25,10 +26,19 @@ const rootReducer = combineReducers({
 	settings: settingsReducer,
 })
 
+const migrations = {
+	2: (state) => {
+		state.settings.cell.size = state.settings.cellSize
+		delete state.settings.cellSize
+		return state
+	},
+}
+
 const persistConfig = {
 	key: 'root',
-	version: 1,
+	version: 2,
 	storage,
+	migrate: createMigrate(migrations, { debug: true }),
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

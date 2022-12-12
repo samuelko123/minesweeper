@@ -42,7 +42,6 @@ import { DownloadButton } from '../components/organisms/DownloadButton'
 export default function Page() {
 	const dispatch = useDispatch()
 	const {
-		cellSize,
 		cell,
 	} = useSelector(settingsSelector)
 
@@ -61,7 +60,7 @@ export default function Page() {
 							<ListItemText>Cell Size</ListItemText>
 							<Box sx={{ flex: 1 }}>
 								<BaseDropdown
-									value={cellSize}
+									value={cell.size}
 									options={Array(21).fill(null).map((_, index) => ({
 										value: index + 20,
 										label: index + 20,
@@ -79,7 +78,7 @@ export default function Page() {
 									alignItems: 'flex-start',
 								}}
 							>
-								<Grid container spacing={cellSize / 20}>
+								<Grid container spacing={cell.size / 20}>
 									{[
 										{ state: CELL_STATE.HIDDEN },
 										{ state: CELL_STATE.FLAGGED },
@@ -130,8 +129,8 @@ export default function Page() {
 											<Tile
 												component='span'
 												cell={cell}
-												width={cellSize}
-												height={cellSize}
+												width={cell.size}
+												height={cell.size}
 											/>
 										</Grid>
 									))}
