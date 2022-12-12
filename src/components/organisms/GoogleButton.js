@@ -7,7 +7,6 @@ import {
 	signInWithPopup,
 	signOut,
 } from 'firebase/auth'
-import { initializeApp } from 'firebase/app'
 import GoogleIcon from '../../images/google.svg'
 import { LoginButton } from '../molecules/LoginButton'
 import {
@@ -15,28 +14,24 @@ import {
 	Stack,
 	Typography,
 } from '@mui/material'
+import { FirebaseContext } from './FirebaseProvider'
 
 export const GoogleButton = () => {
+	const {
+		app,
+	} = React.useContext(FirebaseContext)
+
 	const [auth, setAuth] = React.useState(null)
 	const [currentUser, setCurrentUser] = React.useState(auth?.currentUser)
 	const [error, setError] = React.useState(null)
 
 	React.useEffect(() => {
-		const firebaseConfig = {
-			apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-			authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-			projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-			storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-			messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-			appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-			measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+		if (app) {
+			const _auth = getAuth(app)
+			_auth.onAuthStateChanged(user => setCurrentUser(user))
+			setAuth(_auth)
 		}
-
-		const app = initializeApp(firebaseConfig)
-		const _auth = getAuth(app)
-		_auth.onAuthStateChanged(user => setCurrentUser(user))
-		setAuth(_auth)
-	}, [])
+	}, [app])
 
 	const handleSignIn = async () => {
 		setError(null)
@@ -76,10 +71,7 @@ export const GoogleButton = () => {
 				</Alert>
 			}
 			{currentUser &&
-				<Typography>You are signed in as {currentUser.displayName}.</Typography>
-			}
-			{!currentUser &&
-				<Typography>You not signed in.</Typography>
+				<Typography>You are signed in as <b>{currentUser.displayName}</b>.</Typography>
 			}
 		</Stack>
 	)

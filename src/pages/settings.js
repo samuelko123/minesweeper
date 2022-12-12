@@ -35,6 +35,9 @@ import {
 import { BaseDialog } from '../components/molecules/Dialogs'
 import { BaseList } from '../components/atoms/List'
 import { GoogleButton } from '../components/organisms/GoogleButton'
+import { UploadButton } from '../components/organisms/UploadButton'
+import { FirebaseProvider } from '../components/organisms/FirebaseProvider'
+import { DownloadButton } from '../components/organisms/DownloadButton'
 
 export default function Page() {
 	const dispatch = useDispatch()
@@ -46,7 +49,7 @@ export default function Page() {
 	const [showDialog, setShowDialog] = React.useState(false)
 
 	return (
-		<>
+		<FirebaseProvider>
 			<Stack gap={2}>
 				<BackButton href='/' />
 				<Box>
@@ -139,9 +142,11 @@ export default function Page() {
 						</ListItem>
 						<ListItem>
 							<ListItemText>Upload / Download settings</ListItemText>
-							<Box sx={{ flex: 1 }}>
+							<Stack gap={2} sx={{ flex: 1 }}>
 								<GoogleButton />
-							</Box>
+								<UploadButton />
+								<DownloadButton />
+							</Stack>
 						</ListItem>
 						<ListItem>
 							<ListItemText>Reset to defaults</ListItemText>
@@ -181,6 +186,6 @@ export default function Page() {
 					Are you sure?
 				</DialogContentText>
 			</BaseDialog>
-		</>
+		</FirebaseProvider>
 	)
 }
