@@ -71,7 +71,7 @@ export const GoogleButton = () => {
 				</Alert>
 			}
 			{currentUser &&
-				<Typography>You are signed in as <b>{currentUser.displayName}</b>.</Typography>
+				<Typography>You are signed in as <b>{currentUser.displayName}</b> ({currentUser.email}).</Typography>
 			}
 		</Stack>
 	)
