@@ -15,6 +15,10 @@ export const theme = createTheme(defaultTheme, {
 		surface: {
 			default: surfaceColor,
 		},
+		google: {
+			main: '#4285F4',
+			contrastText: '#ffffff',
+		},
 	},
 	components: {
 		MuiList: {
@@ -35,6 +39,8 @@ export const theme = createTheme(defaultTheme, {
 			},
 			styleOverrides: {
 				root: {
+					paddingTop: defaultTheme.spacing(3),
+					paddingBottom: defaultTheme.spacing(3),
 					gap: 1,
 					alignItems: 'flex-start',
 				},

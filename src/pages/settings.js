@@ -34,6 +34,7 @@ import {
 } from '../slices/minesweeper'
 import { BaseDialog } from '../components/molecules/Dialogs'
 import { BaseList } from '../components/atoms/List'
+import { GoogleButton } from '../components/organisms/GoogleButton'
 
 export default function Page() {
 	const dispatch = useDispatch()
@@ -135,6 +136,12 @@ export default function Page() {
 								<HexColorPicker color={cell.color.background} onChange={(val) => dispatch(setCellBackgroundColor({ color: val }))} />
 								<HexColorInput color={cell.color.background} onChange={(val) => dispatch(setCellBackgroundColor({ color: val }))} />
 							</Stack>
+						</ListItem>
+						<ListItem>
+							<ListItemText>Upload / Download settings</ListItemText>
+							<Box sx={{ flex: 1 }}>
+								<GoogleButton />
+							</Box>
 						</ListItem>
 						<ListItem>
 							<ListItemText>Reset to defaults</ListItemText>
