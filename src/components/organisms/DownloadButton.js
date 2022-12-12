@@ -7,13 +7,13 @@ import {
 } from 'firebase/database'
 import {
 	Alert,
-	Button,
 	Stack,
 } from '@mui/material'
 import { FirebaseContext } from './FirebaseProvider'
 import { useDispatch } from 'react-redux'
 import { load as loadSettings } from '../../slices/settings'
 import { getAuth } from 'firebase/auth'
+import { LoadingButton } from '@mui/lab'
 
 export const DownloadButton = () => {
 	const {
@@ -26,6 +26,7 @@ export const DownloadButton = () => {
 	const [error, setError] = React.useState(null)
 	const [success, setSuccess] = React.useState(false)
 	const [currentUser, setCurrentUser] = React.useState(null)
+	const [loading, setLoading] = React.useState(false)
 
 	React.useEffect(() => {
 		if (app) {
@@ -38,6 +39,7 @@ export const DownloadButton = () => {
 	}, [app])
 
 	const upload = async () => {
+		setLoading(true)
 		setSuccess(false)
 		setError(null)
 
@@ -56,6 +58,8 @@ export const DownloadButton = () => {
 			setSuccess(true)
 		} catch (err) {
 			setError(err)
+		} finally {
+			setLoading(false)
 		}
 	}
 
@@ -65,12 +69,13 @@ export const DownloadButton = () => {
 
 	return (
 		<Stack gap={1} alignItems='flex-start'>
-			<Button
+			<LoadingButton
 				onClick={upload}
 				variant='contained'
+				loading={loading}
 			>
 				Download
-			</Button>
+			</LoadingButton>
 			{error &&
 				<Alert severity='error'>
 					{error.message}
