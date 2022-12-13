@@ -124,6 +124,13 @@ export const App = () => {
 						value='flag'
 						selected={flagMode}
 						onChange={() => setFlagMode(!flagMode)}
+						sx={{
+							backgroundColor: 'rgb(0,0,0,0.08)',
+							position: 'fixed',
+							right: 20,
+							bottom: 20,
+							zIndex: 999,
+						}}
 					>
 						<TfiFlag />
 					</ToggleButton>
