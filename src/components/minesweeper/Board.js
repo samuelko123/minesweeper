@@ -5,6 +5,7 @@ import {
 } from 'react-redux'
 import { primaryInput } from 'detect-it'
 import {
+	CELL_STATE,
 	chordCell,
 	minesweeperSelector,
 	peekNeighborCells,
@@ -56,10 +57,20 @@ export const Board = (props) => {
 
 		switch (e.buttons) {
 			case MOUSE_CLICK.LEFT:
-				dispatch(peekOneCell({
-					row,
-					col,
-				}))
+				if (
+					primaryInput === 'touch' &&
+					board[row][col].state === CELL_STATE.REVEALED
+				) {
+					dispatch(peekNeighborCells({
+						row: row,
+						col: col,
+					}))
+				} else {
+					dispatch(peekOneCell({
+						row,
+						col,
+					}))
+				}
 				break
 			case MOUSE_CLICK.MIDDLE:
 			case MOUSE_CLICK.BOTH:
@@ -82,6 +93,14 @@ export const Board = (props) => {
 			case MOUSE_CLICK.LEFT:
 				if (flagMode) {
 					dispatch(toggleFlag({
+						row: row,
+						col: col,
+					}))
+				} else if (
+					primaryInput === 'touch' &&
+					board[row][col].state === CELL_STATE.REVEALED
+				) {
+					dispatch(peekNeighborCells({
 						row: row,
 						col: col,
 					}))
