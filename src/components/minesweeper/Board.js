@@ -4,7 +4,6 @@ import {
 	useSelector,
 } from 'react-redux'
 import {
-	CELL_STATE,
 	chordCell,
 	minesweeperSelector,
 	peekNeighborCells,
@@ -49,7 +48,7 @@ export const Board = (props) => {
 	const calcRow = (pageY) => { return Math.floor((pageY - tableTop) / tileSize) }
 	const calcCol = (pageX) => { return Math.floor((pageX - tableLeft) / tileSize) }
 
-	const handleMouseMove = (e) => {
+	const handlePointerMove = (e) => {
 		const row = calcRow(e.pageY)
 		const col = calcCol(e.pageX)
 
@@ -70,7 +69,7 @@ export const Board = (props) => {
 		}
 	}
 
-	const handleMouseDown = (e) => {
+	const handlePointerDown = (e) => {
 		e.preventDefault()
 		setButtons(e.buttons)
 
@@ -107,7 +106,7 @@ export const Board = (props) => {
 		}
 	}
 
-	const handleMouseUp = (e) => {
+	const handlePointerUp = (e) => {
 		e.preventDefault()
 		dispatch(resetPeek())
 
@@ -133,83 +132,18 @@ export const Board = (props) => {
 		}
 	}
 
-	const handleMouseLeave = (e) => {
+	const handlePointerLeave = (e) => {
 		e.preventDefault()
 		dispatch(resetPeek())
-	}
-
-	// for mobile
-	const handleTouchMove = (e) => {
-		e.preventDefault()
-
-		const row = calcRow(e.changedTouches[0].pageY)
-		const col = calcCol(e.changedTouches[0].pageX)
-
-		dispatch(peekOneCell({
-			row,
-			col,
-		}))
-	}
-
-	const handleTouchStart = (e) => {
-		e.preventDefault()
-
-		const row = calcRow(e.changedTouches[0].pageY)
-		const col = calcCol(e.changedTouches[0].pageX)
-
-		if (flagMode) {
-			dispatch(toggleFlag({
-				row: row,
-				col: col,
-			}))
-		} else if (board[row][col].state === CELL_STATE.REVEALED) {
-			dispatch(peekNeighborCells({
-				row: row,
-				col: col,
-			}))
-		} else {
-			dispatch(peekOneCell({
-				row: row,
-				col: col,
-			}))
-		}
-	}
-
-	const handleTouchEnd = (e) => {
-		e.preventDefault()
-		dispatch(resetPeek())
-
-		const row = calcRow(e.changedTouches[0].pageY)
-		const col = calcCol(e.changedTouches[0].pageX)
-
-		if (flagMode) {
-			return
-		}
-
-		if (board[row][col].state === CELL_STATE.REVEALED) {
-			dispatch(chordCell({
-				row: row,
-				col: col,
-			}))
-			return
-		}
-
-		dispatch(revealCell({
-			row: row,
-			col: col,
-		}))
 	}
 
 	return (
 		<table
 			ref={tableRef}
-			onMouseMove={handleMouseMove}
-			onMouseDown={handleMouseDown}
-			onMouseUp={handleMouseUp}
-			onMouseLeave={handleMouseLeave}
-			onTouchMove={handleTouchMove}
-			onTouchStart={handleTouchStart}
-			onTouchEnd={handleTouchEnd}
+			onPointerMove={handlePointerMove}
+			onPointerDown={handlePointerDown}
+			onPointerUp={handlePointerUp}
+			onPointerLeave={handlePointerLeave}
 			style={{
 				display: 'table',
 				borderSpacing: 0,
