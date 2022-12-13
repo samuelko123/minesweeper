@@ -23,11 +23,8 @@ import {
 	update as updateStopWatch,
 } from '../../slices/stopWatch'
 import { settingsSelector } from '../../slices/settings'
-import {
-	Stack,
-	ToggleButton,
-} from '@mui/material'
-import { TfiFlag } from 'react-icons/tfi'
+import { Stack } from '@mui/material'
+import { FlagButton } from '../molecules/FlagButton'
 
 const KEYBOARD = Object.freeze({
 	F2: 113,
@@ -117,39 +114,18 @@ export const App = () => {
 					tabIndex={0}
 				/>
 				{primaryInput === 'touch' &&
-					<ToggleButton
-						value='flag'
+					<FlagButton
 						selected={flagMode}
 						onClick={() => setFlagMode(!flagMode)}
+						size={30}
 						sx={{
 							position: 'fixed',
 							right: 20,
 							bottom: 20,
 							zIndex: 999,
 							opacity: 0.75,
-							color: theme => theme.palette.primary.main,
-							backgroundColor: theme => theme.palette.surface.default,
-							':hover': {
-								opacity: 1,
-								color: theme => theme.palette.primary.main,
-								backgroundColor: theme => theme.palette.surface.default,
-							},
-							'&.Mui-selected': {
-								color: theme => theme.palette.surface.default,
-								backgroundColor: theme => theme.palette.primary.main,
-							},
-							'&.Mui-selected:hover': {
-								opacity: 1,
-								color: theme => theme.palette.surface.default,
-								backgroundColor: theme => theme.palette.primary.main,
-							},
 						}}
-					>
-						<TfiFlag
-							color='inherit'
-							size={30}
-						/>
-					</ToggleButton>
+					/>
 				}
 			</Stack>
 			<BorderedBox
