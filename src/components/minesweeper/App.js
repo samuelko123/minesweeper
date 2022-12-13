@@ -15,7 +15,6 @@ import { Counter } from './Counter'
 import { EmojiButton } from './EmojiButton'
 import { Board } from './Board'
 import { BorderedBox } from '../molecules/BorderedBox'
-import { BaseSwitch } from '../atoms/Switch'
 import {
 	reset as resetStopWatch,
 	start as startStopWatch,
@@ -23,7 +22,11 @@ import {
 	update as updateStopWatch,
 } from '../../slices/stopWatch'
 import { settingsSelector } from '../../slices/settings'
-import { Stack } from '@mui/material'
+import {
+	Stack,
+	ToggleButton,
+} from '@mui/material'
+import { TfiFlag } from 'react-icons/tfi'
 
 const KEYBOARD = Object.freeze({
 	F2: 113,
@@ -112,11 +115,13 @@ export const App = () => {
 					onChange={handleModeChange}
 					tabIndex={0}
 				/>
-				<BaseSwitch
-					label='flag'
-					checked={flagMode}
+				<ToggleButton
+					value='flag'
+					selected={flagMode}
 					onChange={() => setFlagMode(!flagMode)}
-				/>
+				>
+					<TfiFlag />
+				</ToggleButton>
 			</Stack>
 			<BorderedBox
 				borderWidth={6}

@@ -79,5 +79,11 @@ export const theme = createTheme(defaultTheme, {
 				},
 			},
 		},
+		MuiToggleButton: {
+			defaultProps: {
+				disableRipple: true,
+				color: 'primary',
+			},
+		},
 	},
 })
