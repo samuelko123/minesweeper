@@ -138,6 +138,18 @@ export const Board = (props) => {
 	}
 
 	// for mobile
+	const handleTouchMove = (e) => {
+		e.preventDefault()
+
+		const row = calcRow(e.changedTouches[0].pageY)
+		const col = calcCol(e.changedTouches[0].pageX)
+
+		dispatch(peekOneCell({
+			row,
+			col,
+		}))
+	}
+
 	const handleTouchStart = (e) => {
 		e.preventDefault()
 
@@ -150,6 +162,21 @@ export const Board = (props) => {
 				col: col,
 			}))
 		} else {
+			dispatch(peekOneCell({
+				row: row,
+				col: col,
+			}))
+		}
+	}
+
+	const handleTouchEnd = (e) => {
+		e.preventDefault()
+		dispatch(resetPeek())
+
+		const row = calcRow(e.changedTouches[0].pageY)
+		const col = calcCol(e.changedTouches[0].pageX)
+
+		if (!flagMode) {
 			dispatch(revealCell({
 				row: row,
 				col: col,
@@ -169,7 +196,9 @@ export const Board = (props) => {
 			onMouseDown={handleMouseDown}
 			onMouseUp={handleMouseUp}
 			onMouseLeave={handleMouseLeave}
+			onTouchMove={handleTouchMove}
 			onTouchStart={handleTouchStart}
+			onTouchEnd={handleTouchEnd}
 			style={{
 				display: 'table',
 				borderSpacing: 0,
