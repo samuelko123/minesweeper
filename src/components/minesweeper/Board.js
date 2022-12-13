@@ -91,16 +91,16 @@ export const Board = (props) => {
 
 		switch (e.buttons) {
 			case MOUSE_CLICK.LEFT:
-				if (flagMode) {
-					dispatch(toggleFlag({
-						row: row,
-						col: col,
-					}))
-				} else if (
+				if (
 					primaryInput === 'touch' &&
 					board[row][col].state === CELL_STATE.REVEALED
 				) {
 					dispatch(peekNeighborCells({
+						row: row,
+						col: col,
+					}))
+				} else if (flagMode) {
+					dispatch(toggleFlag({
 						row: row,
 						col: col,
 					}))
