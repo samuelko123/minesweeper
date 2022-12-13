@@ -99,7 +99,6 @@ export const theme = createTheme(coloredTheme, {
 		MuiToggleButton: {
 			defaultProps: {
 				disableRipple: true,
-				color: 'primary',
 			},
 		},
 	},

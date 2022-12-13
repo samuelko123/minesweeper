@@ -118,21 +118,40 @@ export const App = () => {
 				/>
 				<Tooltip
 					title='Flag mode'
-					placement='right'
+					placement='top'
 				>
 					<ToggleButton
 						value='flag'
 						selected={flagMode}
-						onChange={() => setFlagMode(!flagMode)}
+						onClick={() => setFlagMode(!flagMode)}
 						sx={{
-							backgroundColor: 'rgb(0,0,0,0.08)',
 							position: 'fixed',
 							right: 20,
 							bottom: 20,
 							zIndex: 999,
+							opacity: 0.5,
+							color: theme => theme.palette.primary.main,
+							backgroundColor: theme => theme.palette.surface.default,
+							':hover': {
+								opacity: 1,
+								color: theme => theme.palette.primary.main,
+								backgroundColor: theme => theme.palette.surface.default,
+							},
+							'&.Mui-selected': {
+								color: theme => theme.palette.surface.default,
+								backgroundColor: theme => theme.palette.primary.main,
+							},
+							'&.Mui-selected:hover': {
+								opacity: 1,
+								color: theme => theme.palette.surface.default,
+								backgroundColor: theme => theme.palette.primary.main,
+							},
 						}}
 					>
-						<TfiFlag />
+						<TfiFlag
+							color='inherit'
+							size={20}
+						/>
 					</ToggleButton>
 				</Tooltip>
 			</Stack>
