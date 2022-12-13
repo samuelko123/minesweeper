@@ -3,6 +3,7 @@ import {
 	useDispatch,
 	useSelector,
 } from 'react-redux'
+import { primaryInput } from 'detect-it'
 import {
 	GAME_MODE,
 	GAME_STATUS,
@@ -25,7 +26,6 @@ import { settingsSelector } from '../../slices/settings'
 import {
 	Stack,
 	ToggleButton,
-	Tooltip,
 } from '@mui/material'
 import { TfiFlag } from 'react-icons/tfi'
 
@@ -116,10 +116,7 @@ export const App = () => {
 					onChange={handleModeChange}
 					tabIndex={0}
 				/>
-				<Tooltip
-					title='Flag mode'
-					placement='top'
-				>
+				{primaryInput === 'touch' &&
 					<ToggleButton
 						value='flag'
 						selected={flagMode}
@@ -153,7 +150,7 @@ export const App = () => {
 							size={20}
 						/>
 					</ToggleButton>
-				</Tooltip>
+				}
 			</Stack>
 			<BorderedBox
 				borderWidth={6}
