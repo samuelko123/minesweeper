@@ -25,6 +25,7 @@ import { settingsSelector } from '../../slices/settings'
 import {
 	Stack,
 	ToggleButton,
+	Tooltip,
 } from '@mui/material'
 import { TfiFlag } from 'react-icons/tfi'
 
@@ -115,13 +116,18 @@ export const App = () => {
 					onChange={handleModeChange}
 					tabIndex={0}
 				/>
-				<ToggleButton
-					value='flag'
-					selected={flagMode}
-					onChange={() => setFlagMode(!flagMode)}
+				<Tooltip
+					title='Flag mode'
+					placement='right'
 				>
-					<TfiFlag />
-				</ToggleButton>
+					<ToggleButton
+						value='flag'
+						selected={flagMode}
+						onChange={() => setFlagMode(!flagMode)}
+					>
+						<TfiFlag />
+					</ToggleButton>
+				</Tooltip>
 			</Stack>
 			<BorderedBox
 				borderWidth={6}
