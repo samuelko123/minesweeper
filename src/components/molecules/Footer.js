@@ -30,7 +30,6 @@ export const Footer = (props) => {
 					title='Source code'
 					placement='top'
 				>
-
 					<Box
 						component='span'
 						sx={{ verticalAlign: 'text-top' }}
