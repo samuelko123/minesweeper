@@ -4,6 +4,7 @@ import {
 	useSelector,
 } from 'react-redux'
 import {
+	CELL_STATE,
 	chordCell,
 	minesweeperSelector,
 	peekNeighborCells,
@@ -80,6 +81,11 @@ export const Board = (props) => {
 			case MOUSE_CLICK.LEFT:
 				if (flagMode) {
 					dispatch(toggleFlag({
+						row: row,
+						col: col,
+					}))
+				} else if (board[row][col].state === CELL_STATE.REVEALED) {
+					dispatch(chordCell({
 						row: row,
 						col: col,
 					}))

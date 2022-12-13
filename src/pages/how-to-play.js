@@ -5,6 +5,7 @@ import {
 	ListItem,
 	ListItemText,
 	Stack,
+	Typography,
 } from '@mui/material'
 
 import { BaseHeader } from '../components/atoms/Header'
@@ -44,7 +45,12 @@ export default function Page() {
 					<BaseList title='Mouse'>
 						<ListItem>
 							<ListItemText>Left-click</ListItemText>
-							<ListItemText>Uncover</ListItemText>
+							<ListItemText>
+								<Typography component='span'>Uncover / </Typography>
+								<ExternalLink href='http://www.minesweeper.info/wiki/Chord'>
+									Chord
+								</ExternalLink>
+							</ListItemText>
 						</ListItem>
 						<ListItem>
 							<ListItemText>Right-click</ListItemText>
