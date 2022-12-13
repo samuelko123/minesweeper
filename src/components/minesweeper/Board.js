@@ -3,6 +3,7 @@ import {
 	useDispatch,
 	useSelector,
 } from 'react-redux'
+import { primaryInput } from 'detect-it'
 import {
 	CELL_STATE,
 	chordCell,
@@ -52,6 +53,7 @@ export const Board = (props) => {
 	const handlePointerMove = (e) => {
 		const row = calcRow(e.pageY)
 		const col = calcCol(e.pageX)
+		setButtons(e.buttons)
 
 		switch (e.buttons) {
 			case MOUSE_CLICK.LEFT:
@@ -81,11 +83,6 @@ export const Board = (props) => {
 			case MOUSE_CLICK.LEFT:
 				if (flagMode) {
 					dispatch(toggleFlag({
-						row: row,
-						col: col,
-					}))
-				} else if (board[row][col].state === CELL_STATE.REVEALED) {
-					dispatch(chordCell({
 						row: row,
 						col: col,
 					}))
@@ -119,22 +116,24 @@ export const Board = (props) => {
 		const row = calcRow(e.pageY)
 		const col = calcCol(e.pageX)
 
-		switch (buttons) {
-			case MOUSE_CLICK.LEFT:
-				if (!flagMode) {
-					dispatch(revealCell({
-						row: row,
-						col: col,
-					}))
-				}
-				break
-			case MOUSE_CLICK.MIDDLE:
-			case MOUSE_CLICK.BOTH:
+		if (board[row][col].state === CELL_STATE.REVEALED) {
+			if (
+				primaryInput !== 'mouse' ||
+				buttons === MOUSE_CLICK.BOTH ||
+				buttons === MOUSE_CLICK.MIDDLE
+			) {
 				dispatch(chordCell({
 					row: row,
 					col: col,
 				}))
-				break
+			}
+		}
+
+		if (!flagMode && buttons !== MOUSE_CLICK.RIGHT) {
+			dispatch(revealCell({
+				row: row,
+				col: col,
+			}))
 		}
 	}
 
