@@ -126,7 +126,7 @@ export const App = () => {
 							right: 20,
 							bottom: 20,
 							zIndex: 999,
-							opacity: 0.5,
+							opacity: 0.75,
 							color: theme => theme.palette.primary.main,
 							backgroundColor: theme => theme.palette.surface.default,
 							':hover': {
@@ -147,7 +147,7 @@ export const App = () => {
 					>
 						<TfiFlag
 							color='inherit'
-							size={20}
+							size={30}
 						/>
 					</ToggleButton>
 				}
