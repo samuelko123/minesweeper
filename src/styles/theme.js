@@ -1,10 +1,6 @@
 import { createTheme } from '@mui/material'
 
-const surfaceColor = '#fff'
-
-const defaultTheme = createTheme()
-
-export const theme = createTheme(defaultTheme, {
+const coloredTheme = createTheme({
 	palette: {
 		primary: {
 			main: '#005aaa',
@@ -13,13 +9,16 @@ export const theme = createTheme(defaultTheme, {
 			default: '#eee',
 		},
 		surface: {
-			default: surfaceColor,
+			default: '#fff',
 		},
 		google: {
 			main: '#4285F4',
 			contrastText: '#ffffff',
 		},
 	},
+})
+
+export const theme = createTheme(coloredTheme, {
 	components: {
 		MuiAppBar: {
 			defaultProps: {
@@ -28,10 +27,10 @@ export const theme = createTheme(defaultTheme, {
 			styleOverrides: {
 				root: {
 					position: 'static',
-					padding: defaultTheme.spacing(1),
-					paddingLeft: defaultTheme.spacing(2),
-					paddingRight: defaultTheme.spacing(2),
-					height: defaultTheme.spacing(7),
+					padding: coloredTheme.spacing(1),
+					paddingLeft: coloredTheme.spacing(2),
+					paddingRight: coloredTheme.spacing(2),
+					height: coloredTheme.spacing(7),
 					display: 'flex',
 					flexDirection: 'row',
 					justifyContent: 'space-between',
@@ -60,8 +59,8 @@ export const theme = createTheme(defaultTheme, {
 			},
 			styleOverrides: {
 				root: {
-					paddingTop: defaultTheme.spacing(3),
-					paddingBottom: defaultTheme.spacing(3),
+					paddingTop: coloredTheme.spacing(3),
+					paddingBottom: coloredTheme.spacing(3),
 					gap: 1,
 					alignItems: 'flex-start',
 				},
@@ -82,8 +81,8 @@ export const theme = createTheme(defaultTheme, {
 				root: {
 					display: 'flex',
 					flexDirection: 'row',
-					gap: defaultTheme.spacing(1),
-					padding: defaultTheme.spacing(2),
+					gap: coloredTheme.spacing(1),
+					padding: coloredTheme.spacing(2),
 				},
 			},
 		},
@@ -93,7 +92,7 @@ export const theme = createTheme(defaultTheme, {
 			},
 			styleOverrides: {
 				root: {
-					backgroundColor: surfaceColor,
+					backgroundColor: 'surface',
 				},
 			},
 		},
