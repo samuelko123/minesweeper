@@ -4,6 +4,7 @@ import {
 	useSelector,
 } from 'react-redux'
 import {
+	CELL_STATE,
 	chordCell,
 	minesweeperSelector,
 	peekNeighborCells,
@@ -161,6 +162,11 @@ export const Board = (props) => {
 				row: row,
 				col: col,
 			}))
+		} else if (board[row][col].state === CELL_STATE.REVEALED) {
+			dispatch(peekNeighborCells({
+				row: row,
+				col: col,
+			}))
 		} else {
 			dispatch(peekOneCell({
 				row: row,
@@ -176,14 +182,19 @@ export const Board = (props) => {
 		const row = calcRow(e.changedTouches[0].pageY)
 		const col = calcCol(e.changedTouches[0].pageX)
 
-		if (!flagMode) {
-			dispatch(revealCell({
+		if (flagMode) {
+			return
+		}
+
+		if (board[row][col].state === CELL_STATE.REVEALED) {
+			dispatch(chordCell({
 				row: row,
 				col: col,
 			}))
+			return
 		}
 
-		dispatch(chordCell({
+		dispatch(revealCell({
 			row: row,
 			col: col,
 		}))
