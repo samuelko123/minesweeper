@@ -12,6 +12,7 @@ import { BaseHeader } from '../components/atoms/Header'
 import { BackButton } from '../components/molecules/BackButton'
 import { BaseList } from '../components/atoms/List'
 import { ExternalLink } from '../components/atoms/Links'
+import { FlagButton } from '../components/molecules/FlagButton'
 
 export default function Page() {
 	return (
@@ -46,10 +47,7 @@ export default function Page() {
 						<ListItem>
 							<ListItemText>Left-click</ListItemText>
 							<ListItemText>
-								<Typography component='span'>Uncover / </Typography>
-								<ExternalLink href='http://www.minesweeper.info/wiki/Chord'>
-									Chord
-								</ExternalLink>
+								Uncover
 							</ListItemText>
 						</ListItem>
 						<ListItem>
@@ -69,9 +67,21 @@ export default function Page() {
 					</BaseList>
 					<BaseList title='Mobile'>
 						<ListItem>
-							<ListItemText>Touch</ListItemText>
 							<ListItemText>
-								Uncover / Toggle flag
+								<FlagButton sx={{ cursor: 'default' }} />
+								<Typography component='span'> + Touch</Typography>
+							</ListItemText>
+							<ListItemText>
+								Uncover
+							</ListItemText>
+						</ListItem>
+						<ListItem>
+							<ListItemText>
+								<FlagButton selected={true} sx={{ cursor: 'default' }} />
+								<Typography component='span'> + Touch</Typography>
+							</ListItemText>
+							<ListItemText>
+								Toggle flag
 							</ListItemText>
 						</ListItem>
 						<ListItem>
