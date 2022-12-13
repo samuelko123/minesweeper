@@ -3,6 +3,7 @@ import Head from 'next/head'
 import { Provider as ReduxProvider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import {
+	AppBar,
 	CssBaseline,
 	Stack,
 	ThemeProvider,
@@ -12,7 +13,6 @@ import {
 	store,
 } from '../slices'
 import '../styles/global.css'
-import { BaseAppBar } from '../components/atoms/AppBar'
 import { BrandHeader } from '../components/atoms/BrandHeader'
 import { MenuButton } from '../components/organisms/MenuButton'
 import {
@@ -51,7 +51,7 @@ export default function App(props) {
 							<link rel='manifest' href='site.webmanifest' />
 						</Head>
 						<CssBaseline />
-						<BaseAppBar>
+						<AppBar>
 							<BrandHeader
 								href='/'
 								title={title}
@@ -76,7 +76,7 @@ export default function App(props) {
 									},
 								]}
 							/>
-						</BaseAppBar>
+						</AppBar>
 						<Stack
 							component='main'
 							padding={2}

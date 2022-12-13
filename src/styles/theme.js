@@ -21,6 +21,24 @@ export const theme = createTheme(defaultTheme, {
 		},
 	},
 	components: {
+		MuiAppBar: {
+			defaultProps: {
+				elevation: 2,
+			},
+			styleOverrides: {
+				root: {
+					position: 'static',
+					padding: defaultTheme.spacing(1),
+					paddingLeft: defaultTheme.spacing(2),
+					paddingRight: defaultTheme.spacing(2),
+					height: defaultTheme.spacing(7),
+					display: 'flex',
+					flexDirection: 'row',
+					justifyContent: 'space-between',
+					alignItems: 'center',
+				},
+			},
+		},
 		MuiList: {
 			defaultProps: {
 				disablePadding: true,
