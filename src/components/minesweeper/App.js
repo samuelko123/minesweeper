@@ -25,6 +25,7 @@ import {
 import { settingsSelector } from '../../slices/settings'
 import { Stack } from '@mui/material'
 import { FlagButton } from '../molecules/FlagButton'
+import { TfiFlag } from 'react-icons/tfi'
 
 const KEYBOARD = Object.freeze({
 	F2: 113,
@@ -116,16 +117,30 @@ export const App = () => {
 				{primaryInput === 'touch' &&
 					<FlagButton
 						selected={flagMode}
-						onClick={() => setFlagMode(!flagMode)}
-						size={30}
+						onClick={() => {
+							status === GAME_STATUS.WIN || status === GAME_STATUS.LOSE ?
+								startNewGame()
+								:
+								setFlagMode(!flagMode)
+						}}
 						sx={{
 							position: 'fixed',
-							right: 20,
-							bottom: 20,
+							right: 0,
+							bottom: 0,
 							zIndex: 999,
 							opacity: 0.75,
+							fontSize: 20,
 						}}
-					/>
+					>
+						{status === GAME_STATUS.WIN || status === GAME_STATUS.LOSE ?
+							<span>🙂</span>
+							:
+							<TfiFlag
+								color='inherit'
+								size={30}
+							/>
+						}
+					</FlagButton>
 				}
 			</Stack>
 			<BorderedBox

@@ -1,12 +1,11 @@
 import { ToggleButton } from '@mui/material'
-import { TfiFlag } from 'react-icons/tfi'
 
 export const FlagButton = (props) => {
 	const {
 		onClick,
 		selected,
 		sx,
-		size,
+		children,
 	} = props
 
 	return (
@@ -34,10 +33,7 @@ export const FlagButton = (props) => {
 				...sx,
 			}}
 		>
-			<TfiFlag
-				color='inherit'
-				size={size}
-			/>
+			{children}
 		</ToggleButton>
 	)
 }
