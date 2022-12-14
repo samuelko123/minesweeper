@@ -75,22 +75,23 @@ const restartGame = (state) => {
 	state.board = board
 }
 
-const callFnOnNeighborCells = (state, row, col, fn) => {
-	const {
-		rowCount,
-		colCount,
-	} = state.settings
+const getNeighborCells = (board, row, col) => {
+	const rowCount = board.length
+	const colCount = board[0].length
 
 	const i1 = Math.max(row - 1, 0)
 	const i2 = Math.min(row + 1, rowCount - 1)
 	const j1 = Math.max(col - 1, 0)
 	const j2 = Math.min(col + 1, colCount - 1)
 
+	const cells = []
 	for (let i = i1; i <= i2; i++) {
 		for (let j = j1; j <= j2; j++) {
-			fn(i, j)
+			cells.push(board[i][j])
 		}
 	}
+
+	return cells
 }
 
 const revealCellHelper = (state, row, col) => {
@@ -103,23 +104,26 @@ const revealCellHelper = (state, row, col) => {
 		safeCount,
 	} = state.data
 
+	const clickedCell = state.board[row][col]
+
 	// handle first click
 	if (state.status === GAME_STATUS.READY) {
 		state.status = GAME_STATUS.PLAYING
 
 		// move mine away
-		if (state.board[row][col].value === CELL_VALUE.MINED) {
-			let x, y
+		if (clickedCell.value === CELL_VALUE.MINED) {
+			let x, y, targetCell
 			do {
 				x = Math.floor(Math.random() * rowCount)
 				y = Math.floor(Math.random() * colCount)
+				targetCell = state.board[x][y]
 			} while (
-				state.board[x][y].value === CELL_VALUE.MINED ||
+				targetCell.value === CELL_VALUE.MINED ||
 				(x === row && y === col)
 			)
 
-			state.board[row][col].value = CELL_VALUE.EMPTY
-			state.board[x][y].value = CELL_VALUE.MINED
+			clickedCell.value = CELL_VALUE.EMPTY
+			targetCell.value = CELL_VALUE.MINED
 		}
 
 		// calculate neighbor mine count
@@ -129,9 +133,9 @@ const revealCellHelper = (state, row, col) => {
 					continue
 				}
 
-				callFnOnNeighborCells(state, cell.row, cell.col, (i, j) => {
-					if (state.board[i][j].value !== CELL_VALUE.MINED) {
-						state.board[i][j].value++
+				getNeighborCells(state.board, cell.row, cell.col).map(cell => {
+					if (cell.value !== CELL_VALUE.MINED) {
+						cell.value++
 					}
 				})
 			}
@@ -140,16 +144,16 @@ const revealCellHelper = (state, row, col) => {
 
 	// do nothing if cell is not hidden or peeked
 	if (
-		state.board[row][col].state !== CELL_STATE.HIDDEN &&
-		state.board[row][col].state !== CELL_STATE.PEEKED
+		clickedCell.state !== CELL_STATE.HIDDEN &&
+		clickedCell.state !== CELL_STATE.PEEKED
 	) {
 		return
 	}
 
 	// handle lose if cell is mined
-	if (state.board[row][col].value === CELL_VALUE.MINED) {
+	if (clickedCell.value === CELL_VALUE.MINED) {
 		state.status = GAME_STATUS.LOSE
-		state.board[row][col].state = CELL_STATE.EXPLODED
+		clickedCell.state = CELL_STATE.EXPLODED
 
 		for (const r of state.board) {
 			for (const cell of r) {
@@ -174,27 +178,21 @@ const revealCellHelper = (state, row, col) => {
 	}
 
 	// reveals neighbor cells recursively if cell has no neighbor mines
-	state.board[row][col].state = CELL_STATE.REVEALED
-	const toBeRevealed = [{
-		row: row,
-		col: col,
-	}]
+	clickedCell.state = CELL_STATE.REVEALED
+	const toBeRevealed = [clickedCell]
 
 	while (toBeRevealed.length !== 0) {
-		const cell = toBeRevealed.pop()
-		state.board[cell.row][cell.col].state = CELL_STATE.REVEALED
+		const focusCell = toBeRevealed.pop()
+		focusCell.state = CELL_STATE.REVEALED
 
-		if (state.board[cell.row][cell.col].value === CELL_VALUE.EMPTY) {
-			callFnOnNeighborCells(state, cell.row, cell.col, (i, j) => {
+		if (focusCell.value === CELL_VALUE.EMPTY) {
+			getNeighborCells(state.board, focusCell.row, focusCell.col).map(neighborCell => {
 				if (
-					(i !== cell.row || j !== cell.col)
-					&& state.board[i][j].state === CELL_STATE.HIDDEN
-					&& state.board[i][j].value !== CELL_VALUE.MINED
+					(neighborCell.row !== focusCell.row || neighborCell.col !== focusCell.col)
+					&& neighborCell.state === CELL_STATE.HIDDEN
+					&& neighborCell.value !== CELL_VALUE.MINED
 				) {
-					toBeRevealed.push({
-						row: i,
-						col: j,
-					})
+					toBeRevealed.push(neighborCell)
 				}
 			})
 		}
@@ -314,11 +312,12 @@ const minesweeperSlice = createSlice({
 				return
 			}
 
-			if (state.board[row][col].state === CELL_STATE.HIDDEN) {
-				state.board[row][col].state = CELL_STATE.FLAGGED
+			const cell = state.board[row][col]
+			if (cell.state === CELL_STATE.HIDDEN) {
+				cell.state = CELL_STATE.FLAGGED
 				state.data.flagCount++
-			} else if (state.board[row][col].state === CELL_STATE.FLAGGED) {
-				state.board[row][col].state = CELL_STATE.HIDDEN
+			} else if (cell.state === CELL_STATE.FLAGGED) {
+				cell.state = CELL_STATE.HIDDEN
 				state.data.flagCount--
 			}
 		},
@@ -332,27 +331,25 @@ const minesweeperSlice = createSlice({
 				return
 			}
 
-			const cellValue = state.board[row][col].value
-			const cellState = state.board[row][col].state
-
+			const cell = state.board[row][col]
 			if (
-				cellValue <= 0 ||
-				cellState !== CELL_STATE.REVEALED
+				cell.value <= 0 ||
+				cell.state !== CELL_STATE.REVEALED
 			) {
 				return
 			}
 
 			let flagCount = 0
-			callFnOnNeighborCells(state, row, col, (i, j) => {
-				if (state.board[i][j].state === CELL_STATE.FLAGGED) {
+			getNeighborCells(state.board, row, col).map(cell => {
+				if (cell.state === CELL_STATE.FLAGGED) {
 					flagCount++
 				}
 			})
 
-			if (flagCount === cellValue) {
-				callFnOnNeighborCells(state, row, col, (i, j) => {
-					if (state.board[i][j].state === CELL_STATE.HIDDEN) {
-						revealCellHelper(state, i, j)
+			if (flagCount === cell.value) {
+				getNeighborCells(state.board, row, col).map(cell => {
+					if (cell.state === CELL_STATE.HIDDEN) {
+						revealCellHelper(state, cell.row, cell.col)
 					}
 				})
 			}
@@ -398,8 +395,8 @@ const minesweeperSlice = createSlice({
 			}
 
 			state.data.peeking = true
-			for(const r of state.board){
-				for(const cell of r){
+			for (const r of state.board) {
+				for (const cell of r) {
 					if (Math.abs(row - cell.row) <= 1 && Math.abs(col - cell.col) <= 1) {
 						if (cell.state === CELL_STATE.HIDDEN) {
 							cell.state = CELL_STATE.PEEKED
@@ -412,8 +409,8 @@ const minesweeperSlice = createSlice({
 		},
 		resetPeek: (state) => {
 			state.data.peeking = false
-			for(const r of state.board){
-				for(const cell of r){
+			for (const r of state.board) {
+				for (const cell of r) {
 					if (cell.state === CELL_STATE.PEEKED) {
 						cell.state = CELL_STATE.HIDDEN
 					}
