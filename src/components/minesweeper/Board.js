@@ -99,7 +99,7 @@ export const Board = (props) => {
 						row: row,
 						col: col,
 					}))
-				} else {
+				} else if (!flagMode) {
 					dispatch(peekOneCell({
 						row: row,
 						col: col,
