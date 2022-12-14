@@ -51,9 +51,10 @@ export const Board = (props) => {
 	const calcCol = (pageX) => { return Math.floor((pageX - tableLeft) / tileSize) }
 
 	const handlePointerMove = (e) => {
+		e.preventDefault()
+
 		const row = calcRow(e.pageY)
 		const col = calcCol(e.pageX)
-		setButtons(e.buttons)
 
 		switch (e.buttons) {
 			case MOUSE_CLICK.LEFT:
@@ -83,7 +84,6 @@ export const Board = (props) => {
 	}
 
 	const handlePointerDown = (e) => {
-		e.preventDefault()
 		setButtons(e.buttons)
 
 		const row = calcRow(e.pageY)
@@ -167,6 +167,28 @@ export const Board = (props) => {
 		dispatch(resetPeek())
 	}
 
+	const handleMouseDown = (e) => {
+		e.preventDefault()
+		setButtons(e.buttons)
+	}
+
+	const handleMouseUp = (e) => {
+		e.preventDefault()
+
+		const row = calcRow(e.pageY)
+		const col = calcCol(e.pageX)
+
+		switch (buttons) {
+			case MOUSE_CLICK.MIDDLE:
+			case MOUSE_CLICK.BOTH:
+				dispatch(chordCell({
+					row: row,
+					col: col,
+				}))
+				break
+		}
+	}
+
 	return (
 		<table
 			ref={tableRef}
@@ -174,6 +196,8 @@ export const Board = (props) => {
 			onPointerDown={handlePointerDown}
 			onPointerUp={handlePointerUp}
 			onPointerLeave={handlePointerLeave}
+			onMouseDown={handleMouseDown}
+			onMouseUp={handleMouseUp}
 			style={{
 				display: 'table',
 				borderSpacing: 0,

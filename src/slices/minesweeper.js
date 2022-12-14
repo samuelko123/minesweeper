@@ -353,7 +353,10 @@ const minesweeperSlice = createSlice({
 
 			if (flagCount === cell.value) {
 				getNeighborCells(state.board, row, col).map(cell => {
-					if (cell.state === CELL_STATE.HIDDEN) {
+					if (
+						cell.state === CELL_STATE.HIDDEN ||
+						cell.state === CELL_STATE.PEEKED
+					) {
 						revealCellHelper(state, cell.row, cell.col)
 					}
 				})
