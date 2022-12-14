@@ -65,6 +65,7 @@ export const App = () => {
 		clearInterval(timer.current)
 		dispatch(resetStopWatch())
 		dispatch(initGame(settings))
+		setFlagMode(false)
 	}
 
 	const handleKeyDown = (e) => {
