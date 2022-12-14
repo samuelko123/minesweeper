@@ -82,7 +82,7 @@ describe('minesweeper', () => {
 			expect(newState).toEqual(oldState)
 		})
 
-		it('removes mine from first-click cell', () => {
+		it('makes first-click cell to zero', () => {
 			// arrange
 			const oldState = {
 				status: GAME_STATUS.READY,
@@ -102,54 +102,10 @@ describe('minesweeper', () => {
 						[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
 					],
 					[
-						[CELL_VALUE.MINED, CELL_VALUE.MINED, CELL_VALUE.MINED],
 						[CELL_VALUE.MINED, CELL_VALUE.MINED, CELL_VALUE.EMPTY],
-						[CELL_VALUE.MINED, CELL_VALUE.MINED, CELL_VALUE.MINED],
-						[CELL_VALUE.MINED, CELL_VALUE.MINED, CELL_VALUE.MINED],
-					]),
-			}
-
-			const payload = {
-				row: 1,
-				col: 1,
-			}
-
-			// action
-			const newState = reducer(oldState, revealCell(payload))
-
-			// assert
-			expect(getValues(newState.board)).toEqual([
-				[CELL_VALUE.MINED, CELL_VALUE.MINED, CELL_VALUE.MINED],
-				[CELL_VALUE.MINED, 8, CELL_VALUE.MINED],
-				[CELL_VALUE.MINED, CELL_VALUE.MINED, CELL_VALUE.MINED],
-				[CELL_VALUE.MINED, CELL_VALUE.MINED, CELL_VALUE.MINED],
-			])
-		})
-
-		it('fills neighbor mine count on first click', () => {
-			// arrange
-			const oldState = {
-				status: GAME_STATUS.READY,
-				settings: {
-					rowCount: 4,
-					colCount: 3,
-					mineCount: 5,
-				},
-				data: {
-					safeCount: 7,
-				},
-				board: buildBoard(
-					[
-						[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
-						[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
-						[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
-						[CELL_STATE.HIDDEN, CELL_STATE.HIDDEN, CELL_STATE.HIDDEN],
-					],
-					[
-						[CELL_VALUE.EMPTY, CELL_VALUE.EMPTY, CELL_VALUE.EMPTY],
-						[CELL_VALUE.EMPTY, CELL_VALUE.MINED, CELL_VALUE.EMPTY],
-						[CELL_VALUE.MINED, CELL_VALUE.EMPTY, CELL_VALUE.EMPTY],
-						[CELL_VALUE.MINED, CELL_VALUE.MINED, CELL_VALUE.MINED],
+						[CELL_VALUE.MINED, CELL_VALUE.MINED, CELL_VALUE.EMPTY],
+						[CELL_VALUE.MINED, CELL_VALUE.MINED, CELL_VALUE.EMPTY],
+						[CELL_VALUE.MINED, CELL_VALUE.MINED, CELL_VALUE.EMPTY],
 					]),
 			}
 
@@ -162,11 +118,10 @@ describe('minesweeper', () => {
 			const newState = reducer(oldState, revealCell(payload))
 
 			// assert
-			expect(newState.status).toEqual(GAME_STATUS.PLAYING)
 			expect(getValues(newState.board)).toEqual([
-				[1, 1, 1],
-				[2, -1, 1],
-				[-1, 5, 3],
+				[0, 2, -1],
+				[2, 5, -1],
+				[-1, -1, -1],
 				[-1, -1, -1],
 			])
 		})

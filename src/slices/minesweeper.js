@@ -110,21 +110,26 @@ const revealCellHelper = (state, row, col) => {
 	if (state.status === GAME_STATUS.READY) {
 		state.status = GAME_STATUS.PLAYING
 
-		// move mine away
-		if (clickedCell.value === CELL_VALUE.MINED) {
-			let x, y, targetCell
-			do {
-				x = Math.floor(Math.random() * rowCount)
-				y = Math.floor(Math.random() * colCount)
-				targetCell = state.board[x][y]
-			} while (
-				targetCell.value === CELL_VALUE.MINED ||
-				(x === row && y === col)
-			)
+		// move mines away
+		getNeighborCells(state.board, row, col).map(neighborCell => {
+			if (neighborCell.value === CELL_VALUE.MINED) {
+				let x, y, targetCell
+				do {
+					x = Math.floor(Math.random() * rowCount)
+					y = Math.floor(Math.random() * colCount)
+					targetCell = state.board[x][y]
+				} while (
+					targetCell.value === CELL_VALUE.MINED ||
+					(
+						Math.abs(targetCell.row - clickedCell.row) <= 1 &
+						Math.abs(targetCell.col - clickedCell.col) <= 1
+					)
+				)
 
-			clickedCell.value = CELL_VALUE.EMPTY
-			targetCell.value = CELL_VALUE.MINED
-		}
+				neighborCell.value = CELL_VALUE.EMPTY
+				targetCell.value = CELL_VALUE.MINED
+			}
+		})
 
 		// calculate neighbor mine count
 		for (const r of state.board) {
