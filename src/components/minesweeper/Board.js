@@ -99,11 +99,6 @@ export const Board = (props) => {
 						row: row,
 						col: col,
 					}))
-				} else if (flagMode) {
-					dispatch(toggleFlag({
-						row: row,
-						col: col,
-					}))
 				} else {
 					dispatch(peekOneCell({
 						row: row,
@@ -137,6 +132,13 @@ export const Board = (props) => {
 		switch (buttons) {
 			case MOUSE_CLICK.LEFT:
 				if (primaryInput === 'touch') {
+					if (flagMode) {
+						dispatch(toggleFlag({
+							row: row,
+							col: col,
+						}))
+					}
+
 					dispatch(chordCell({
 						row: row,
 						col: col,
