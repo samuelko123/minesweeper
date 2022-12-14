@@ -13,6 +13,7 @@ import { BackButton } from '../components/molecules/BackButton'
 import { BaseList } from '../components/atoms/List'
 import { ExternalLink } from '../components/atoms/Links'
 import { FlagButton } from '../components/molecules/FlagButton'
+import { TfiFlag } from 'react-icons/tfi'
 
 export default function Page() {
 	return (
@@ -68,7 +69,9 @@ export default function Page() {
 					<BaseList title='Mobile'>
 						<ListItem>
 							<ListItemText>
-								<FlagButton sx={{ cursor: 'default' }} />
+								<FlagButton selected={false} sx={{ cursor: 'default' }}>
+									<TfiFlag color='inherit' />
+								</FlagButton>
 								<Typography component='span'> + Touch</Typography>
 							</ListItemText>
 							<ListItemText>
@@ -77,7 +80,9 @@ export default function Page() {
 						</ListItem>
 						<ListItem>
 							<ListItemText>
-								<FlagButton selected={true} sx={{ cursor: 'default' }} />
+								<FlagButton selected={true} sx={{ cursor: 'default' }}>
+									<TfiFlag color='inherit' />
+								</FlagButton>
 								<Typography component='span'> + Touch</Typography>
 							</ListItemText>
 							<ListItemText>
