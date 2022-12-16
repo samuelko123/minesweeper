@@ -66,7 +66,7 @@ export const App = () => {
 	}, [status, dispatch, startStopWatch, stopStopWatch])
 
 	const startNewGame = () => {
-		startStopWatch()
+		stopStopWatch()
 		dispatch(resetStopWatch())
 		dispatch(initGame(settings))
 		setFlagMode(false)
