@@ -10,7 +10,7 @@ const stopWatchSlice = createSlice({
 	name: 'stopWatch',
 	initialState: INIT_STATE,
 	reducers: {
-		start: (state) => {
+		setStartTime: (state) => {
 			state.startTimestamp = Date.now()
 			state.prevElapsed = state.elapsedTimeMS
 		},
@@ -22,7 +22,7 @@ const stopWatchSlice = createSlice({
 })
 
 export const {
-	start,
+	setStartTime,
 	update,
 	reset,
 } = stopWatchSlice.actions

@@ -18,7 +18,7 @@ import { Board } from './Board'
 import { BorderedBox } from '../molecules/BorderedBox'
 import {
 	reset as resetStopWatch,
-	start as startStopWatch,
+	setStartTime,
 	stopWatchSelector,
 	update as updateStopWatch,
 } from '../../slices/stopWatch'
@@ -26,6 +26,7 @@ import { settingsSelector } from '../../slices/settings'
 import { Stack } from '@mui/material'
 import { FlagButton } from '../molecules/FlagButton'
 import { TfiFlag } from 'react-icons/tfi'
+import { useAnimationFrame } from '../../hooks/useAnimationFrame'
 
 const KEYBOARD = Object.freeze({
 	F2: 113,
@@ -46,23 +47,26 @@ export const App = () => {
 	} = useSelector(settingsSelector)
 
 	const [flagMode, setFlagMode] = React.useState(false)
+	const {
+		start: startStopWatch,
+		stop: stopStopWatch,
+	} = useAnimationFrame(1000, () => dispatch(updateStopWatch()))
 
-	const timer = React.useRef()
 	React.useEffect(() => {
 		if (status === GAME_STATUS.PLAYING) {
-			dispatch(startStopWatch())
-			timer.current = setInterval(() => dispatch(updateStopWatch()), 100)
+			dispatch(setStartTime())
+			startStopWatch()
 		} else if (status === GAME_STATUS.READY) {
 			dispatch(resetStopWatch())
 		} else {
-			clearInterval(timer.current)
+			stopStopWatch()
 		}
 
-		return () => clearInterval(timer.current)
-	}, [status, dispatch])
+		return () => stopStopWatch()
+	}, [status, dispatch, startStopWatch, stopStopWatch])
 
 	const startNewGame = () => {
-		clearInterval(timer.current)
+		startStopWatch()
 		dispatch(resetStopWatch())
 		dispatch(initGame(settings))
 		setFlagMode(false)
@@ -192,7 +196,7 @@ export const App = () => {
 							borderWidth={2}
 							sunken={true}
 						>
-							<Counter value={Math.floor(elapsedTimeMS / 1000)} />
+							<Counter value={Math.round(elapsedTimeMS / 1000)} />
 						</BorderedBox>
 					</BorderedBox>
 					<BorderedBox
