@@ -16,6 +16,7 @@ import '../styles/global.css'
 import { BrandHeader } from '../components/atoms/BrandHeader'
 import { MenuButton } from '../components/organisms/MenuButton'
 import {
+	MdFeedback,
 	MdHome,
 	MdOutlineHelp,
 	MdSettings,
@@ -65,6 +66,12 @@ export default function App(props) {
 											icon: <MdOutlineHelp />,
 											title: 'How To Play',
 										},
+										{
+											href: '/contact',
+											icon: <MdFeedback />,
+											title: 'Contact Me',
+										},
+
 									]}
 								/>
 							</AppBar>
