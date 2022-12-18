@@ -1,4 +1,6 @@
 import { initializeApp } from 'firebase/app'
+import { getAnalytics } from 'firebase/analytics'
+
 import React from 'react'
 
 export const FirebaseContext = React.createContext({})
@@ -7,6 +9,7 @@ export const FirebaseProvider = (props) => {
 	const { children } = props
 
 	const [app, setApp] = React.useState(null)
+	const [analytics, setAnalytics] = React.useState(null)
 
 	React.useEffect(() => {
 		const firebaseConfig = {
@@ -22,11 +25,17 @@ export const FirebaseProvider = (props) => {
 
 		const _app = initializeApp(firebaseConfig)
 		setApp(_app)
+
+		const _analytics = getAnalytics(_app)
+		setAnalytics(_analytics)
 	}, [])
 
 	return (
 		<FirebaseContext.Provider
-			value={{ app }}
+			value={{
+				app,
+				analytics,
+			}}
 		>
 			{children}
 		</FirebaseContext.Provider>
