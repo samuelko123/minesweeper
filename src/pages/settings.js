@@ -139,14 +139,6 @@ export default function Page() {
 							</Stack>
 						</ListItem>
 						<ListItem>
-							<ListItemText>Upload / Download settings</ListItemText>
-							<Stack gap={2} sx={{ flex: 1 }}>
-								<GoogleButton />
-								<UploadButton />
-								<DownloadButton />
-							</Stack>
-						</ListItem>
-						<ListItem>
 							<ListItemText>Reset to defaults</ListItemText>
 							<Box sx={{ flex: 1 }}>
 								<Button

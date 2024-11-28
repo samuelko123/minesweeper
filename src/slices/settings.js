@@ -19,7 +19,6 @@ const settingsSlice = createSlice({
 		setCellBackgroundColor: (state, { payload }) => {
 			state.cell.color.background = payload.color
 		},
-		load: (state, { payload }) => payload,
 		reset: () => INIT_STATE,
 	},
 })
@@ -27,7 +26,6 @@ const settingsSlice = createSlice({
 export const {
 	setCellSize,
 	setCellBackgroundColor,
-	load,
 	reset,
 } = settingsSlice.actions
 
