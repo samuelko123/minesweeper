@@ -34,9 +34,6 @@ import {
 } from '../slices/minesweeper'
 import { BaseDialog } from '../components/molecules/Dialogs'
 import { BaseList } from '../components/atoms/List'
-import { GoogleButton } from '../components/organisms/GoogleButton'
-import { UploadButton } from '../components/organisms/UploadButton'
-import { DownloadButton } from '../components/organisms/DownloadButton'
 
 export default function Page() {
 	const dispatch = useDispatch()
